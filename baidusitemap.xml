@@ -4,62 +4,8 @@
 
     
   <url>
-    <loc>http://yanglonglong.com/2016/04/19/testphoto/</loc>
-    <lastmod>2016-04-19T13:54:33.000Z</lastmod>
-    <data>
-        <display>
-        <title>testphoto</title>
-        <pubTime>2016-04-19T13:26:27.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yanglonglong.com/2016/04/19/helloworld/</loc>
-    <lastmod>2016-04-19T12:52:49.000Z</lastmod>
-    <data>
-        <display>
-        <title>helloworld</title>
-        <pubTime>2016-04-19T08:10:31.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yanglonglong.com/2016/04/19/helloworld2/</loc>
-    <lastmod>2016-04-19T12:23:26.000Z</lastmod>
-    <data>
-        <display>
-        <title>helloworld2</title>
-        <pubTime>2016-04-19T08:16:36.000Z</pubTime>
-        
-        <tag>css</tag>
-         
-         
-           
-             
-              <breadCrumb title="前端" url="http://yanglonglong.com/categories/%E5%89%8D%E7%AB%AF/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-    
-  <url>
     <loc>http://yanglonglong.com/2016/04/19/hello-world/</loc>
-    <lastmod>2016-04-19T12:06:59.000Z</lastmod>
+    <lastmod>2016-04-19T20:34:00.000Z</lastmod>
     <data>
         <display>
         <title>Hello World</title>
@@ -74,20 +20,5 @@
     </url>
 
     
-  <url>
-    <loc>http://yanglonglong.com/2016/04/19/testpage/</loc>
-    <lastmod>2016-04-19T12:06:50.000Z</lastmod>
-    <data>
-        <display>
-        <title>testpage</title>
-        <pubTime>2016-04-19T08:15:41.000Z</pubTime>
-        
-        <tag>html</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
+    
 </urlset>
