@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
-  
+  <title>ziv小站</title>
+  <subtitle>GIS佬，武大郎</subtitle>
   <link href="/rss.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
-  <updated>2016-04-19T12:23:26.000Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="http://yanglonglong.com/"/>
+  <updated>2016-04-19T13:54:33.000Z</updated>
+  <id>http://yanglonglong.com/</id>
   
   <author>
-    <name>John Doe</name>
-    
+    <name>杨龙龙</name>
+    <email>me@yanglonglong.com</email>
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>testphoto</title>
+    <link href="http://yanglonglong.com/2016/04/19/testphoto/"/>
+    <id>http://yanglonglong.com/2016/04/19/testphoto/</id>
+    <published>2016-04-19T13:26:27.000Z</published>
+    <updated>2016-04-19T13:54:33.000Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>helloworld2</title>
-    <link href="http://yoursite.com/2016/04/19/helloworld2/"/>
-    <id>http://yoursite.com/2016/04/19/helloworld2/</id>
+    <link href="http://yanglonglong.com/2016/04/19/helloworld2/"/>
+    <id>http://yanglonglong.com/2016/04/19/helloworld2/</id>
     <published>2016-04-19T08:16:36.000Z</published>
     <updated>2016-04-19T12:23:26.000Z</updated>
     
@@ -33,17 +49,17 @@
     
     </summary>
     
-      <category term="前端" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/"/>
+      <category term="前端" scheme="http://yanglonglong.com/categories/%E5%89%8D%E7%AB%AF/"/>
     
     
-      <category term="css" scheme="http://yoursite.com/tags/css/"/>
+      <category term="css" scheme="http://yanglonglong.com/tags/css/"/>
     
   </entry>
   
   <entry>
     <title>testpage</title>
-    <link href="http://yoursite.com/2016/04/19/testpage/"/>
-    <id>http://yoursite.com/2016/04/19/testpage/</id>
+    <link href="http://yanglonglong.com/2016/04/19/testpage/"/>
+    <id>http://yanglonglong.com/2016/04/19/testpage/</id>
     <published>2016-04-19T08:15:41.000Z</published>
     <updated>2016-04-19T12:06:50.000Z</updated>
     
@@ -58,14 +74,14 @@
     </summary>
     
     
-      <category term="html" scheme="http://yoursite.com/tags/html/"/>
+      <category term="html" scheme="http://yanglonglong.com/tags/html/"/>
     
   </entry>
   
   <entry>
     <title>helloworld</title>
-    <link href="http://yoursite.com/2016/04/19/helloworld/"/>
-    <id>http://yoursite.com/2016/04/19/helloworld/</id>
+    <link href="http://yanglonglong.com/2016/04/19/helloworld/"/>
+    <id>http://yanglonglong.com/2016/04/19/helloworld/</id>
     <published>2016-04-19T08:10:31.000Z</published>
     <updated>2016-04-19T12:52:49.000Z</updated>
     
@@ -80,14 +96,14 @@
     </summary>
     
     
-      <category term="javascript" scheme="http://yoursite.com/tags/javascript/"/>
+      <category term="javascript" scheme="http://yanglonglong.com/tags/javascript/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2016/04/19/hello-world/"/>
-    <id>http://yoursite.com/2016/04/19/hello-world/</id>
+    <link href="http://yanglonglong.com/2016/04/19/hello-world/"/>
+    <id>http://yanglonglong.com/2016/04/19/hello-world/</id>
     <published>2016-04-19T08:01:32.000Z</published>
     <updated>2016-04-19T12:06:59.000Z</updated>
     
@@ -109,7 +125,7 @@
     </summary>
     
     
-      <category term="javascript" scheme="http://yoursite.com/tags/javascript/"/>
+      <category term="javascript" scheme="http://yanglonglong.com/tags/javascript/"/>
     
   </entry>
   
