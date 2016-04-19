@@ -105,7 +105,7 @@
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
+      userId: 6245147771486078000,
       author: '博主'
     }
   };
@@ -193,6 +193,26 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
@@ -212,11 +232,51 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-project">
+          <a href="/project.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-laptop fa-fw"></i> <br />
+            
+            项目
+          </a>
+        </li>
+      
 
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
       
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'kZRr7iSpb_ShckiHsFWs','2.0.0');
+</script>
+
+
+
+    </div>
   
 </nav>
 
@@ -274,7 +334,7 @@
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2016/04/19/helloworld/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/04/19/helloworld/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/19/helloworld/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -283,6 +343,15 @@
           
 
           
+          
+             <span id="/2016/04/19/helloworld/" class="leancloud_visitors" data-flag-title="helloworld">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
           
 
           
@@ -321,12 +390,39 @@
     <div>
       
         
+<div id="wechat_subscriber" style="display: block； padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="http://source.yanglonglong.com/public-wexin.jpg" alt="杨龙龙 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！</div>
+</div>
+
       
     </div>
 
     <div>
       
         
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none; margin-top:20px;">
+    
+      <div id="wechat" style="display: inline-block; margin-right: 10px;">
+        <img id="wechat_qr" src="http://source.yanglonglong.com/pay-weixin.jpg" alt="杨龙龙 WeChat Pay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>微信打赏</p>
+      </div>
+    
+    
+      <div id="alipay" style="display: inline-block;margin-left: 10px;">
+        <img id="alipay_qr" src="http://source.yanglonglong.com/pay-zhifubao.jpg" alt="杨龙龙 Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
+
       
     </div>
 
@@ -368,11 +464,24 @@
 
     <div class="post-spread">
       
-        
-<script>
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
-</script>
+        <div class="ds-share flat" data-thread-key="2016/04/19/helloworld/"
+     data-title="helloworld"
+     data-content=""
+     data-url="http://yanglonglong.com/2016/04/19/helloworld/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
 
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
       
     </div>
   </div>
@@ -381,15 +490,15 @@
           </div>
           
 
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
 
           
   <div class="comments" id="comments">
     
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
+      <div class="ds-thread" data-thread-key="2016/04/19/helloworld/"
+           data-title="helloworld" data-url="http://yanglonglong.com/2016/04/19/helloworld/">
       </div>
     
   </div>
@@ -426,7 +535,7 @@
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/default_avatar.jpg"
+               src="http://source.yanglonglong.com/headimg.JPG"
                alt="杨龙龙" />
           <p class="site-author-name" itemprop="name">杨龙龙</p>
           <p class="site-description motion-element" itemprop="description">杨龙龙的个人博客</p>
@@ -441,10 +550,10 @@
 
           
             <div class="site-state-item site-state-categories">
-              
+              <a href="/categories">
                 <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">分类</span>
-              
+              </a>
             </div>
           
 
@@ -470,12 +579,122 @@
 
         <div class="links-of-author motion-element">
           
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/yllziv" target="_blank" title="github">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:zivyangll@gmail.com" target="_blank" title="邮箱">
+                  
+                    <i class="fa fa-envelope-o"></i>
+                  
+                  邮箱
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/zivyangll" target="_blank" title="twitter">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3169496351/profile" target="_blank" title="微博">
+                  
+                    <i class="fa fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/ziv_yll/" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/ziv_yll" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.instagram.com/yll.ziv/" target="_blank" title="instagram">
+                  
+                    <i class="fa fa-instagram"></i>
+                  
+                  instagram
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/?hl=zh-CN" target="_blank" title="google+">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  google+
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.pinterest.com/zivyangll/" target="_blank" title="pinterest">
+                  
+                    <i class="fa fa-pinterest"></i>
+                  
+                  pinterest
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/profile.php?id=100005693700694" target="_blank" title="facebook">
+                  
+                    <i class="fa fa-facebook"></i>
+                  
+                  facebook
+                </a>
+              </span>
+            
+          
         </div>
 
         
         
 
         
+        
+          <div class="links-of-blogroll motion-element">
+            <div class="links-of-blogroll-title">
+              <i class="fa fa-globe fa-fw"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.ruanyifeng.com/blog/" title="刘宵婧" target="_blank">刘宵婧</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://example.com/" title="阮一峰" target="_blank">阮一峰</a>
+                </li>
+              
+            </ul>
+          </div>
         
 
       </section>
@@ -505,23 +724,12 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
+  &copy;  2015 - 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">杨龙龙</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
 </div>
 
         
@@ -608,38 +816,129 @@
 
   
 
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yanglonglongcom"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
 
 
   
+  
+  
 
-    <script type="text/javascript">
-      var disqus_shortname = 'yanglonglong';
-      var disqus_identifier = '2016/04/19/helloworld/';
-      var disqus_title = 'helloworld';
-      var disqus_url = 'http://yanglonglong.com/2016/04/19/helloworld/';
+  
 
-      function run_disqus_script(disqus_script){
-        var dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("BmuPD1RNfHPGtYM3h2G54XVc-gzGzoHsz", "jO5G91I9DFMgH4TqeBdGXDhE");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
       }
-
-      run_disqus_script('count.js');
-      
-        run_disqus_script('embed.js');
-      
-    </script>
-  
+    });
+  </script>
 
 
-
-  
-  
-  
-
-  
 
   
 
