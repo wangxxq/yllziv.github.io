@@ -2,9 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yanglonglong.com/2016/04/19/hello-world/</loc>
+    <loc>http://yanglonglong.com/grid/index.html</loc>
     
-    <lastmod>2016-04-19T20:34:00.000Z</lastmod>
+    <lastmod>2016-04-20T16:39:08.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/grid/resetpage.css</loc>
+    
+    <lastmod>2016-04-20T16:25:33.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/photos/blogAlbum.json</loc>
+    
+    <lastmod>2016-04-20T16:06:01.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/blog/web/2016-04-19-hello-world.html</loc>
+    
+    <lastmod>2016-04-20T15:50:30.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/tool/index.html</loc>
+    
+    <lastmod>2016-04-20T14:32:21.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/project/index.html</loc>
+    
+    <lastmod>2016-04-20T13:55:13.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/aboutme/index.html</loc>
+    
+    <lastmod>2016-04-20T13:54:13.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/photos/index.html</loc>
+    
+    <lastmod>2016-04-20T13:50:16.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/photos/albumString.json</loc>
+    
+    <lastmod>2016-04-20T13:40:10.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/photos/photos.css</loc>
+    
+    <lastmod>2016-04-20T13:01:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/photos/qiniu_blog.js</loc>
+    
+    <lastmod>2016-04-20T09:28:03.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/photos/qiniu_string.js</loc>
+    
+    <lastmod>2016-04-20T09:27:47.000Z</lastmod>
     
   </url>
   
@@ -12,13 +89,6 @@
     <loc>http://yanglonglong.com/categories/index.html</loc>
     
     <lastmod>2016-04-19T12:19:45.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/tags/index.html</loc>
-    
-    <lastmod>2016-04-19T12:18:17.000Z</lastmod>
     
   </url>
   

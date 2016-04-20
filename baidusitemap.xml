@@ -3,9 +3,12 @@
 
 
     
+    
+    
+    
   <url>
-    <loc>http://yanglonglong.com/2016/04/19/hello-world/</loc>
-    <lastmod>2016-04-19T20:34:00.000Z</lastmod>
+    <loc>http://yanglonglong.com/blog/web/2016-04-19-hello-world.html</loc>
+    <lastmod>2016-04-20T15:50:30.000Z</lastmod>
     <data>
         <display>
         <title>Hello World</title>
@@ -15,10 +18,20 @@
          
          
            
+             
+              <breadCrumb title="前端" url="http://yanglonglong.com/categories/web/"/>
+          
         </display>
     </data>
     </url>
 
+    
+    
+    
+    
+    
+    
+    
     
     
 </urlset>
