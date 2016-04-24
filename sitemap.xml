@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yanglonglong.com/tool/rest.html</loc>
+    
+    <lastmod>2016-04-24T15:31:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/tool/regular.html</loc>
+    
+    <lastmod>2016-04-24T10:35:17.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/tool/vim.html</loc>
+    
+    <lastmod>2016-04-24T07:14:38.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/photos/blogAlbum.json</loc>
+    
+    <lastmod>2016-04-24T06:11:11.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/tool/compress.html</loc>
+    
+    <lastmod>2016-04-24T02:10:01.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yanglonglong.com/tool/transform.html</loc>
     
     <lastmod>2016-04-23T16:53:45.000Z</lastmod>
@@ -16,58 +51,9 @@
   </url>
   
   <url>
-    <loc>http://yanglonglong.com/tool/markdown.html</loc>
-    
-    <lastmod>2016-04-23T11:01:40.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/tool/typeword.html</loc>
-    
-    <lastmod>2016-04-23T11:01:20.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/tool/vim.html</loc>
-    
-    <lastmod>2016-04-23T11:00:55.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/tool/regular.html</loc>
-    
-    <lastmod>2016-04-23T11:00:40.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/tool/rest.html</loc>
-    
-    <lastmod>2016-04-23T11:00:22.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/tool/compress.html</loc>
-    
-    <lastmod>2016-04-23T10:59:48.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://yanglonglong.com/tool/index.html</loc>
     
     <lastmod>2016-04-23T10:51:17.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/photos/blogAlbum.json</loc>
-    
-    <lastmod>2016-04-23T10:39:35.000Z</lastmod>
     
   </url>
   
