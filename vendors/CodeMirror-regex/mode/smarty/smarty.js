@@ -1,1 +1,148 @@
-CodeMirror.defineMode("smarty",function(e,t){function r(e,t){return f=t,e}function i(e,t){function r(r){return t.tokenize=r,r(e,t)}return e.match(d,!0)?e.eat("*")?r(o("comment","*"+s)):(t.tokenize=n,"tag"):(e.next(),null)}function n(e,t){if(e.match(s,!0))return t.tokenize=i,r("tag",null);var n=e.next();if("$"==n)return e.eatWhile(l.validIdentifier),r("variable-2","variable");if("."==n)return r("operator","property");if(l.stringChar.test(n))return t.tokenize=a(n),r("string","string");if(l.operatorChars.test(n))return e.eatWhile(l.operatorChars),r("operator","operator");if("["==n||"]"==n)return r("bracket","bracket");if(/\d/.test(n))return e.eatWhile(/\d/),r("number","number");if("variable"==t.last){if("@"==n)return e.eatWhile(l.validIdentifier),r("property","property");if("|"==n)return e.eatWhile(l.validIdentifier),r("qualifier","modifier")}else{if("whitespace"==t.last)return e.eatWhile(l.validIdentifier),r("attribute","modifier");if("property"==t.last)return e.eatWhile(l.validIdentifier),r("property",null);if(/\s/.test(n))return f="whitespace",null}var o="";"/"!=n&&(o+=n);for(var d="";d=e.eat(l.validIdentifier);)o+=d;var c,m;for(c=0,m=u.length;m>c;c++)if(u[c]==o)return r("keyword","keyword");return/\s/.test(n)?null:r("tag","tag")}function a(e){return function(t,r){for(;!t.eol();)if(t.next()==e){r.tokenize=n;break}return"string"}}function o(e,t){return function(r,n){for(;!r.eol();){if(r.match(t)){n.tokenize=i;break}r.next()}return e}}var f,u=["debug","extends","function","include","literal"],l={operatorChars:/[+\-*&%=<>!?]/,validIdentifier:/[a-zA-Z0-9\_]/,stringChar:/[\'\"]/},d="undefined"!=typeof e.mode.leftDelimiter?e.mode.leftDelimiter:"{",s="undefined"!=typeof e.mode.rightDelimiter?e.mode.rightDelimiter:"}";return{startState:function(){return{tokenize:i,mode:"smarty",last:null}},token:function(e,t){var r=t.tokenize(e,t);return t.last=f,r},electricChars:""}}),CodeMirror.defineMIME("text/x-smarty","smarty");
+CodeMirror.defineMode("smarty", function(config, parserConfig) {
+  var keyFuncs = ["debug", "extends", "function", "include", "literal"];
+  var last;
+  var regs = {
+    operatorChars: /[+\-*&%=<>!?]/,
+    validIdentifier: /[a-zA-Z0-9\_]/,
+    stringChar: /[\'\"]/
+  }
+  var leftDelim = (typeof config.mode.leftDelimiter != 'undefined') ? config.mode.leftDelimiter : "{";
+  var rightDelim = (typeof config.mode.rightDelimiter != 'undefined') ? config.mode.rightDelimiter : "}";
+  function ret(style, lst) { last = lst; return style; }
+
+
+  function tokenizer(stream, state) {
+    function chain(parser) {
+      state.tokenize = parser;
+      return parser(stream, state);
+    }
+
+    if (stream.match(leftDelim, true)) {
+      if (stream.eat("*")) {
+        return chain(inBlock("comment", "*" + rightDelim));
+      }
+      else {
+        state.tokenize = inSmarty;
+        return "tag";
+      }
+    }
+    else {
+      // I'd like to do an eatWhile() here, but I can't get it to eat only up to the rightDelim string/char
+      stream.next();
+      return null;
+    }
+  }
+
+  function inSmarty(stream, state) {
+    if (stream.match(rightDelim, true)) {
+      state.tokenize = tokenizer;
+      return ret("tag", null);
+    }
+
+    var ch = stream.next();
+    if (ch == "$") {
+      stream.eatWhile(regs.validIdentifier);
+      return ret("variable-2", "variable");
+    }
+    else if (ch == ".") {
+      return ret("operator", "property");
+    }
+    else if (regs.stringChar.test(ch)) {
+      state.tokenize = inAttribute(ch);
+      return ret("string", "string");
+    }
+    else if (regs.operatorChars.test(ch)) {
+      stream.eatWhile(regs.operatorChars);
+      return ret("operator", "operator");
+    }
+    else if (ch == "[" || ch == "]") {
+      return ret("bracket", "bracket");
+    }
+    else if (/\d/.test(ch)) {
+      stream.eatWhile(/\d/);
+      return ret("number", "number");
+    }
+    else {
+      if (state.last == "variable") {
+        if (ch == "@") {
+          stream.eatWhile(regs.validIdentifier);
+          return ret("property", "property");
+        }
+        else if (ch == "|") {
+          stream.eatWhile(regs.validIdentifier);
+          return ret("qualifier", "modifier");
+        }
+      }
+      else if (state.last == "whitespace") {
+        stream.eatWhile(regs.validIdentifier);
+        return ret("attribute", "modifier");
+      }
+      else if (state.last == "property") {
+        stream.eatWhile(regs.validIdentifier);
+        return ret("property", null);
+      }
+      else if (/\s/.test(ch)) {
+        last = "whitespace";
+        return null;
+      }
+
+      var str = "";
+      if (ch != "/") {
+    	str += ch;
+      }
+      var c = "";
+      while ((c = stream.eat(regs.validIdentifier))) {
+        str += c;
+      }
+      var i, j;
+      for (i=0, j=keyFuncs.length; i<j; i++) {
+        if (keyFuncs[i] == str) {
+          return ret("keyword", "keyword");
+        }
+      }
+      if (/\s/.test(ch)) {
+    	return null;
+      }
+      return ret("tag", "tag");
+    }
+  }
+
+  function inAttribute(quote) {
+    return function(stream, state) {
+      while (!stream.eol()) {
+        if (stream.next() == quote) {
+          state.tokenize = inSmarty;
+          break;
+        }
+      }
+      return "string";
+    };
+  }
+
+  function inBlock(style, terminator) {
+    return function(stream, state) {
+      while (!stream.eol()) {
+        if (stream.match(terminator)) {
+          state.tokenize = tokenizer;
+          break;
+        }
+        stream.next();
+      }
+      return style;
+    };
+  }
+
+  return {
+    startState: function() {
+      return { tokenize: tokenizer, mode: "smarty", last: null };
+    },
+    token: function(stream, state) {
+      var style = state.tokenize(stream, state);
+      state.last = last;
+      return style;
+    },
+    electricChars: ""
+  }
+});
+
+CodeMirror.defineMIME("text/x-smarty", "smarty");

@@ -1,1 +1,66 @@
-CodeMirror.defineMode("spec",function(r,e){var t=/^(i386|i586|i686|x86_64|ppc64|ppc|ia64|s390x|s390|sparc64|sparcv9|sparc|noarch|alphaev6|alpha|hppa|mipsel)/,a=/^(Name|Version|Release|License|Summary|Url|Group|Source|BuildArch|BuildRequires|BuildRoot|AutoReqProv|Provides|Requires(\(\w+\))?|Obsoletes|Conflicts|Recommends|Source\d*|Patch\d*|ExclusiveArch|NoSource|Supplements):/,c=/^%(debug_package|package|description|prep|build|install|files|clean|changelog|preun|postun|pre|post|triggerin|triggerun|pretrans|posttrans|verifyscript|check|triggerpostun|triggerprein|trigger)/,i=/^%(ifnarch|ifarch|if)/,o=/^%(else|endif)/,n=/^(\!|\?|\<\=|\<|\>\=|\>|\=\=|\&\&|\|\|)/;return{startState:function(){return{controlFlow:!1,macroParameters:!1,section:!1}},token:function(r,e){var u=r.peek();if("#"==u)return r.skipToEnd(),"comment";if(r.sol()){if(r.match(a))return"preamble";if(r.match(c))return"section"}if(r.match(/^\$\w+/))return"def";if(r.match(/^\$\{\w+\}/))return"def";if(r.match(o))return"keyword";if(r.match(i))return e.controlFlow=!0,"keyword";if(e.controlFlow){if(r.match(n))return"operator";if(r.match(/^(\d+)/))return"number";r.eol()&&(e.controlFlow=!1)}if(r.match(t))return"number";if(r.match(/^%[\w]+/))return r.match(/^\(/)&&(e.macroParameters=!0),"macro";if(e.macroParameters){if(r.match(/^\d+/))return"number";if(r.match(/^\)/))return e.macroParameters=!1,"macro"}return r.match(/^%\{\??[\w \-]+\}/)?"macro":(r.next(),null)}}}),CodeMirror.defineMIME("text/x-rpm-spec","spec");
+// Quick and dirty spec file highlighting
+
+CodeMirror.defineMode("spec", function(config, modeConfig) {
+  var arch = /^(i386|i586|i686|x86_64|ppc64|ppc|ia64|s390x|s390|sparc64|sparcv9|sparc|noarch|alphaev6|alpha|hppa|mipsel)/;
+
+  var preamble = /^(Name|Version|Release|License|Summary|Url|Group|Source|BuildArch|BuildRequires|BuildRoot|AutoReqProv|Provides|Requires(\(\w+\))?|Obsoletes|Conflicts|Recommends|Source\d*|Patch\d*|ExclusiveArch|NoSource|Supplements):/;
+  var section = /^%(debug_package|package|description|prep|build|install|files|clean|changelog|preun|postun|pre|post|triggerin|triggerun|pretrans|posttrans|verifyscript|check|triggerpostun|triggerprein|trigger)/;
+  var control_flow_complex = /^%(ifnarch|ifarch|if)/; // rpm control flow macros
+  var control_flow_simple = /^%(else|endif)/; // rpm control flow macros
+  var operators = /^(\!|\?|\<\=|\<|\>\=|\>|\=\=|\&\&|\|\|)/; // operators in control flow macros
+
+  return {
+    startState: function () {
+        return {
+          controlFlow: false,
+          macroParameters: false,
+          section: false
+        };
+    },
+    token: function (stream, state) {
+      var ch = stream.peek();
+      if (ch == "#") { stream.skipToEnd(); return "comment"; }
+
+      if (stream.sol()) {
+        if (stream.match(preamble)) { return "preamble"; }
+        if (stream.match(section)) { return "section"; }
+      }
+
+      if (stream.match(/^\$\w+/)) { return "def"; } // Variables like '$RPM_BUILD_ROOT'
+      if (stream.match(/^\$\{\w+\}/)) { return "def"; } // Variables like '${RPM_BUILD_ROOT}'
+
+      if (stream.match(control_flow_simple)) { return "keyword"; }
+      if (stream.match(control_flow_complex)) {
+        state.controlFlow = true;
+        return "keyword";
+      }
+      if (state.controlFlow) {
+        if (stream.match(operators)) { return "operator"; }
+        if (stream.match(/^(\d+)/)) { return "number"; }
+        if (stream.eol()) { state.controlFlow = false; }
+      }
+
+      if (stream.match(arch)) { return "number"; }
+
+      // Macros like '%make_install' or '%attr(0775,root,root)'
+      if (stream.match(/^%[\w]+/)) {
+        if (stream.match(/^\(/)) { state.macroParameters = true; }
+        return "macro";
+      }
+      if (state.macroParameters) {
+        if (stream.match(/^\d+/)) { return "number";}
+        if (stream.match(/^\)/)) {
+          state.macroParameters = false;
+          return "macro";
+        }
+      }
+      if (stream.match(/^%\{\??[\w \-]+\}/)) { return "macro"; } // Macros like '%{defined fedora}'
+
+      //TODO: Include bash script sub-parser (CodeMirror supports that)
+      stream.next();
+      return null;
+    }
+  };
+});
+
+CodeMirror.defineMIME("text/x-rpm-spec", "spec");

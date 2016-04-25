@@ -1,1 +1,30 @@
-!function(){"use strict";function e(e){var t=e.getWrapperElement();e.state.fullScreenRestore={scrollTop:window.pageYOffset,scrollLeft:window.pageXOffset,width:t.style.width,height:t.style.height},t.style.width=t.style.height="",t.className+=" CodeMirror-fullscreen",document.documentElement.style.overflow="hidden",e.refresh()}function t(e){var t=e.getWrapperElement();t.className=t.className.replace(/\s*CodeMirror-fullscreen\b/,""),document.documentElement.style.overflow="";var r=e.state.fullScreenRestore;t.style.width=r.width,t.style.height=r.height,window.scrollTo(r.scrollLeft,r.scrollTop),e.refresh()}CodeMirror.defineOption("fullScreen",!1,function(r,l,o){o==CodeMirror.Init&&(o=!1),!o!=!l&&(l?e(r):t(r))})}();
+(function() {
+  "use strict";
+
+  CodeMirror.defineOption("fullScreen", false, function(cm, val, old) {
+    if (old == CodeMirror.Init) old = false;
+    if (!old == !val) return;
+    if (val) setFullscreen(cm);
+    else setNormal(cm);
+  });
+
+  function setFullscreen(cm) {
+    var wrap = cm.getWrapperElement();
+    cm.state.fullScreenRestore = {scrollTop: window.pageYOffset, scrollLeft: window.pageXOffset,
+                                  width: wrap.style.width, height: wrap.style.height};
+    wrap.style.width = wrap.style.height = "";
+    wrap.className += " CodeMirror-fullscreen";
+    document.documentElement.style.overflow = "hidden";
+    cm.refresh();
+  }
+
+  function setNormal(cm) {
+    var wrap = cm.getWrapperElement();
+    wrap.className = wrap.className.replace(/\s*CodeMirror-fullscreen\b/, "");
+    document.documentElement.style.overflow = "";
+    var info = cm.state.fullScreenRestore;
+    wrap.style.width = info.width; wrap.style.height = info.height;
+    window.scrollTo(info.scrollLeft, info.scrollTop);
+    cm.refresh();
+  }
+})();

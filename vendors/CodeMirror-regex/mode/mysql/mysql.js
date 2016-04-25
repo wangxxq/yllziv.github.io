@@ -1,1 +1,188 @@
-CodeMirror.defineMode("mysql",function(E){function t(E){return new RegExp("^(?:"+E.join("|")+")$","i")}function e(E,t){var e=E.next();if(N=null,"$"==e||"?"==e)return E.match(/^[\w\d]*/),"variable-2";if("<"==e&&!E.match(/^[\s\u00a0=]/,!1))return E.match(/^[^\s\u00a0>]*>?/),"atom";if('"'==e||"'"==e)return t.tokenize=n(e),t.tokenize(E,t);if("`"==e)return t.tokenize=T(e),t.tokenize(E,t);if(/[{}\(\),\.;\[\]]/.test(e))return N=e,null;if("-"!=e){if(S.test(e))return E.eatWhile(S),null;if(":"==e)return E.eatWhile(/[\w\d\._\-]/),"atom";if(E.eatWhile(/[_\w\d]/),E.eat(":"))return E.eatWhile(/[\w\d_\-]/),"atom";var I=E.current();return O.test(I)?null:L.test(I)?"keyword":"variable"}return ch2=E.next(),"-"==ch2?(E.skipToEnd(),"comment"):void 0}function n(E){return function(t,n){for(var T,I=!1;null!=(T=t.next());){if(T==E&&!I){n.tokenize=e;break}I=!I&&"\\"==T}return"string"}}function T(E){return function(t,n){for(var T,I=!1;null!=(T=t.next());){if(T==E&&!I){n.tokenize=e;break}I=!I&&"\\"==T}return"variable-2"}}function I(E,t,e){E.context={prev:E.context,indent:E.indent,col:e,type:t}}function R(E){E.indent=E.context.indent,E.context=E.context.prev}var N,A=E.indentUnit,O=t(["str","lang","langmatches","datatype","bound","sameterm","isiri","isuri","isblank","isliteral","union","a"]),L=t(["ACCESSIBLE","ALTER","AS","BEFORE","BINARY","BY","CASE","CHARACTER","COLUMN","CONTINUE","CROSS","CURRENT_TIMESTAMP","DATABASE","DAY_MICROSECOND","DEC","DEFAULT","DESC","DISTINCT","DOUBLE","EACH","ENCLOSED","EXIT","FETCH","FLOAT8","FOREIGN","GRANT","HIGH_PRIORITY","HOUR_SECOND","IN","INNER","INSERT","INT2","INT8","INTO","JOIN","KILL","LEFT","LINEAR","LOCALTIME","LONG","LOOP","MATCH","MEDIUMTEXT","MINUTE_SECOND","NATURAL","NULL","OPTIMIZE","OR","OUTER","PRIMARY","RANGE","READ_WRITE","REGEXP","REPEAT","RESTRICT","RIGHT","SCHEMAS","SENSITIVE","SHOW","SPECIFIC","SQLSTATE","SQL_CALC_FOUND_ROWS","STARTING","TERMINATED","TINYINT","TRAILING","UNDO","UNLOCK","USAGE","UTC_DATE","VALUES","VARCHARACTER","WHERE","WRITE","ZEROFILL","ALL","AND","ASENSITIVE","BIGINT","BOTH","CASCADE","CHAR","COLLATE","CONSTRAINT","CREATE","CURRENT_TIME","CURSOR","DAY_HOUR","DAY_SECOND","DECLARE","DELETE","DETERMINISTIC","DIV","DUAL","ELSEIF","EXISTS","FALSE","FLOAT4","FORCE","FULLTEXT","HAVING","HOUR_MINUTE","IGNORE","INFILE","INSENSITIVE","INT1","INT4","INTERVAL","ITERATE","KEYS","LEAVE","LIMIT","LOAD","LOCK","LONGTEXT","MASTER_SSL_VERIFY_SERVER_CERT","MEDIUMINT","MINUTE_MICROSECOND","MODIFIES","NO_WRITE_TO_BINLOG","ON","OPTIONALLY","OUT","PRECISION","PURGE","READS","REFERENCES","RENAME","REQUIRE","REVOKE","SCHEMA","SELECT","SET","SPATIAL","SQLEXCEPTION","SQL_BIG_RESULT","SSL","TABLE","TINYBLOB","TO","TRUE","UNIQUE","UPDATE","USING","UTC_TIMESTAMP","VARCHAR","WHEN","WITH","YEAR_MONTH","ADD","ANALYZE","ASC","BETWEEN","BLOB","CALL","CHANGE","CHECK","CONDITION","CONVERT","CURRENT_DATE","CURRENT_USER","DATABASES","DAY_MINUTE","DECIMAL","DELAYED","DESCRIBE","DISTINCTROW","DROP","ELSE","ESCAPED","EXPLAIN","FLOAT","FOR","FROM","GROUP","HOUR_MICROSECOND","IF","INDEX","INOUT","INT","INT3","INTEGER","IS","KEY","LEADING","LIKE","LINES","LOCALTIMESTAMP","LONGBLOB","LOW_PRIORITY","MEDIUMBLOB","MIDDLEINT","MOD","NOT","NUMERIC","OPTION","ORDER","OUTFILE","PROCEDURE","READ","REAL","RELEASE","REPLACE","RETURN","RLIKE","SECOND_MICROSECOND","SEPARATOR","SMALLINT","SQL","SQLWARNING","SQL_SMALL_RESULT","STRAIGHT_JOIN","THEN","TINYTEXT","TRIGGER","UNION","UNSIGNED","USE","UTC_TIME","VARBINARY","VARYING","WHILE","XOR","FULL","COLUMNS","MIN","MAX","STDEV","COUNT"]),S=/[*+\-<>=&|]/;return{startState:function(E){return{tokenize:e,context:null,indent:0,col:0}},token:function(E,t){if(E.sol()&&(t.context&&null==t.context.align&&(t.context.align=!1),t.indent=E.indentation()),E.eatSpace())return null;var e=t.tokenize(E,t);if("comment"!=e&&t.context&&null==t.context.align&&"pattern"!=t.context.type&&(t.context.align=!0),"("==N)I(t,")",E.column());else if("["==N)I(t,"]",E.column());else if("{"==N)I(t,"}",E.column());else if(/[\]\}\)]/.test(N)){for(;t.context&&"pattern"==t.context.type;)R(t);t.context&&N==t.context.type&&R(t)}else"."==N&&t.context&&"pattern"==t.context.type?R(t):/atom|string|variable/.test(e)&&t.context&&(/[\}\]]/.test(t.context.type)?I(t,"pattern",E.column()):"pattern"!=t.context.type||t.context.align||(t.context.align=!0,t.context.col=E.column()));return e},indent:function(E,t){var e=t&&t.charAt(0),n=E.context;if(/[\]\}]/.test(e))for(;n&&"pattern"==n.type;)n=n.prev;var T=n&&e==n.type;return n?"pattern"==n.type?n.col:n.align?n.col+(T?0:1):n.indent+(T?0:A):0}}}),CodeMirror.defineMIME("text/x-mysql","mysql");
+/*
+ *	MySQL Mode for CodeMirror 2 by MySQL-Tools
+ *	@author James Thorne (partydroid)
+ *	@link 	http://github.com/partydroid/MySQL-Tools
+ * 	@link 	http://mysqltools.org
+ *	@version 02/Jan/2012
+*/
+CodeMirror.defineMode("mysql", function(config) {
+  var indentUnit = config.indentUnit;
+  var curPunc;
+
+  function wordRegexp(words) {
+    return new RegExp("^(?:" + words.join("|") + ")$", "i");
+  }
+  var ops = wordRegexp(["str", "lang", "langmatches", "datatype", "bound", "sameterm", "isiri", "isuri",
+                        "isblank", "isliteral", "union", "a"]);
+  var keywords = wordRegexp([
+  	('ACCESSIBLE'),('ALTER'),('AS'),('BEFORE'),('BINARY'),('BY'),('CASE'),('CHARACTER'),('COLUMN'),('CONTINUE'),('CROSS'),('CURRENT_TIMESTAMP'),('DATABASE'),('DAY_MICROSECOND'),('DEC'),('DEFAULT'),
+	('DESC'),('DISTINCT'),('DOUBLE'),('EACH'),('ENCLOSED'),('EXIT'),('FETCH'),('FLOAT8'),('FOREIGN'),('GRANT'),('HIGH_PRIORITY'),('HOUR_SECOND'),('IN'),('INNER'),('INSERT'),('INT2'),('INT8'),
+	('INTO'),('JOIN'),('KILL'),('LEFT'),('LINEAR'),('LOCALTIME'),('LONG'),('LOOP'),('MATCH'),('MEDIUMTEXT'),('MINUTE_SECOND'),('NATURAL'),('NULL'),('OPTIMIZE'),('OR'),('OUTER'),('PRIMARY'),
+	('RANGE'),('READ_WRITE'),('REGEXP'),('REPEAT'),('RESTRICT'),('RIGHT'),('SCHEMAS'),('SENSITIVE'),('SHOW'),('SPECIFIC'),('SQLSTATE'),('SQL_CALC_FOUND_ROWS'),('STARTING'),('TERMINATED'),
+	('TINYINT'),('TRAILING'),('UNDO'),('UNLOCK'),('USAGE'),('UTC_DATE'),('VALUES'),('VARCHARACTER'),('WHERE'),('WRITE'),('ZEROFILL'),('ALL'),('AND'),('ASENSITIVE'),('BIGINT'),('BOTH'),('CASCADE'),
+	('CHAR'),('COLLATE'),('CONSTRAINT'),('CREATE'),('CURRENT_TIME'),('CURSOR'),('DAY_HOUR'),('DAY_SECOND'),('DECLARE'),('DELETE'),('DETERMINISTIC'),('DIV'),('DUAL'),('ELSEIF'),('EXISTS'),('FALSE'),
+	('FLOAT4'),('FORCE'),('FULLTEXT'),('HAVING'),('HOUR_MINUTE'),('IGNORE'),('INFILE'),('INSENSITIVE'),('INT1'),('INT4'),('INTERVAL'),('ITERATE'),('KEYS'),('LEAVE'),('LIMIT'),('LOAD'),('LOCK'),
+	('LONGTEXT'),('MASTER_SSL_VERIFY_SERVER_CERT'),('MEDIUMINT'),('MINUTE_MICROSECOND'),('MODIFIES'),('NO_WRITE_TO_BINLOG'),('ON'),('OPTIONALLY'),('OUT'),('PRECISION'),('PURGE'),('READS'),
+	('REFERENCES'),('RENAME'),('REQUIRE'),('REVOKE'),('SCHEMA'),('SELECT'),('SET'),('SPATIAL'),('SQLEXCEPTION'),('SQL_BIG_RESULT'),('SSL'),('TABLE'),('TINYBLOB'),('TO'),('TRUE'),('UNIQUE'),
+	('UPDATE'),('USING'),('UTC_TIMESTAMP'),('VARCHAR'),('WHEN'),('WITH'),('YEAR_MONTH'),('ADD'),('ANALYZE'),('ASC'),('BETWEEN'),('BLOB'),('CALL'),('CHANGE'),('CHECK'),('CONDITION'),('CONVERT'),
+	('CURRENT_DATE'),('CURRENT_USER'),('DATABASES'),('DAY_MINUTE'),('DECIMAL'),('DELAYED'),('DESCRIBE'),('DISTINCTROW'),('DROP'),('ELSE'),('ESCAPED'),('EXPLAIN'),('FLOAT'),('FOR'),('FROM'),
+	('GROUP'),('HOUR_MICROSECOND'),('IF'),('INDEX'),('INOUT'),('INT'),('INT3'),('INTEGER'),('IS'),('KEY'),('LEADING'),('LIKE'),('LINES'),('LOCALTIMESTAMP'),('LONGBLOB'),('LOW_PRIORITY'),
+	('MEDIUMBLOB'),('MIDDLEINT'),('MOD'),('NOT'),('NUMERIC'),('OPTION'),('ORDER'),('OUTFILE'),('PROCEDURE'),('READ'),('REAL'),('RELEASE'),('REPLACE'),('RETURN'),('RLIKE'),('SECOND_MICROSECOND'),
+	('SEPARATOR'),('SMALLINT'),('SQL'),('SQLWARNING'),('SQL_SMALL_RESULT'),('STRAIGHT_JOIN'),('THEN'),('TINYTEXT'),('TRIGGER'),('UNION'),('UNSIGNED'),('USE'),('UTC_TIME'),('VARBINARY'),('VARYING'),
+	('WHILE'),('XOR'),('FULL'),('COLUMNS'),('MIN'),('MAX'),('STDEV'),('COUNT')
+  ]);
+  var operatorChars = /[*+\-<>=&|]/;
+
+  function tokenBase(stream, state) {
+    var ch = stream.next();
+    curPunc = null;
+    if (ch == "$" || ch == "?") {
+      stream.match(/^[\w\d]*/);
+      return "variable-2";
+    }
+    else if (ch == "<" && !stream.match(/^[\s\u00a0=]/, false)) {
+      stream.match(/^[^\s\u00a0>]*>?/);
+      return "atom";
+    }
+    else if (ch == "\"" || ch == "'") {
+      state.tokenize = tokenLiteral(ch);
+      return state.tokenize(stream, state);
+    }
+    else if (ch == "`") {
+      state.tokenize = tokenOpLiteral(ch);
+      return state.tokenize(stream, state);
+    }
+    else if (/[{}\(\),\.;\[\]]/.test(ch)) {
+      curPunc = ch;
+      return null;
+    }
+    else if (ch == "-") {
+		ch2 = stream.next();
+		if(ch2=="-")
+		{
+			stream.skipToEnd();
+			return "comment";
+		}
+
+    }
+    else if (operatorChars.test(ch)) {
+      stream.eatWhile(operatorChars);
+      return null;
+    }
+    else if (ch == ":") {
+      stream.eatWhile(/[\w\d\._\-]/);
+      return "atom";
+    }
+    else {
+      stream.eatWhile(/[_\w\d]/);
+      if (stream.eat(":")) {
+        stream.eatWhile(/[\w\d_\-]/);
+        return "atom";
+      }
+      var word = stream.current(), type;
+      if (ops.test(word))
+        return null;
+      else if (keywords.test(word))
+        return "keyword";
+      else
+        return "variable";
+    }
+  }
+
+  function tokenLiteral(quote) {
+    return function(stream, state) {
+      var escaped = false, ch;
+      while ((ch = stream.next()) != null) {
+        if (ch == quote && !escaped) {
+          state.tokenize = tokenBase;
+          break;
+        }
+        escaped = !escaped && ch == "\\";
+      }
+      return "string";
+    };
+  }
+
+  function tokenOpLiteral(quote) {
+    return function(stream, state) {
+      var escaped = false, ch;
+      while ((ch = stream.next()) != null) {
+        if (ch == quote && !escaped) {
+          state.tokenize = tokenBase;
+          break;
+        }
+        escaped = !escaped && ch == "\\";
+      }
+      return "variable-2";
+    };
+  }
+
+
+  function pushContext(state, type, col) {
+    state.context = {prev: state.context, indent: state.indent, col: col, type: type};
+  }
+  function popContext(state) {
+    state.indent = state.context.indent;
+    state.context = state.context.prev;
+  }
+
+  return {
+    startState: function(base) {
+      return {tokenize: tokenBase,
+              context: null,
+              indent: 0,
+              col: 0};
+    },
+
+    token: function(stream, state) {
+      if (stream.sol()) {
+        if (state.context && state.context.align == null) state.context.align = false;
+        state.indent = stream.indentation();
+      }
+      if (stream.eatSpace()) return null;
+      var style = state.tokenize(stream, state);
+
+      if (style != "comment" && state.context && state.context.align == null && state.context.type != "pattern") {
+        state.context.align = true;
+      }
+
+      if (curPunc == "(") pushContext(state, ")", stream.column());
+      else if (curPunc == "[") pushContext(state, "]", stream.column());
+      else if (curPunc == "{") pushContext(state, "}", stream.column());
+      else if (/[\]\}\)]/.test(curPunc)) {
+        while (state.context && state.context.type == "pattern") popContext(state);
+        if (state.context && curPunc == state.context.type) popContext(state);
+      }
+      else if (curPunc == "." && state.context && state.context.type == "pattern") popContext(state);
+      else if (/atom|string|variable/.test(style) && state.context) {
+        if (/[\}\]]/.test(state.context.type))
+          pushContext(state, "pattern", stream.column());
+        else if (state.context.type == "pattern" && !state.context.align) {
+          state.context.align = true;
+          state.context.col = stream.column();
+        }
+      }
+
+      return style;
+    },
+
+    indent: function(state, textAfter) {
+      var firstChar = textAfter && textAfter.charAt(0);
+      var context = state.context;
+      if (/[\]\}]/.test(firstChar))
+        while (context && context.type == "pattern") context = context.prev;
+
+      var closing = context && firstChar == context.type;
+      if (!context)
+        return 0;
+      else if (context.type == "pattern")
+        return context.col;
+      else if (context.align)
+        return context.col + (closing ? 0 : 1);
+      else
+        return context.indent + (closing ? 0 : indentUnit);
+    }
+  };
+});
+
+CodeMirror.defineMIME("text/x-mysql", "mysql");

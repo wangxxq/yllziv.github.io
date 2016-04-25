@@ -1,1 +1,124 @@
-CodeMirror.defineMode("css",function(e){function t(e,t){return o=t,e}function n(e,n){var o=e.next();return"@"==o?(e.eatWhile(/[\w\\\-]/),t("meta",e.current())):"/"==o&&e.eat("*")?(n.tokenize=r,r(e,n)):"<"==o&&e.eat("!")?(n.tokenize=a,a(e,n)):"="!=o?"~"!=o&&"|"!=o||!e.eat("=")?'"'==o||"'"==o?(n.tokenize=i(o),n.tokenize(e,n)):"#"==o?(e.eatWhile(/[\w\\\-]/),t("atom","hash")):"!"==o?(e.match(/^\s*\w*/),t("keyword","important")):/\d/.test(o)?(e.eatWhile(/[\w.%]/),t("number","unit")):/[,.+>*\/]/.test(o)?t(null,"select-op"):/[;{}:\[\]]/.test(o)?t(null,o):(e.eatWhile(/[\w\\\-]/),t("variable","variable")):t(null,"compare"):void t(null,"compare")}function r(e,r){for(var a,i=!1;null!=(a=e.next());){if(i&&"/"==a){r.tokenize=n;break}i="*"==a}return t("comment","comment")}function a(e,r){for(var a,i=0;null!=(a=e.next());){if(i>=2&&">"==a){r.tokenize=n;break}i="-"==a?i+1:0}return t("comment","comment")}function i(e){return function(r,a){for(var i,o=!1;null!=(i=r.next())&&(i!=e||o);)o=!o&&"\\"==i;return o||(a.tokenize=n),t("string","string")}}var o,u=e.indentUnit;return{startState:function(e){return{tokenize:n,baseIndent:e||0,stack:[]}},token:function(e,t){if(e.eatSpace())return null;var n=t.tokenize(e,t),r=t.stack[t.stack.length-1];return"hash"==o&&"rule"!=r?n="string-2":"variable"==n&&("rule"==r?n="number":r&&"@media{"!=r||(n="tag")),"rule"==r&&/^[\{\};]$/.test(o)&&t.stack.pop(),"{"==o?"@media"==r?t.stack[t.stack.length-1]="@media{":t.stack.push("{"):"}"==o?t.stack.pop():"@media"==o?t.stack.push("@media"):"{"==r&&"comment"!=o&&t.stack.push("rule"),n},indent:function(e,t){var n=e.stack.length;return/^\}/.test(t)&&(n-="rule"==e.stack[e.stack.length-1]?2:1),e.baseIndent+n*u},electricChars:"}"}}),CodeMirror.defineMIME("text/css","css");
+CodeMirror.defineMode("css", function(config) {
+  var indentUnit = config.indentUnit, type;
+  function ret(style, tp) {type = tp; return style;}
+
+  function tokenBase(stream, state) {
+    var ch = stream.next();
+    if (ch == "@") {stream.eatWhile(/[\w\\\-]/); return ret("meta", stream.current());}
+    else if (ch == "/" && stream.eat("*")) {
+      state.tokenize = tokenCComment;
+      return tokenCComment(stream, state);
+    }
+    else if (ch == "<" && stream.eat("!")) {
+      state.tokenize = tokenSGMLComment;
+      return tokenSGMLComment(stream, state);
+    }
+    else if (ch == "=") ret(null, "compare");
+    else if ((ch == "~" || ch == "|") && stream.eat("=")) return ret(null, "compare");
+    else if (ch == "\"" || ch == "'") {
+      state.tokenize = tokenString(ch);
+      return state.tokenize(stream, state);
+    }
+    else if (ch == "#") {
+      stream.eatWhile(/[\w\\\-]/);
+      return ret("atom", "hash");
+    }
+    else if (ch == "!") {
+      stream.match(/^\s*\w*/);
+      return ret("keyword", "important");
+    }
+    else if (/\d/.test(ch)) {
+      stream.eatWhile(/[\w.%]/);
+      return ret("number", "unit");
+    }
+    else if (/[,.+>*\/]/.test(ch)) {
+      return ret(null, "select-op");
+    }
+    else if (/[;{}:\[\]]/.test(ch)) {
+      return ret(null, ch);
+    }
+    else {
+      stream.eatWhile(/[\w\\\-]/);
+      return ret("variable", "variable");
+    }
+  }
+
+  function tokenCComment(stream, state) {
+    var maybeEnd = false, ch;
+    while ((ch = stream.next()) != null) {
+      if (maybeEnd && ch == "/") {
+        state.tokenize = tokenBase;
+        break;
+      }
+      maybeEnd = (ch == "*");
+    }
+    return ret("comment", "comment");
+  }
+
+  function tokenSGMLComment(stream, state) {
+    var dashes = 0, ch;
+    while ((ch = stream.next()) != null) {
+      if (dashes >= 2 && ch == ">") {
+        state.tokenize = tokenBase;
+        break;
+      }
+      dashes = (ch == "-") ? dashes + 1 : 0;
+    }
+    return ret("comment", "comment");
+  }
+
+  function tokenString(quote) {
+    return function(stream, state) {
+      var escaped = false, ch;
+      while ((ch = stream.next()) != null) {
+        if (ch == quote && !escaped)
+          break;
+        escaped = !escaped && ch == "\\";
+      }
+      if (!escaped) state.tokenize = tokenBase;
+      return ret("string", "string");
+    };
+  }
+
+  return {
+    startState: function(base) {
+      return {tokenize: tokenBase,
+              baseIndent: base || 0,
+              stack: []};
+    },
+
+    token: function(stream, state) {
+      if (stream.eatSpace()) return null;
+      var style = state.tokenize(stream, state);
+
+      var context = state.stack[state.stack.length-1];
+      if (type == "hash" && context != "rule") style = "string-2";
+      else if (style == "variable") {
+        if (context == "rule") style = "number";
+        else if (!context || context == "@media{") style = "tag";
+      }
+
+      if (context == "rule" && /^[\{\};]$/.test(type))
+        state.stack.pop();
+      if (type == "{") {
+        if (context == "@media") state.stack[state.stack.length-1] = "@media{";
+        else state.stack.push("{");
+      }
+      else if (type == "}") state.stack.pop();
+      else if (type == "@media") state.stack.push("@media");
+      else if (context == "{" && type != "comment") state.stack.push("rule");
+      return style;
+    },
+
+    indent: function(state, textAfter) {
+      var n = state.stack.length;
+      if (/^\}/.test(textAfter))
+        n -= state.stack[state.stack.length-1] == "rule" ? 2 : 1;
+      return state.baseIndent + n * indentUnit;
+    },
+
+    electricChars: "}"
+  };
+});
+
+CodeMirror.defineMIME("text/css", "css");

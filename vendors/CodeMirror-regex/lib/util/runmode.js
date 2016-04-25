@@ -1,1 +1,49 @@
-CodeMirror.runMode=function(r,e,o,i){var t=CodeMirror.getMode(CodeMirror.defaults,e),a=1==o.nodeType,n=i&&i.tabSize||CodeMirror.defaults.tabSize;if(a){var s=o,d=[],M=0;o=function(r,e){if("\n"==r)return d.push("<br>"),void(M=0);for(var o="",i=0;;){var t=r.indexOf("	",i);if(-1==t){o+=CodeMirror.htmlEscape(r.slice(i)),M+=r.length-i;break}M+=t-i,o+=CodeMirror.htmlEscape(r.slice(i,t));var a=n-M%n;M+=a;for(var s=0;a>s;++s)o+=" ";i=t+1}e?d.push('<span class="cm-'+CodeMirror.htmlEscape(e)+'">'+o+"</span>"):d.push(o)}}for(var f=CodeMirror.splitLines(r),l=CodeMirror.startState(t),p=0,c=f.length;c>p;++p){p&&o("\n");for(var u=new CodeMirror.StringStream(f[p]);!u.eol();){var v=t.token(u,l);o(u.current(),v,p,u.start),u.start=u.pos}}a&&(s.innerHTML=d.join(""))};
+CodeMirror.runMode = function(string, modespec, callback, options) {
+  var mode = CodeMirror.getMode(CodeMirror.defaults, modespec);
+  var isNode = callback.nodeType == 1;
+  var tabSize = (options && options.tabSize) || CodeMirror.defaults.tabSize;
+  if (isNode) {
+    var node = callback, accum = [], col = 0;
+    callback = function(text, style) {
+      if (text == "\n") {
+        accum.push("<br>");
+        col = 0;
+        return;
+      }
+      var escaped = "";
+      // HTML-escape and replace tabs
+      for (var pos = 0;;) {
+        var idx = text.indexOf("\t", pos);
+        if (idx == -1) {
+          escaped += CodeMirror.htmlEscape(text.slice(pos));
+          col += text.length - pos;
+          break;
+        } else {
+          col += idx - pos;
+          escaped += CodeMirror.htmlEscape(text.slice(pos, idx));
+          var size = tabSize - col % tabSize;
+          col += size;
+          for (var i = 0; i < size; ++i) escaped += " ";
+          pos = idx + 1;
+        }
+      }
+
+      if (style) 
+        accum.push("<span class=\"cm-" + CodeMirror.htmlEscape(style) + "\">" + escaped + "</span>");
+      else
+        accum.push(escaped);
+    }
+  }
+  var lines = CodeMirror.splitLines(string), state = CodeMirror.startState(mode);
+  for (var i = 0, e = lines.length; i < e; ++i) {
+    if (i) callback("\n");
+    var stream = new CodeMirror.StringStream(lines[i]);
+    while (!stream.eol()) {
+      var style = mode.token(stream, state);
+      callback(stream.current(), style, i, stream.start);
+      stream.start = stream.pos;
+    }
+  }
+  if (isNode)
+    node.innerHTML = accum.join("");
+};

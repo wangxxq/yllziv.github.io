@@ -1,1 +1,153 @@
-!function(){"use strict";CodeMirror.defineMode("haml",function(e){function t(e){return function(t,i){var o=t.peek();return o==e&&1==i.rubyState.tokenize.length?(t.next(),i.tokenize=r,"closeAttributeTag"):n(t,i)}}function n(e,t){return e.match("-#")?(e.skipToEnd(),"comment"):o.token(e,t.rubyState)}function r(e,r){var o=e.peek();if("comment"==r.previousToken.style&&r.indented>r.previousToken.indented)return e.skipToEnd(),"commentLine";if(r.startOfLine){if("!"==o&&e.match("!!"))return e.skipToEnd(),"tag";if(e.match(/^%[\w:#\.]+=/))return r.tokenize=n,"hamlTag";if(e.match(/^%[\w:]+/))return"hamlTag";if("/"==o)return e.skipToEnd(),"comment"}if((r.startOfLine||"hamlTag"==r.previousToken.style)&&("#"==o||"."==o))return e.match(/[\w-#\.]*/),"hamlAttribute";if(r.startOfLine&&!e.match("-->",!1)&&("="==o||"-"==o))return r.tokenize=n,null;if("hamlTag"==r.previousToken.style||"closeAttributeTag"==r.previousToken.style||"hamlAttribute"==r.previousToken.style){if("("==o)return r.tokenize=t(")"),null;if("{"==o)return r.tokenize=t("}"),null}return i.token(e,r.htmlState)}var i=CodeMirror.getMode(e,{name:"htmlmixed"}),o=CodeMirror.getMode(e,"ruby");return{startState:function(){var e=i.startState(),t=o.startState();return{htmlState:e,rubyState:t,indented:0,previousToken:{style:null,indented:0},tokenize:r}},copyState:function(e){return{htmlState:CodeMirror.copyState(i,e.htmlState),rubyState:CodeMirror.copyState(o,e.rubyState),indented:e.indented,previousToken:e.previousToken,tokenize:e.tokenize}},token:function(e,t){if(e.sol()&&(t.indented=e.indentation(),t.startOfLine=!0),e.eatSpace())return null;var i=t.tokenize(e,t);if(t.startOfLine=!1,i&&"commentLine"!=i&&(t.previousToken={style:i,indented:t.indented}),e.eol()&&t.tokenize==n){e.backUp(1);var o=e.peek();e.next(),o&&","!=o&&(t.tokenize=r)}return"hamlTag"==i?i="tag":"commentLine"==i?i="comment":"hamlAttribute"==i?i="attribute":"closeAttributeTag"==i&&(i=null),i},indent:function(e){return e.indented}}},"htmlmixed","ruby"),CodeMirror.defineMIME("text/x-haml","haml")}();
+(function() {
+  "use strict";
+
+  // full haml mode. This handled embeded ruby and html fragments too
+  CodeMirror.defineMode("haml", function(config) {
+    var htmlMode = CodeMirror.getMode(config, {name: "htmlmixed"});
+    var rubyMode = CodeMirror.getMode(config, "ruby");
+
+    function rubyInQuote(endQuote) {
+      return function(stream, state) {
+        var ch = stream.peek();
+        if (ch == endQuote && state.rubyState.tokenize.length == 1) {
+          // step out of ruby context as it seems to complete processing all the braces
+          stream.next();
+          state.tokenize = html;
+          return "closeAttributeTag";
+        } else {
+          return ruby(stream, state);
+        }
+      };
+    }
+
+    function ruby(stream, state) {
+      if (stream.match("-#")) {
+        stream.skipToEnd();
+        return "comment";
+      }
+      return rubyMode.token(stream, state.rubyState);
+    }
+
+    function html(stream, state) {
+      var ch = stream.peek();
+
+      // handle haml declarations. All declarations that cant be handled here
+      // will be passed to html mode
+      if (state.previousToken.style == "comment" ) {
+        if (state.indented > state.previousToken.indented) {
+          stream.skipToEnd();
+          return "commentLine";
+        }
+      }
+
+      if (state.startOfLine) {
+        if (ch == "!" && stream.match("!!")) {
+          stream.skipToEnd();
+          return "tag";
+        } else if (stream.match(/^%[\w:#\.]+=/)) {
+          state.tokenize = ruby;
+          return "hamlTag";
+        } else if (stream.match(/^%[\w:]+/)) {
+          return "hamlTag";
+        } else if (ch == "/" ) {
+          stream.skipToEnd();
+          return "comment";
+        }
+      }
+
+      if (state.startOfLine || state.previousToken.style == "hamlTag") {
+        if ( ch == "#" || ch == ".") {
+          stream.match(/[\w-#\.]*/);
+          return "hamlAttribute";
+        }
+      }
+
+      // donot handle --> as valid ruby, make it HTML close comment instead
+      if (state.startOfLine && !stream.match("-->", false) && (ch == "=" || ch == "-" )) {
+        state.tokenize = ruby;
+        return null;
+      }
+
+      if (state.previousToken.style == "hamlTag" ||
+          state.previousToken.style == "closeAttributeTag" ||
+          state.previousToken.style == "hamlAttribute") {
+        if (ch == "(") {
+          state.tokenize = rubyInQuote(")");
+          return null;
+        } else if (ch == "{") {
+          state.tokenize = rubyInQuote("}");
+          return null;
+        }
+      }
+
+      return htmlMode.token(stream, state.htmlState);
+    }
+
+    return {
+      // default to html mode
+      startState: function() {
+        var htmlState = htmlMode.startState();
+        var rubyState = rubyMode.startState();
+        return {
+          htmlState: htmlState,
+          rubyState: rubyState,
+          indented: 0,
+          previousToken: { style: null, indented: 0},
+          tokenize: html
+        };
+      },
+
+      copyState: function(state) {
+        return {
+          htmlState : CodeMirror.copyState(htmlMode, state.htmlState),
+          rubyState: CodeMirror.copyState(rubyMode, state.rubyState),
+          indented: state.indented,
+          previousToken: state.previousToken,
+          tokenize: state.tokenize
+        };
+      },
+
+      token: function(stream, state) {
+        if (stream.sol()) {
+          state.indented = stream.indentation();
+          state.startOfLine = true;
+        }
+        if (stream.eatSpace()) return null;
+        var style = state.tokenize(stream, state);
+        state.startOfLine = false;
+        // dont record comment line as we only want to measure comment line with
+        // the opening comment block
+        if (style && style != "commentLine") {
+          state.previousToken = { style: style, indented: state.indented };
+        }
+        // if current state is ruby and the previous token is not `,` reset the
+        // tokenize to html
+        if (stream.eol() && state.tokenize == ruby) {
+          stream.backUp(1);
+          var ch = stream.peek();
+          stream.next();
+          if (ch && ch != ",") {
+            state.tokenize = html;
+          }
+        }
+        // reprocess some of the specific style tag when finish setting previousToken
+        if (style == "hamlTag") {
+          style = "tag";
+        } else if (style == "commentLine") {
+          style = "comment";
+        } else if (style == "hamlAttribute") {
+          style = "attribute";
+        } else if (style == "closeAttributeTag") {
+          style = null;
+        }
+        return style;
+      },
+
+      indent: function(state) {
+        return state.indented;
+      }
+    };
+  }, "htmlmixed", "ruby");
+
+  CodeMirror.defineMIME("text/x-haml", "haml");
+})();

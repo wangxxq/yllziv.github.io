@@ -1,1 +1,105 @@
-CodeMirror.defineMode("commonlisp",function(t){function n(t){for(var n;n=t.next();)if("\\"==n)t.next();else if(!a.test(n)){t.backUp(1);break}return t.current()}function e(t,e){if(t.eatSpace())return i="ws",null;if(t.match(u))return"number";var c=t.next();if("\\"==c&&(c=t.next()),'"'==c)return(e.tokenize=r)(t,e);if("("==c)return i="open","bracket";if(")"==c||"]"==c)return i="close","bracket";if(";"==c)return t.skipToEnd(),i="ws","comment";if(/['`,@]/.test(c))return null;if("|"==c)return t.skipTo("|")?(t.next(),"symbol"):(t.skipToEnd(),"error");if("#"==c){var c=t.next();return"["==c?(i="open","bracket"):/[+\-=\.']/.test(c)?null:/\d/.test(c)&&t.match(/^\d*#/)?null:"|"==c?(e.tokenize=o)(t,e):":"==c?(n(t),"meta"):"error"}var a=n(t);return"."==a?null:(i="symbol","nil"==a||"t"==a?"atom":":"==a.charAt(0)?"keyword":"&"==a.charAt(0)?"variable-2":"variable")}function r(t,n){for(var r,o=!1;r=t.next();){if('"'==r&&!o){n.tokenize=e;break}o=!o&&"\\"==r}return"string"}function o(t,n){for(var r,o;r=t.next();){if("#"==r&&"|"==o){n.tokenize=e;break}o=r}return i="ws","comment"}var i,c=/^with|^def|^do|^prog|case$|^cond$|bind$|when$|unless$/,u=/^(?:[+\-]?(?:\d+|\d*\.\d+)(?:[efd][+\-]?\d+)?|[+\-]?\d+(?:\/[+\-]?\d+)?|#b[+\-]?[01]+|#o[+\-]?[0-7]+|#x[+\-]?[\da-f]+)/,a=/[^\s'`,@()\[\]";]/;return{startState:function(){return{ctx:{prev:null,start:0,indentTo:0},tokenize:e}},token:function(n,e){n.sol()&&"number"!=typeof e.ctx.indentTo&&(e.ctx.indentTo=e.ctx.start+1),i=null;var r=e.tokenize(n,e);return"ws"!=i&&(null==e.ctx.indentTo?"symbol"==i&&c.test(n.current())?e.ctx.indentTo=e.ctx.start+t.indentUnit:e.ctx.indentTo="next":"next"==e.ctx.indentTo&&(e.ctx.indentTo=n.column())),"open"==i?e.ctx={prev:e.ctx,start:n.column(),indentTo:null}:"close"==i&&(e.ctx=e.ctx.prev||e.ctx),r},indent:function(t,n){var e=t.ctx.indentTo;return"number"==typeof e?e:t.ctx.start+1},lineComment:";;",blockCommentStart:"#|",blockCommentEnd:"|#"}}),CodeMirror.defineMIME("text/x-common-lisp","commonlisp");
+CodeMirror.defineMode("commonlisp", function (config) {
+  var assumeBody = /^with|^def|^do|^prog|case$|^cond$|bind$|when$|unless$/;
+  var numLiteral = /^(?:[+\-]?(?:\d+|\d*\.\d+)(?:[efd][+\-]?\d+)?|[+\-]?\d+(?:\/[+\-]?\d+)?|#b[+\-]?[01]+|#o[+\-]?[0-7]+|#x[+\-]?[\da-f]+)/;
+  var symbol = /[^\s'`,@()\[\]";]/;
+  var type;
+
+  function readSym(stream) {
+    var ch;
+    while (ch = stream.next()) {
+      if (ch == "\\") stream.next();
+      else if (!symbol.test(ch)) { stream.backUp(1); break; }
+    }
+    return stream.current();
+  }
+
+  function base(stream, state) {
+    if (stream.eatSpace()) {type = "ws"; return null;}
+    if (stream.match(numLiteral)) return "number";
+    var ch = stream.next();
+    if (ch == "\\") ch = stream.next();
+
+    if (ch == '"') return (state.tokenize = inString)(stream, state);
+    else if (ch == "(") { type = "open"; return "bracket"; }
+    else if (ch == ")" || ch == "]") { type = "close"; return "bracket"; }
+    else if (ch == ";") { stream.skipToEnd(); type = "ws"; return "comment"; }
+    else if (/['`,@]/.test(ch)) return null;
+    else if (ch == "|") {
+      if (stream.skipTo("|")) { stream.next(); return "symbol"; }
+      else { stream.skipToEnd(); return "error"; }
+    } else if (ch == "#") {
+      var ch = stream.next();
+      if (ch == "[") { type = "open"; return "bracket"; }
+      else if (/[+\-=\.']/.test(ch)) return null;
+      else if (/\d/.test(ch) && stream.match(/^\d*#/)) return null;
+      else if (ch == "|") return (state.tokenize = inComment)(stream, state);
+      else if (ch == ":") { readSym(stream); return "meta"; }
+      else return "error";
+    } else {
+      var name = readSym(stream);
+      if (name == ".") return null;
+      type = "symbol";
+      if (name == "nil" || name == "t") return "atom";
+      if (name.charAt(0) == ":") return "keyword";
+      if (name.charAt(0) == "&") return "variable-2";
+      return "variable";
+    }
+  }
+
+  function inString(stream, state) {
+    var escaped = false, next;
+    while (next = stream.next()) {
+      if (next == '"' && !escaped) { state.tokenize = base; break; }
+      escaped = !escaped && next == "\\";
+    }
+    return "string";
+  }
+
+  function inComment(stream, state) {
+    var next, last;
+    while (next = stream.next()) {
+      if (next == "#" && last == "|") { state.tokenize = base; break; }
+      last = next;
+    }
+    type = "ws";
+    return "comment";
+  }
+
+  return {
+    startState: function () {
+      return {ctx: {prev: null, start: 0, indentTo: 0}, tokenize: base};
+    },
+
+    token: function (stream, state) {
+      if (stream.sol() && typeof state.ctx.indentTo != "number")
+        state.ctx.indentTo = state.ctx.start + 1;
+
+      type = null;
+      var style = state.tokenize(stream, state);
+      if (type != "ws") {
+        if (state.ctx.indentTo == null) {
+          if (type == "symbol" && assumeBody.test(stream.current()))
+            state.ctx.indentTo = state.ctx.start + config.indentUnit;
+          else
+            state.ctx.indentTo = "next";
+        } else if (state.ctx.indentTo == "next") {
+          state.ctx.indentTo = stream.column();
+        }
+      }
+      if (type == "open") state.ctx = {prev: state.ctx, start: stream.column(), indentTo: null};
+      else if (type == "close") state.ctx = state.ctx.prev || state.ctx;
+      return style;
+    },
+
+    indent: function (state, _textAfter) {
+      var i = state.ctx.indentTo;
+      return typeof i == "number" ? i : state.ctx.start + 1;
+    },
+
+    lineComment: ";;",
+    blockCommentStart: "#|",
+    blockCommentEnd: "|#"
+  };
+});
+
+CodeMirror.defineMIME("text/x-common-lisp", "commonlisp");

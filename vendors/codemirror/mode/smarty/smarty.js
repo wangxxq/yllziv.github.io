@@ -1,1 +1,205 @@
-CodeMirror.defineMode("smarty",function(t){"use strict";var e={rightDelimiter:"}",leftDelimiter:"{",smartyVersion:2};t.hasOwnProperty("leftDelimiter")&&(e.leftDelimiter=t.leftDelimiter),t.hasOwnProperty("rightDelimiter")&&(e.rightDelimiter=t.rightDelimiter),t.hasOwnProperty("smartyVersion")&&3===t.smartyVersion&&(e.smartyVersion=3);var r,i=["debug","extends","function","include","literal"],n={operatorChars:/[+\-*&%=<>!?]/,validIdentifier:/[a-zA-Z0-9_]/,stringChar:/['"]/},a={cont:function(t,e){return r=e,t},chain:function(t,e,r){return e.tokenize=r,r(t,e)}},o={tokenizer:function(t,i){if(t.match(e.leftDelimiter,!0)){if(t.eat("*"))return a.chain(t,i,o.inBlock("comment","*"+e.rightDelimiter));i.depth++;var n=t.eol(),l=/\s/.test(t.peek());return 3===e.smartyVersion&&"{"===e.leftDelimiter&&(n||l)?(i.depth--,null):(i.tokenize=o.smarty,r="startTag","tag")}return t.next(),null},smarty:function(t,l){if(t.match(e.rightDelimiter,!0))return 3===e.smartyVersion?(l.depth--,l.depth<=0&&(l.tokenize=o.tokenizer)):l.tokenize=o.tokenizer,a.cont("tag",null);if(t.match(e.leftDelimiter,!0))return l.depth++,a.cont("tag","startTag");var u=t.next();if("$"==u)return t.eatWhile(n.validIdentifier),a.cont("variable-2","variable");if("|"==u)return a.cont("operator","pipe");if("."==u)return a.cont("operator","property");if(n.stringChar.test(u))return l.tokenize=o.inAttribute(u),a.cont("string","string");if(n.operatorChars.test(u))return t.eatWhile(n.operatorChars),a.cont("operator","operator");if("["==u||"]"==u)return a.cont("bracket","bracket");if("("==u||")"==u)return a.cont("bracket","operator");if(/\d/.test(u))return t.eatWhile(/\d/),a.cont("number","number");if("variable"==l.last){if("@"==u)return t.eatWhile(n.validIdentifier),a.cont("property","property");if("|"==u)return t.eatWhile(n.validIdentifier),a.cont("qualifier","modifier")}else{if("pipe"==l.last)return t.eatWhile(n.validIdentifier),a.cont("qualifier","modifier");if("whitespace"==l.last)return t.eatWhile(n.validIdentifier),a.cont("attribute","modifier")}if("property"==l.last)return t.eatWhile(n.validIdentifier),a.cont("property",null);if(/\s/.test(u))return r="whitespace",null;var f="";"/"!=u&&(f+=u);for(var s=null;s=t.eat(n.validIdentifier);)f+=s;for(var c=0,d=i.length;d>c;c++)if(i[c]==f)return a.cont("keyword","keyword");return/\s/.test(u)?null:a.cont("tag","tag")},inAttribute:function(t){return function(e,r){for(var i=null,n=null;!e.eol();){if(n=e.peek(),e.next()==t&&"\\"!==i){r.tokenize=o.smarty;break}i=n}return"string"}},inBlock:function(t,e){return function(r,i){for(;!r.eol();){if(r.match(e)){i.tokenize=o.tokenizer;break}r.next()}return t}}};return{startState:function(){return{tokenize:o.tokenizer,mode:"smarty",last:null,depth:0}},token:function(t,e){var i=e.tokenize(t,e);return e.last=r,i},electricChars:""}}),CodeMirror.defineMIME("text/x-smarty","smarty");
+/**
+ * Smarty 2 and 3 mode.
+ */
+CodeMirror.defineMode("smarty", function(config) {
+  "use strict";
+
+  // our default settings; check to see if they're overridden
+  var settings = {
+    rightDelimiter: '}',
+    leftDelimiter: '{',
+    smartyVersion: 2 // for backward compatibility
+  };
+  if (config.hasOwnProperty("leftDelimiter")) {
+    settings.leftDelimiter = config.leftDelimiter;
+  }
+  if (config.hasOwnProperty("rightDelimiter")) {
+    settings.rightDelimiter = config.rightDelimiter;
+  }
+  if (config.hasOwnProperty("smartyVersion") && config.smartyVersion === 3) {
+    settings.smartyVersion = 3;
+  }
+
+  var keyFunctions = ["debug", "extends", "function", "include", "literal"];
+  var last;
+  var regs = {
+    operatorChars: /[+\-*&%=<>!?]/,
+    validIdentifier: /[a-zA-Z0-9_]/,
+    stringChar: /['"]/
+  };
+
+  var helpers = {
+    cont: function(style, lastType) {
+      last = lastType;
+      return style;
+    },
+    chain: function(stream, state, parser) {
+      state.tokenize = parser;
+      return parser(stream, state);
+    }
+  };
+
+
+  // our various parsers
+  var parsers = {
+
+    // the main tokenizer
+    tokenizer: function(stream, state) {
+      if (stream.match(settings.leftDelimiter, true)) {
+        if (stream.eat("*")) {
+          return helpers.chain(stream, state, parsers.inBlock("comment", "*" + settings.rightDelimiter));
+        } else {
+          // Smarty 3 allows { and } surrounded by whitespace to NOT slip into Smarty mode
+          state.depth++;
+          var isEol = stream.eol();
+          var isFollowedByWhitespace = /\s/.test(stream.peek());
+          if (settings.smartyVersion === 3 && settings.leftDelimiter === "{" && (isEol || isFollowedByWhitespace)) {
+            state.depth--;
+            return null;
+          } else {
+            state.tokenize = parsers.smarty;
+            last = "startTag";
+            return "tag";
+          }
+        }
+      } else {
+        stream.next();
+        return null;
+      }
+    },
+
+    // parsing Smarty content
+    smarty: function(stream, state) {
+      if (stream.match(settings.rightDelimiter, true)) {
+        if (settings.smartyVersion === 3) {
+          state.depth--;
+          if (state.depth <= 0) {
+            state.tokenize = parsers.tokenizer;
+          }
+        } else {
+          state.tokenize = parsers.tokenizer;
+        }
+        return helpers.cont("tag", null);
+      }
+
+      if (stream.match(settings.leftDelimiter, true)) {
+        state.depth++;
+        return helpers.cont("tag", "startTag");
+      }
+
+      var ch = stream.next();
+      if (ch == "$") {
+        stream.eatWhile(regs.validIdentifier);
+        return helpers.cont("variable-2", "variable");
+      } else if (ch == "|") {
+        return helpers.cont("operator", "pipe");
+      } else if (ch == ".") {
+        return helpers.cont("operator", "property");
+      } else if (regs.stringChar.test(ch)) {
+        state.tokenize = parsers.inAttribute(ch);
+        return helpers.cont("string", "string");
+      } else if (regs.operatorChars.test(ch)) {
+        stream.eatWhile(regs.operatorChars);
+        return helpers.cont("operator", "operator");
+      } else if (ch == "[" || ch == "]") {
+        return helpers.cont("bracket", "bracket");
+      } else if (ch == "(" || ch == ")") {
+        return helpers.cont("bracket", "operator");
+      } else if (/\d/.test(ch)) {
+        stream.eatWhile(/\d/);
+        return helpers.cont("number", "number");
+      } else {
+
+        if (state.last == "variable") {
+          if (ch == "@") {
+            stream.eatWhile(regs.validIdentifier);
+            return helpers.cont("property", "property");
+          } else if (ch == "|") {
+            stream.eatWhile(regs.validIdentifier);
+            return helpers.cont("qualifier", "modifier");
+          }
+        } else if (state.last == "pipe") {
+          stream.eatWhile(regs.validIdentifier);
+          return helpers.cont("qualifier", "modifier");
+        } else if (state.last == "whitespace") {
+          stream.eatWhile(regs.validIdentifier);
+          return helpers.cont("attribute", "modifier");
+        } if (state.last == "property") {
+          stream.eatWhile(regs.validIdentifier);
+          return helpers.cont("property", null);
+        } else if (/\s/.test(ch)) {
+          last = "whitespace";
+          return null;
+        }
+
+        var str = "";
+        if (ch != "/") {
+          str += ch;
+        }
+        var c = null;
+        while (c = stream.eat(regs.validIdentifier)) {
+          str += c;
+        }
+        for (var i=0, j=keyFunctions.length; i<j; i++) {
+          if (keyFunctions[i] == str) {
+            return helpers.cont("keyword", "keyword");
+          }
+        }
+        if (/\s/.test(ch)) {
+          return null;
+        }
+        return helpers.cont("tag", "tag");
+      }
+    },
+
+    inAttribute: function(quote) {
+      return function(stream, state) {
+        var prevChar = null;
+        var currChar = null;
+        while (!stream.eol()) {
+          currChar = stream.peek();
+          if (stream.next() == quote && prevChar !== '\\') {
+            state.tokenize = parsers.smarty;
+            break;
+          }
+          prevChar = currChar;
+        }
+        return "string";
+      };
+    },
+
+    inBlock: function(style, terminator) {
+      return function(stream, state) {
+        while (!stream.eol()) {
+          if (stream.match(terminator)) {
+            state.tokenize = parsers.tokenizer;
+            break;
+          }
+          stream.next();
+        }
+        return style;
+      };
+    }
+  };
+
+
+  // the public API for CodeMirror
+  return {
+    startState: function() {
+      return {
+        tokenize: parsers.tokenizer,
+        mode: "smarty",
+        last: null,
+        depth: 0
+      };
+    },
+    token: function(stream, state) {
+      var style = state.tokenize(stream, state);
+      state.last = last;
+      return style;
+    },
+    electricChars: ""
+  };
+});
+
+CodeMirror.defineMIME("text/x-smarty", "smarty");

@@ -1,1 +1,448 @@
-CodeMirror.defineMode("xquery",function(e,t){function n(e,t,n){return v=e,w=n,t}function r(e,t,n){return t.tokenize=n,n(e,t)}function a(e,t){var a=e.next(),s=!1,g=y(e);if("<"==a){if(e.match("!--",!0))return r(e,t,f);if(e.match("![CDATA",!1))return t.tokenize=l,n("tag","tag");if(e.match("?",!1))return r(e,t,m);var h=e.eat("/");e.eatSpace();for(var x,v="";x=e.eat(/[^\s\u00a0=<>\"\'\/?]/);)v+=x;return r(e,t,u(v,h))}if("{"==a)return k(t,{type:"codeblock"}),n("","");if("}"==a)return b(t),n("","");if(d(t))return">"==a?n("tag","tag"):"/"==a&&e.eat(">")?(b(t),n("tag","tag")):n("word","word");if(/\d/.test(a))return e.match(/^\d*(?:\.\d*)?(?:E[+\-]?\d+)?/),n("number","atom");if("("===a&&e.eat(":"))return k(t,{type:"comment"}),r(e,t,i);if(g||'"'!==a&&"'"!==a){if("$"===a)return r(e,t,c);if(":"===a&&e.eat("="))return n("operator","keyword");if("("===a)return k(t,{type:"paren"}),n("","");if(")"===a)return b(t),n("","");if("["===a)return k(t,{type:"bracket"}),n("","");if("]"===a)return b(t),n("","");var w=z.propertyIsEnumerable(a)&&z[a];if(g&&'"'===a)for(;'"'!==e.next(););if(g&&"'"===a)for(;"'"!==e.next(););w||e.eatWhile(/[\w\$_-]/);var q=e.eat(":");!e.eat(":")&&q&&e.eatWhile(/[\w\$_-]/),e.match(/^[ \t]*\(/,!1)&&(s=!0);var _=e.current();return w=z.propertyIsEnumerable(_)&&z[_],s&&!w&&(w={type:"function_call",style:"variable def"}),p(t)?(b(t),n("word","word",_)):("element"!=_&&"attribute"!=_&&"axis_specifier"!=w.type||k(t,{type:"xmlconstructor"}),w?n(w.type,w.style,_):n("word","word",_))}return r(e,t,o(a))}function i(e,t){for(var r,a=!1,i=!1,o=0;r=e.next();){if(")"==r&&a){if(!(o>0)){b(t);break}o--}else":"==r&&i&&o++;a=":"==r,i="("==r}return n("comment","comment")}function o(e,t){return function(r,i){var c;if(h(i)&&r.current()==e)return b(i),t&&(i.tokenize=t),n("string","string");if(k(i,{type:"string",name:e,tokenize:o(e,t)}),r.match("{",!1)&&g(i))return i.tokenize=a,n("string","string");for(;c=r.next();){if(c==e){b(i),t&&(i.tokenize=t);break}if(r.match("{",!1)&&g(i))return i.tokenize=a,n("string","string")}return n("string","string")}}function c(e,t){var r=/[\w\$_-]/;if(e.eat('"')){for(;'"'!==e.next(););e.eat(":")}else e.eatWhile(r),e.match(":=",!1)||e.eat(":");return e.eatWhile(r),t.tokenize=a,n("variable","variable")}function u(e,t){return function(r,i){return r.eatSpace(),t&&r.eat(">")?(b(i),i.tokenize=a,n("tag","tag")):(r.eat("/")||k(i,{type:"tag",name:e,tokenize:a}),r.eat(">")?(i.tokenize=a,n("tag","tag")):(i.tokenize=s,n("tag","tag")))}}function s(e,t){var i=e.next();return"/"==i&&e.eat(">")?(g(t)&&b(t),d(t)&&b(t),n("tag","tag")):">"==i?(g(t)&&b(t),n("tag","tag")):"="==i?n("",""):'"'==i||"'"==i?r(e,t,o(i,s)):(g(t)||k(t,{type:"attribute",name:name,tokenize:s}),e.eat(/[a-zA-Z_:]/),e.eatWhile(/[-a-zA-Z0-9_:.]/),e.eatSpace(),(e.match(">",!1)||e.match("/",!1))&&(b(t),t.tokenize=a),n("attribute","attribute"))}function f(e,t){for(;ch=e.next();)if("-"==ch&&e.match("->",!0))return t.tokenize=a,n("comment","comment")}function l(e,t){for(;ch=e.next();)if("]"==ch&&e.match("]",!0))return t.tokenize=a,n("comment","comment")}function m(e,t){for(;ch=e.next();)if("?"==ch&&e.match(">",!0))return t.tokenize=a,n("comment","comment meta")}function d(e){return x(e,"tag")}function g(e){return x(e,"attribute")}function p(e){return x(e,"xmlconstructor")}function h(e){return x(e,"string")}function y(e){return'"'===e.current()?e.match(/^[^\"]+\"\:/,!1):"'"===e.current()?e.match(/^[^\"]+\'\:/,!1):!1}function x(e,t){return e.stack.length&&e.stack[e.stack.length-1].type==t}function k(e,t){e.stack.push(t)}function b(e){var t=(e.stack.pop(),e.stack.length&&e.stack[e.stack.length-1].tokenize);e.tokenize=t||a}var v,w,z=function(){function e(e){return{type:e,style:"keyword"}}for(var t=e("keyword a"),n=e("keyword b"),r=e("keyword c"),a=e("operator"),i={type:"atom",style:"atom"},o={type:"punctuation",style:""},c={type:"axis_specifier",style:"qualifier"},u={"if":t,"switch":t,"while":t,"for":t,"else":n,then:n,"try":n,"finally":n,"catch":n,element:r,attribute:r,let:r,"implements":r,"import":r,module:r,namespace:r,"return":r,"super":r,"this":r,"throws":r,where:r,"private":r,",":o,"null":i,"fn:false()":i,"fn:true()":i},s=["after","ancestor","ancestor-or-self","and","as","ascending","assert","attribute","before","by","case","cast","child","comment","declare","default","define","descendant","descendant-or-self","descending","document","document-node","element","else","eq","every","except","external","following","following-sibling","follows","for","function","if","import","in","instance","intersect","item","let","module","namespace","node","node","of","only","or","order","parent","precedes","preceding","preceding-sibling","processing-instruction","ref","return","returns","satisfies","schema","schema-element","self","some","sortby","stable","text","then","to","treat","typeswitch","union","variable","version","where","xquery","empty-sequence"],f=0,l=s.length;l>f;f++)u[s[f]]=e(s[f]);for(var m=["xs:string","xs:float","xs:decimal","xs:double","xs:integer","xs:boolean","xs:date","xs:dateTime","xs:time","xs:duration","xs:dayTimeDuration","xs:time","xs:yearMonthDuration","numeric","xs:hexBinary","xs:base64Binary","xs:anyURI","xs:QName","xs:byte","xs:boolean","xs:anyURI","xf:yearMonthDuration"],f=0,l=m.length;l>f;f++)u[m[f]]=i;for(var d=["eq","ne","lt","le","gt","ge",":=","=",">",">=","<","<=",".","|","?","and","or","div","idiv","mod","*","/","+","-"],f=0,l=d.length;l>f;f++)u[d[f]]=a;for(var g=["self::","attribute::","child::","descendant::","descendant-or-self::","parent::","ancestor::","ancestor-or-self::","following::","preceding::","following-sibling::","preceding-sibling::"],f=0,l=g.length;l>f;f++)u[g[f]]=c;return u}();return{startState:function(e){return{tokenize:a,cc:[],stack:[]}},token:function(e,t){if(e.eatSpace())return null;var n=t.tokenize(e,t);return n}}}),CodeMirror.defineMIME("application/xquery","xquery");
+/*
+Copyright (C) 2011 by MarkLogic Corporation
+Author: Mike Brevoort <mike@brevoort.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+CodeMirror.defineMode("xquery", function(config, parserConfig) {
+
+  // The keywords object is set to the result of this self executing
+  // function. Each keyword is a property of the keywords object whose
+  // value is {type: atype, style: astyle}
+  var keywords = function(){
+    // conveinence functions used to build keywords object
+    function kw(type) {return {type: type, style: "keyword"};}
+    var A = kw("keyword a")
+      , B = kw("keyword b")
+      , C = kw("keyword c")
+      , operator = kw("operator")
+      , atom = {type: "atom", style: "atom"}
+      , punctuation = {type: "punctuation", style: ""}
+      , qualifier = {type: "axis_specifier", style: "qualifier"};
+    
+    // kwObj is what is return from this function at the end
+    var kwObj = {
+      'if': A, 'switch': A, 'while': A, 'for': A,
+      'else': B, 'then': B, 'try': B, 'finally': B, 'catch': B,
+      'element': C, 'attribute': C, 'let': C, 'implements': C, 'import': C, 'module': C, 'namespace': C, 
+      'return': C, 'super': C, 'this': C, 'throws': C, 'where': C, 'private': C,      
+      ',': punctuation,
+      'null': atom, 'fn:false()': atom, 'fn:true()': atom
+    };
+    
+    // a list of 'basic' keywords. For each add a property to kwObj with the value of 
+    // {type: basic[i], style: "keyword"} e.g. 'after' --> {type: "after", style: "keyword"}
+    var basic = ['after','ancestor','ancestor-or-self','and','as','ascending','assert','attribute','before',
+    'by','case','cast','child','comment','declare','default','define','descendant','descendant-or-self',
+    'descending','document','document-node','element','else','eq','every','except','external','following',
+    'following-sibling','follows','for','function','if','import','in','instance','intersect','item',
+    'let','module','namespace','node','node','of','only','or','order','parent','precedes','preceding',
+    'preceding-sibling','processing-instruction','ref','return','returns','satisfies','schema','schema-element',
+    'self','some','sortby','stable','text','then','to','treat','typeswitch','union','variable','version','where',
+    'xquery', 'empty-sequence'];
+    for(var i=0, l=basic.length; i < l; i++) { kwObj[basic[i]] = kw(basic[i])};
+    
+    // a list of types. For each add a property to kwObj with the value of 
+    // {type: "atom", style: "atom"}
+    var types = ['xs:string', 'xs:float', 'xs:decimal', 'xs:double', 'xs:integer', 'xs:boolean', 'xs:date', 'xs:dateTime', 
+    'xs:time', 'xs:duration', 'xs:dayTimeDuration', 'xs:time', 'xs:yearMonthDuration', 'numeric', 'xs:hexBinary', 
+    'xs:base64Binary', 'xs:anyURI', 'xs:QName', 'xs:byte','xs:boolean','xs:anyURI','xf:yearMonthDuration'];
+    for(var i=0, l=types.length; i < l; i++) { kwObj[types[i]] = atom;};
+    
+    // each operator will add a property to kwObj with value of {type: "operator", style: "keyword"}
+    var operators = ['eq', 'ne', 'lt', 'le', 'gt', 'ge', ':=', '=', '>', '>=', '<', '<=', '.', '|', '?', 'and', 'or', 'div', 'idiv', 'mod', '*', '/', '+', '-'];
+    for(var i=0, l=operators.length; i < l; i++) { kwObj[operators[i]] = operator;};
+    
+    // each axis_specifiers will add a property to kwObj with value of {type: "axis_specifier", style: "qualifier"}
+    var axis_specifiers = ["self::", "attribute::", "child::", "descendant::", "descendant-or-self::", "parent::", 
+    "ancestor::", "ancestor-or-self::", "following::", "preceding::", "following-sibling::", "preceding-sibling::"];
+    for(var i=0, l=axis_specifiers.length; i < l; i++) { kwObj[axis_specifiers[i]] = qualifier; };
+
+    return kwObj;
+  }();
+
+  // Used as scratch variables to communicate multiple values without
+  // consing up tons of objects.
+  var type, content;
+  
+  function ret(tp, style, cont) {
+    type = tp; content = cont;
+    return style;
+  }
+  
+  function chain(stream, state, f) {
+    state.tokenize = f;
+    return f(stream, state);
+  }
+  
+  // the primary mode tokenizer
+  function tokenBase(stream, state) {
+    var ch = stream.next(), 
+        mightBeFunction = false,
+        isEQName = isEQNameAhead(stream);
+    
+    // an XML tag (if not in some sub, chained tokenizer)
+    if (ch == "<") {
+      if(stream.match("!--", true))
+        return chain(stream, state, tokenXMLComment);
+        
+      if(stream.match("![CDATA", false)) {
+        state.tokenize = tokenCDATA;
+        return ret("tag", "tag");
+      }
+      
+      if(stream.match("?", false)) {
+        return chain(stream, state, tokenPreProcessing);
+      }
+      
+      var isclose = stream.eat("/");
+      stream.eatSpace();
+      var tagName = "", c;
+      while ((c = stream.eat(/[^\s\u00a0=<>\"\'\/?]/))) tagName += c;
+      
+      return chain(stream, state, tokenTag(tagName, isclose));
+    }
+    // start code block
+    else if(ch == "{") {
+      pushStateStack(state,{ type: "codeblock"});
+      return ret("", "");
+    }
+    // end code block
+    else if(ch == "}") {
+      popStateStack(state);
+      return ret("", "");
+    }
+    // if we're in an XML block
+    else if(isInXmlBlock(state)) {
+      if(ch == ">")
+        return ret("tag", "tag");
+      else if(ch == "/" && stream.eat(">")) {
+        popStateStack(state);
+        return ret("tag", "tag");
+      }
+      else  
+        return ret("word", "word");
+    }
+    // if a number
+    else if (/\d/.test(ch)) {
+      stream.match(/^\d*(?:\.\d*)?(?:E[+\-]?\d+)?/);
+      return ret("number", "atom");
+    }
+    // comment start
+    else if (ch === "(" && stream.eat(":")) {
+      pushStateStack(state, { type: "comment"});
+      return chain(stream, state, tokenComment);
+    }
+    // quoted string
+    else if (  !isEQName && (ch === '"' || ch === "'"))
+      return chain(stream, state, tokenString(ch));
+    // variable
+    else if(ch === "$") {
+      return chain(stream, state, tokenVariable);
+    }
+    // assignment
+    else if(ch ===":" && stream.eat("=")) {
+      return ret("operator", "keyword");
+    }
+    // open paren
+    else if(ch === "(") {
+      pushStateStack(state, { type: "paren"});
+      return ret("", "");
+    }
+    // close paren
+    else if(ch === ")") {
+      popStateStack(state);
+      return ret("", "");
+    }
+    // open paren
+    else if(ch === "[") {
+      pushStateStack(state, { type: "bracket"});
+      return ret("", "");
+    }
+    // close paren
+    else if(ch === "]") {
+      popStateStack(state);
+      return ret("", "");
+    }
+    else {
+      var known = keywords.propertyIsEnumerable(ch) && keywords[ch];
+
+      // if there's a EQName ahead, consume the rest of the string portion, it's likely a function
+      if(isEQName && ch === '\"') while(stream.next() !== '"'){}
+      if(isEQName && ch === '\'') while(stream.next() !== '\''){}
+      
+      // gobble up a word if the character is not known
+      if(!known) stream.eatWhile(/[\w\$_-]/);
+      
+      // gobble a colon in the case that is a lib func type call fn:doc
+      var foundColon = stream.eat(":")
+      
+      // if there's not a second colon, gobble another word. Otherwise, it's probably an axis specifier
+      // which should get matched as a keyword
+      if(!stream.eat(":") && foundColon) {
+        stream.eatWhile(/[\w\$_-]/);
+      }
+      // if the next non whitespace character is an open paren, this is probably a function (if not a keyword of other sort)
+      if(stream.match(/^[ \t]*\(/, false)) {
+        mightBeFunction = true;
+      }
+      // is the word a keyword?
+      var word = stream.current();
+      known = keywords.propertyIsEnumerable(word) && keywords[word];
+      
+      // if we think it's a function call but not yet known, 
+      // set style to variable for now for lack of something better
+      if(mightBeFunction && !known) known = {type: "function_call", style: "variable def"};
+      
+      // if the previous word was element, attribute, axis specifier, this word should be the name of that
+      if(isInXmlConstructor(state)) {
+        popStateStack(state);
+        return ret("word", "word", word);
+      }
+      // as previously checked, if the word is element,attribute, axis specifier, call it an "xmlconstructor" and 
+      // push the stack so we know to look for it on the next word
+      if(word == "element" || word == "attribute" || known.type == "axis_specifier") pushStateStack(state, {type: "xmlconstructor"});
+      
+      // if the word is known, return the details of that else just call this a generic 'word'
+      return known ? ret(known.type, known.style, word) :
+                     ret("word", "word", word);
+    }
+  }
+
+  // handle comments, including nested 
+  function tokenComment(stream, state) {
+    var maybeEnd = false, maybeNested = false, nestedCount = 0, ch;
+    while (ch = stream.next()) {
+      if (ch == ")" && maybeEnd) {
+        if(nestedCount > 0)
+          nestedCount--;
+        else {
+          popStateStack(state);
+          break;
+        }
+      }
+      else if(ch == ":" && maybeNested) {
+        nestedCount++;
+      }
+      maybeEnd = (ch == ":");
+      maybeNested = (ch == "(");
+    }
+    
+    return ret("comment", "comment");
+  }
+
+  // tokenizer for string literals
+  // optionally pass a tokenizer function to set state.tokenize back to when finished
+  function tokenString(quote, f) {
+    return function(stream, state) {
+      var ch;
+
+      if(isInString(state) && stream.current() == quote) {
+        popStateStack(state);
+        if(f) state.tokenize = f;
+        return ret("string", "string");
+      }
+
+      pushStateStack(state, { type: "string", name: quote, tokenize: tokenString(quote, f) });
+
+      // if we're in a string and in an XML block, allow an embedded code block
+      if(stream.match("{", false) && isInXmlAttributeBlock(state)) {
+        state.tokenize = tokenBase;
+        return ret("string", "string"); 
+      }
+
+      
+      while (ch = stream.next()) {
+        if (ch ==  quote) {
+          popStateStack(state);
+          if(f) state.tokenize = f;
+          break;
+        }
+        else {
+          // if we're in a string and in an XML block, allow an embedded code block in an attribute
+          if(stream.match("{", false) && isInXmlAttributeBlock(state)) {
+            state.tokenize = tokenBase;
+            return ret("string", "string"); 
+          }
+
+        }
+      }
+      
+      return ret("string", "string");
+    };
+  }
+  
+  // tokenizer for variables
+  function tokenVariable(stream, state) {
+    var isVariableChar = /[\w\$_-]/;
+
+    // a variable may start with a quoted EQName so if the next character is quote, consume to the next quote
+    if(stream.eat("\"")) {
+      while(stream.next() !== '\"'){};
+      stream.eat(":");
+    } else {
+      stream.eatWhile(isVariableChar);
+      if(!stream.match(":=", false)) stream.eat(":");
+    }
+    stream.eatWhile(isVariableChar);
+    state.tokenize = tokenBase;
+    return ret("variable", "variable");
+  }
+  
+  // tokenizer for XML tags
+  function tokenTag(name, isclose) {
+    return function(stream, state) {
+      stream.eatSpace();
+      if(isclose && stream.eat(">")) {
+        popStateStack(state);
+        state.tokenize = tokenBase;
+        return ret("tag", "tag");
+      }
+      // self closing tag without attributes?
+      if(!stream.eat("/"))
+        pushStateStack(state, { type: "tag", name: name, tokenize: tokenBase});
+      if(!stream.eat(">")) {
+        state.tokenize = tokenAttribute;
+        return ret("tag", "tag");
+      }
+      else {
+        state.tokenize = tokenBase;        
+      }
+      return ret("tag", "tag");
+    }
+  }
+
+  // tokenizer for XML attributes
+  function tokenAttribute(stream, state) {
+    var ch = stream.next();
+    
+    if(ch == "/" && stream.eat(">")) {
+      if(isInXmlAttributeBlock(state)) popStateStack(state);
+      if(isInXmlBlock(state)) popStateStack(state);
+      return ret("tag", "tag");
+    }
+    if(ch == ">") {
+      if(isInXmlAttributeBlock(state)) popStateStack(state);
+      return ret("tag", "tag");
+    }
+    if(ch == "=")
+      return ret("", "");
+    // quoted string
+    if (ch == '"' || ch == "'")
+      return chain(stream, state, tokenString(ch, tokenAttribute));
+
+    if(!isInXmlAttributeBlock(state)) 
+      pushStateStack(state, { type: "attribute", name: name, tokenize: tokenAttribute});
+
+    stream.eat(/[a-zA-Z_:]/);
+    stream.eatWhile(/[-a-zA-Z0-9_:.]/);
+    stream.eatSpace();
+
+    // the case where the attribute has not value and the tag was closed
+    if(stream.match(">", false) || stream.match("/", false)) {
+      popStateStack(state);
+      state.tokenize = tokenBase;      
+    }
+
+    return ret("attribute", "attribute");
+  }
+  
+  // handle comments, including nested 
+  function tokenXMLComment(stream, state) {
+    while (ch = stream.next()) {
+      if (ch == "-" && stream.match("->", true)) {
+        state.tokenize = tokenBase;        
+        return ret("comment", "comment");
+      }
+    }
+  }
+
+
+  // handle CDATA
+  function tokenCDATA(stream, state) {
+    while (ch = stream.next()) {
+      if (ch == "]" && stream.match("]", true)) {
+        state.tokenize = tokenBase;        
+        return ret("comment", "comment");
+      }
+    }
+  }
+
+  // handle preprocessing instructions
+  function tokenPreProcessing(stream, state) {
+    while (ch = stream.next()) {
+      if (ch == "?" && stream.match(">", true)) {
+        state.tokenize = tokenBase;        
+        return ret("comment", "comment meta");
+      }
+    }
+  }
+  
+  
+  // functions to test the current context of the state
+  function isInXmlBlock(state) { return isIn(state, "tag"); }
+  function isInXmlAttributeBlock(state) { return isIn(state, "attribute"); }
+  function isInCodeBlock(state) { return isIn(state, "codeblock"); }
+  function isInXmlConstructor(state) { return isIn(state, "xmlconstructor"); }
+  function isInString(state) { return isIn(state, "string"); }
+
+  function isEQNameAhead(stream) { 
+    // assume we've already eaten a quote (")
+    if(stream.current() === '"')
+      return stream.match(/^[^\"]+\"\:/, false);
+    else if(stream.current() === '\'')
+      return stream.match(/^[^\"]+\'\:/, false);
+    else
+      return false;
+  }
+  
+  function isIn(state, type) {
+    return (state.stack.length && state.stack[state.stack.length - 1].type == type);    
+  }
+  
+  function pushStateStack(state, newState) {
+    state.stack.push(newState);
+  }
+  
+  function popStateStack(state) {
+    var popped = state.stack.pop();
+    var reinstateTokenize = state.stack.length && state.stack[state.stack.length-1].tokenize
+    state.tokenize = reinstateTokenize || tokenBase;
+  }
+  
+  // the interface for the mode API
+  return {
+    startState: function(basecolumn) {
+      return {
+        tokenize: tokenBase,
+        cc: [],
+        stack: []
+      };
+    },
+
+    token: function(stream, state) {
+      if (stream.eatSpace()) return null;
+      var style = state.tokenize(stream, state);
+      return style;
+    }
+  };
+
+});
+
+CodeMirror.defineMIME("application/xquery", "xquery");

@@ -1,1 +1,182 @@
-CodeMirror.defineMode("stex",function(t,e){function n(t,e){t.cmdState.push(e)}function r(t){return t.cmdState.length>0?t.cmdState[t.cmdState.length-1]:null}function a(t){if(t.cmdState.length>0){var e=t.cmdState.pop();e.closeBracket()}}function c(t){for(var e=t.cmdState,n=e.length-1;n>=0;n--){var r=e[n];if("DEFAULT"!=r.name)return r.styleIdentifier()}return null}function i(t,e,n,r){return function(){this.name=t,this.bracketNo=0,this.style=e,this.styles=r,this.brackets=n,this.styleIdentifier=function(t){return this.bracketNo<=this.styles.length?this.styles[this.bracketNo-1]:null},this.openBracket=function(t){return this.bracketNo++,"bracket"},this.closeBracket=function(t){}}}function o(t,e){t.f=e}function s(t,e){if(t.match(/^\\[a-zA-Z@]+/)){var a=t.current();a=a.substr(1,a.length-1);var i;return i=f.hasOwnProperty(a)?f[a]:f.DEFAULT,i=new i,n(e,i),o(e,l),i.style}if(t.match(/^\\[$&%#{}_]/))return"tag";if(t.match(/^\\[,;!\/]/))return"tag";var s=t.next();return"%"==s?(t.eol()||o(e,u),"comment"):"}"==s||"]"==s?(i=r(e))?(i.closeBracket(s),o(e,l),"bracket"):"error":"{"==s||"["==s?(i=f.DEFAULT,i=new i,n(e,i),"bracket"):/\d/.test(s)?(t.eatWhile(/[\w.%]/),"atom"):(t.eatWhile(/[\w-_]/),c(e))}function u(t,e){return t.skipToEnd(),o(e,s),"comment"}function l(t,e){var n=t.peek();if("{"==n||"["==n){var c=r(e);return c.openBracket(n),t.eat(n),o(e,s),"bracket"}return/[ \t\r]/.test(n)?(t.eat(n),null):(o(e,s),c=r(e),c&&a(e),s(t,e))}var f=new Array;return f.importmodule=i("importmodule","tag","{[",["string","builtin"]),f.documentclass=i("documentclass","tag","{[",["","atom"]),f.usepackage=i("documentclass","tag","[",["atom"]),f.begin=i("documentclass","tag","[",["atom"]),f.end=i("documentclass","tag","[",["atom"]),f.DEFAULT=function(){this.name="DEFAULT",this.style="tag",this.styleIdentifier=function(t){},this.openBracket=function(t){},this.closeBracket=function(t){}},{startState:function(){return{f:s,cmdState:[]}},copyState:function(t){return{f:t.f,cmdState:t.cmdState.slice(0,t.cmdState.length)}},token:function(t,e){var n=e.f(t,e);return t.current(),n}}}),CodeMirror.defineMIME("text/x-stex","stex");
+/*
+ * Author: Constantin Jucovschi (c.jucovschi@jacobs-university.de)
+ * Licence: MIT
+ */
+
+CodeMirror.defineMode("stex", function(cmCfg, modeCfg) 
+{    
+    function pushCommand(state, command) {
+	state.cmdState.push(command);
+    }
+
+    function peekCommand(state) { 
+	if (state.cmdState.length>0)
+	    return state.cmdState[state.cmdState.length-1];
+	else
+	    return null;
+    }
+
+    function popCommand(state) {
+	if (state.cmdState.length>0) {
+	    var plug = state.cmdState.pop();
+	    plug.closeBracket();
+	}	    
+    }
+
+    function applyMostPowerful(state) {
+      var context = state.cmdState;
+      for (var i = context.length - 1; i >= 0; i--) {
+	  var plug = context[i];
+	  if (plug.name=="DEFAULT")
+	      continue;
+	  return plug.styleIdentifier();
+      }
+      return null;
+    }
+
+    function addPluginPattern(pluginName, cmdStyle, brackets, styles) {
+	return function () {
+	    this.name=pluginName;
+	    this.bracketNo = 0;
+	    this.style=cmdStyle;
+	    this.styles = styles;
+	    this.brackets = brackets;
+
+	    this.styleIdentifier = function(content) {
+		if (this.bracketNo<=this.styles.length)
+		    return this.styles[this.bracketNo-1];
+		else
+		    return null;
+	    };
+	    this.openBracket = function(content) {
+		this.bracketNo++;
+		return "bracket";
+	    };
+	    this.closeBracket = function(content) {
+	    };
+	}
+    }
+
+    var plugins = new Array();
+   
+    plugins["importmodule"] = addPluginPattern("importmodule", "tag", "{[", ["string", "builtin"]);
+    plugins["documentclass"] = addPluginPattern("documentclass", "tag", "{[", ["", "atom"]);
+    plugins["usepackage"] = addPluginPattern("documentclass", "tag", "[", ["atom"]);
+    plugins["begin"] = addPluginPattern("documentclass", "tag", "[", ["atom"]);
+    plugins["end"] = addPluginPattern("documentclass", "tag", "[", ["atom"]);
+
+    plugins["DEFAULT"] = function () {
+	this.name="DEFAULT";
+	this.style="tag";
+
+	this.styleIdentifier = function(content) {
+	};
+	this.openBracket = function(content) {
+	};
+	this.closeBracket = function(content) {
+	};
+    };
+
+    function setState(state, f) {
+	state.f = f;
+    }
+
+    function normal(source, state) {
+	if (source.match(/^\\[a-zA-Z@]+/)) {
+	    var cmdName = source.current();
+	    cmdName = cmdName.substr(1, cmdName.length-1);
+            var plug;
+            if (plugins.hasOwnProperty(cmdName)) {
+	      plug = plugins[cmdName];
+            } else {
+              plug = plugins["DEFAULT"];
+            }
+	    plug = new plug();
+	    pushCommand(state, plug);
+	    setState(state, beginParams);
+	    return plug.style;
+	}
+
+        // escape characters 
+        if (source.match(/^\\[$&%#{}_]/)) {
+          return "tag";
+        }
+
+        // white space control characters
+        if (source.match(/^\\[,;!\/]/)) {
+          return "tag";
+        }
+
+	var ch = source.next();
+	if (ch == "%") {
+            // special case: % at end of its own line; stay in same state
+            if (!source.eol()) {
+              setState(state, inCComment);
+            }
+	    return "comment";
+	} 
+	else if (ch=='}' || ch==']') {
+	    plug = peekCommand(state);
+	    if (plug) {
+		plug.closeBracket(ch);
+		setState(state, beginParams);
+	    } else
+		return "error";
+	    return "bracket";
+	} else if (ch=='{' || ch=='[') {
+	    plug = plugins["DEFAULT"];	    
+	    plug = new plug();
+	    pushCommand(state, plug);
+	    return "bracket";	    
+	}
+	else if (/\d/.test(ch)) {
+	    source.eatWhile(/[\w.%]/);
+	    return "atom";
+	}
+	else {
+	    source.eatWhile(/[\w-_]/);
+	    return applyMostPowerful(state);
+	}
+    }
+
+    function inCComment(source, state) {
+	source.skipToEnd();
+	setState(state, normal);
+	return "comment";
+    }
+
+    function beginParams(source, state) {
+	var ch = source.peek();
+	if (ch == '{' || ch == '[') {
+	   var lastPlug = peekCommand(state);
+	   var style = lastPlug.openBracket(ch);
+	   source.eat(ch);
+	   setState(state, normal);
+	   return "bracket";
+	}
+	if (/[ \t\r]/.test(ch)) {
+	    source.eat(ch);
+	    return null;
+	}
+	setState(state, normal);
+	lastPlug = peekCommand(state);
+	if (lastPlug) {
+	    popCommand(state);
+	}
+        return normal(source, state);
+    }
+
+    return {
+     startState: function() { return { f:normal, cmdState:[] }; },
+	 copyState: function(s) { return { f: s.f, cmdState: s.cmdState.slice(0, s.cmdState.length) }; },
+	 
+	 token: function(stream, state) {
+	 var t = state.f(stream, state);
+	 var w = stream.current();
+	 return t;
+     }
+ };
+});
+
+
+CodeMirror.defineMIME("text/x-stex", "stex");

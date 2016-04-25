@@ -1,1 +1,34 @@
-!function(){"use strict";function n(n,t){CodeMirror.changeEnd(t).line==n.lastLine()&&e(n)}function e(n){var e="";if(n.lineCount()>1){var t=n.display.scroller.clientHeight-30,i=n.getLineHandle(n.lastLine()).height;e=t-i+"px"}n.state.scrollPastEndPadding!=e&&(n.state.scrollPastEndPadding=e,n.display.lineSpace.parentNode.style.paddingBottom=e,n.setSize())}CodeMirror.defineOption("scrollPastEnd",!1,function(t,i,a){a&&a!=CodeMirror.Init&&(t.off("change",n),t.display.lineSpace.parentNode.style.paddingBottom="",t.state.scrollPastEndPadding=null),i&&(t.on("change",n),e(t))})}();
+(function() {
+  "use strict";
+
+  CodeMirror.defineOption("scrollPastEnd", false, function(cm, val, old) {
+    if (old && old != CodeMirror.Init) {
+      cm.off("change", onChange);
+      cm.display.lineSpace.parentNode.style.paddingBottom = "";
+      cm.state.scrollPastEndPadding = null;
+    }
+    if (val) {
+      cm.on("change", onChange);
+      updateBottomMargin(cm);
+    }
+  });
+
+  function onChange(cm, change) {
+    if (CodeMirror.changeEnd(change).line == cm.lastLine())
+      updateBottomMargin(cm);
+  }
+
+  function updateBottomMargin(cm) {
+    var padding = "";
+    if (cm.lineCount() > 1) {
+      var totalH = cm.display.scroller.clientHeight - 30,
+          lastLineH = cm.getLineHandle(cm.lastLine()).height;
+      padding = (totalH - lastLineH) + "px";
+    }
+    if (cm.state.scrollPastEndPadding != padding) {
+      cm.state.scrollPastEndPadding = padding;
+      cm.display.lineSpace.parentNode.style.paddingBottom = padding;
+      cm.setSize();
+    }
+  }
+})();

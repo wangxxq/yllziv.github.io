@@ -1,1 +1,326 @@
-CodeMirror.defineMode("rst",function(t,n){function e(t,n,e){t.fn=n,r(t,e)}function r(t,n){t.ctx=n||{}}function o(t,n){if(n&&"string"!=typeof n){var r=n.current();n=r[r.length-1]}e(t,u,{back:n})}function i(t){if(t){var n=CodeMirror.listModes();for(var e in n)if(n[e]==t)return!0}return!1}function c(n){return i(n)?CodeMirror.getMode(t,n):null}function u(t,n){function r(t){return s||!n.ctx.back||t.test(n.ctx.back)}function i(n){return t.eol()||t.match(n,!1)}function c(n){return t.match(n)&&r(/\W/)&&i(/\W/)}var u,s,l;if(t.eat(/\\/))return u=t.next(),o(n,u),null;if(s=t.sol(),s&&(u=t.eat(h))){for(l=0;t.eat(u);l++);if(l>=3&&t.match(/^\s*$/))return o(n,null),"header";t.backUp(l+1)}if(s&&t.match($))return t.eol()||e(n,f),"meta";if(t.match(g)){if(x){var m=x;e(n,d,{mode:m,local:m.startState()})}else e(n,d);return"meta"}if(s&&t.match(C,!1)){if(v){var m=v;return e(n,d,{mode:m,local:m.startState()}),null}return e(n,d),"meta"}if(c(M))return o(n,t),"footnote";if(c(S))return o(n,t),"citation";if(u=t.next(),r(y)){if((":"===u||"|"===u)&&t.eat(/\S/)){var p;return p=":"===u?"builtin":"atom",e(n,a,{ch:u,wide:!1,prev:null,token:p}),p}if("*"===u||"`"===u){var k=u,w=!1;if(u=t.next(),u==k&&(w=!0,u=t.next()),u&&!/\s/.test(u)){var p;return p="*"===k?w?"strong":"em":w?"string":"string-2",e(n,a,{ch:k,wide:w,prev:null,token:p}),p}}}return o(n,u),null}function a(t,n){function r(t){return n.ctx.prev=t,c}var i=t.next(),c=n.ctx.token;return i!=n.ctx.ch?r(i):/\s/.test(n.ctx.prev)?r(i):n.ctx.wide&&(i=t.next(),i!=n.ctx.ch)?r(i):t.eol()||_.test(t.peek())?(e(n,u),o(n,i),c):(n.ctx.wide&&t.backUp(1),r(i))}function f(t,n){var r=null;if(t.match(p))r="attribute";else if(t.match(k))r="link";else if(t.match(w))r="quote";else{if(!t.match(b))return t.eatSpace(),t.eol()?(o(n,t),null):(t.skipToEnd(),e(n,l),"comment");r="quote"}return e(n,s,{start:!0}),r}function s(t,n){var e="body";return!n.ctx.start||t.sol()?m(t,n,e):(t.skipToEnd(),r(n),e)}function l(t,n){return m(t,n,"comment")}function d(t,n){return x?t.sol()?(t.eatSpace()||o(n,t),null):x.token(t,n.ctx.local):m(t,n,"meta")}function m(t,n,e){return t.eol()||t.eatSpace()?(t.skipToEnd(),e):(o(n,t),null)}var x=c(n.verbatim),v=c("python"),h=/^[!"#$%&'()*+,-.\/:;<=>?@[\\\]^_`{|}~]/,p=/^\s*\w([-:.\w]*\w)?::(\s|$)/,k=/^\s*_[\w-]+:(\s|$)/,w=/^\s*\[(\d+|#)\](\s|$)/,b=/^\s*\[[A-Za-z][\w-]*\](\s|$)/,M=/^\[(\d+|#)\]_/,S=/^\[[A-Za-z][\w-]*\]_/,$=/^\.\.(\s|$)/,g=/^::\s*$/,y=/^[-\s"([{<\/:]/,_=/^[-\s`'")\]}>\/:.,;!?\\_]/,C=/^\s+(>>>|In \[\d+\]:)\s/;return{startState:function(){return{fn:u,ctx:{}}},copyState:function(t){return{fn:t.fn,ctx:t.ctx}},token:function(t,n){var e=n.fn(t,n);return e}}},"python"),CodeMirror.defineMIME("text/x-rst","rst");
+CodeMirror.defineMode('rst', function(config, options) {
+    function setState(state, fn, ctx) {
+        state.fn = fn;
+        setCtx(state, ctx);
+    }
+
+    function setCtx(state, ctx) {
+        state.ctx = ctx || {};
+    }
+
+    function setNormal(state, ch) {
+        if (ch && (typeof ch !== 'string')) {
+            var str = ch.current();
+            ch = str[str.length-1];
+        }
+
+        setState(state, normal, {back: ch});
+    }
+
+    function hasMode(mode) {
+        if (mode) {
+            var modes = CodeMirror.listModes();
+
+            for (var i in modes) {
+                if (modes[i] == mode) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    function getMode(mode) {
+        if (hasMode(mode)) {
+            return CodeMirror.getMode(config, mode);
+        } else {
+            return null;
+        }
+    }
+
+    var verbatimMode = getMode(options.verbatim);
+    var pythonMode = getMode('python');
+
+    var reSection = /^[!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]/;
+    var reDirective = /^\s*\w([-:.\w]*\w)?::(\s|$)/;
+    var reHyperlink = /^\s*_[\w-]+:(\s|$)/;
+    var reFootnote = /^\s*\[(\d+|#)\](\s|$)/;
+    var reCitation = /^\s*\[[A-Za-z][\w-]*\](\s|$)/;
+    var reFootnoteRef = /^\[(\d+|#)\]_/;
+    var reCitationRef = /^\[[A-Za-z][\w-]*\]_/;
+    var reDirectiveMarker = /^\.\.(\s|$)/;
+    var reVerbatimMarker = /^::\s*$/;
+    var rePreInline = /^[-\s"([{</:]/;
+    var rePostInline = /^[-\s`'")\]}>/:.,;!?\\_]/;
+    var reEnumeratedList = /^\s*((\d+|[A-Za-z#])[.)]|\((\d+|[A-Z-a-z#])\))\s/;
+    var reBulletedList = /^\s*[-\+\*]\s/;
+    var reExamples = /^\s+(>>>|In \[\d+\]:)\s/;
+
+    function normal(stream, state) {
+        var ch, sol, i;
+
+        if (stream.eat(/\\/)) {
+            ch = stream.next();
+            setNormal(state, ch);
+            return null;
+        }
+
+        sol = stream.sol();
+
+        if (sol && (ch = stream.eat(reSection))) {
+            for (i = 0; stream.eat(ch); i++);
+
+            if (i >= 3 && stream.match(/^\s*$/)) {
+                setNormal(state, null);
+                return 'header';
+            } else {
+                stream.backUp(i + 1);
+            }
+        }
+
+        if (sol && stream.match(reDirectiveMarker)) {
+            if (!stream.eol()) {
+                setState(state, directive);
+            }
+            return 'meta';
+        }
+
+        if (stream.match(reVerbatimMarker)) {
+            if (!verbatimMode) {
+                setState(state, verbatim);
+            } else {
+                var mode = verbatimMode;
+
+                setState(state, verbatim, {
+                    mode: mode,
+                    local: mode.startState()
+                });
+            }
+            return 'meta';
+        }
+
+        if (sol && stream.match(reExamples, false)) {
+            if (!pythonMode) {
+                setState(state, verbatim);
+                return 'meta';
+            } else {
+                var mode = pythonMode;
+
+                setState(state, verbatim, {
+                    mode: mode,
+                    local: mode.startState()
+                });
+
+                return null;
+            }
+        }
+
+        function testBackward(re) {
+            return sol || !state.ctx.back || re.test(state.ctx.back);
+        }
+
+        function testForward(re) {
+            return stream.eol() || stream.match(re, false);
+        }
+
+        function testInline(re) {
+            return stream.match(re) && testBackward(/\W/) && testForward(/\W/);
+        }
+
+        if (testInline(reFootnoteRef)) {
+            setNormal(state, stream);
+            return 'footnote';
+        }
+
+        if (testInline(reCitationRef)) {
+            setNormal(state, stream);
+            return 'citation';
+        }
+
+        ch = stream.next();
+
+        if (testBackward(rePreInline)) {
+            if ((ch === ':' || ch === '|') && stream.eat(/\S/)) {
+                var token;
+
+                if (ch === ':') {
+                    token = 'builtin';
+                } else {
+                    token = 'atom';
+                }
+
+                setState(state, inline, {
+                    ch: ch,
+                    wide: false,
+                    prev: null,
+                    token: token
+                });
+
+                return token;
+            }
+
+            if (ch === '*' || ch === '`') {
+                var orig = ch,
+                    wide = false;
+
+                ch = stream.next();
+
+                if (ch == orig) {
+                    wide = true;
+                    ch = stream.next();
+                }
+
+                if (ch && !/\s/.test(ch)) {
+                    var token;
+
+                    if (orig === '*') {
+                        token = wide ? 'strong' : 'em';
+                    } else {
+                        token = wide ? 'string' : 'string-2';
+                    }
+
+                    setState(state, inline, {
+                        ch: orig,               // inline() has to know what to search for
+                        wide: wide,             // are we looking for `ch` or `chch`
+                        prev: null,             // terminator must not be preceeded with whitespace
+                        token: token            // I don't want to recompute this all the time
+                    });
+
+                    return token;
+                }
+            }
+        }
+
+        setNormal(state, ch);
+        return null;
+    }
+
+    function inline(stream, state) {
+        var ch = stream.next(),
+            token = state.ctx.token;
+
+        function finish(ch) {
+            state.ctx.prev = ch;
+            return token;
+        }
+
+        if (ch != state.ctx.ch) {
+            return finish(ch);
+        }
+
+        if (/\s/.test(state.ctx.prev)) {
+            return finish(ch);
+        }
+
+        if (state.ctx.wide) {
+            ch = stream.next();
+
+            if (ch != state.ctx.ch) {
+                return finish(ch);
+            }
+        }
+
+        if (!stream.eol() && !rePostInline.test(stream.peek())) {
+            if (state.ctx.wide) {
+                stream.backUp(1);
+            }
+
+            return finish(ch);
+        }
+
+        setState(state, normal);
+        setNormal(state, ch);
+
+        return token;
+    }
+
+    function directive(stream, state) {
+        var token = null;
+
+        if (stream.match(reDirective)) {
+            token = 'attribute';
+        } else if (stream.match(reHyperlink)) {
+            token = 'link';
+        } else if (stream.match(reFootnote)) {
+            token = 'quote';
+        } else if (stream.match(reCitation)) {
+            token = 'quote';
+        } else {
+            stream.eatSpace();
+
+            if (stream.eol()) {
+                setNormal(state, stream);
+                return null;
+            } else {
+                stream.skipToEnd();
+                setState(state, comment);
+                return 'comment';
+            }
+        }
+
+        // FIXME this is unreachable
+        setState(state, body, {start: true});
+        return token;
+    }
+
+    function body(stream, state) {
+        var token = 'body';
+
+        if (!state.ctx.start || stream.sol()) {
+            return block(stream, state, token);
+        }
+
+        stream.skipToEnd();
+        setCtx(state);
+
+        return token;
+    }
+
+    function comment(stream, state) {
+        return block(stream, state, 'comment');
+    }
+
+    function verbatim(stream, state) {
+        if (!verbatimMode) {
+            return block(stream, state, 'meta');
+        } else {
+            if (stream.sol()) {
+                if (!stream.eatSpace()) {
+                    setNormal(state, stream);
+                }
+
+                return null;
+            }
+
+            return verbatimMode.token(stream, state.ctx.local);
+        }
+    }
+
+    function block(stream, state, token) {
+        if (stream.eol() || stream.eatSpace()) {
+            stream.skipToEnd();
+            return token;
+        } else {
+            setNormal(state, stream);
+            return null;
+        }
+    }
+
+    return {
+        startState: function() {
+            return {fn: normal, ctx: {}};
+        },
+
+        copyState: function(state) {
+            return {fn: state.fn, ctx: state.ctx};
+        },
+
+        token: function(stream, state) {
+            var token = state.fn(stream, state);
+            return token;
+        }
+    };
+}, "python");
+
+CodeMirror.defineMIME("text/x-rst", "rst");

@@ -1,1 +1,68 @@
-!function(){"use strict";function t(t,e){var n=e&&e.schemaInfo,i=e&&e.quoteChar||'"';if(n){var a=t.getCursor(),s=t.getTokenAt(a),o=CodeMirror.innerMode(t.getMode(),s.state);if("xml"==o.mode.name){var g,f=[],h=!1,l="<"==s.string.charAt(0);if(!o.state.tagName||l){l&&(g=s.string.slice(1),h=!0);var d=o.state.context,p=d&&n[d.tagName],u=d?p&&p.children:n["!top"];if(u)for(var m=0;m<u.length;++m)g&&0!=u[m].indexOf(g)||f.push("<"+u[m]);else for(var c in n)!n.hasOwnProperty(c)||"!top"==c||g&&0!=c.indexOf(g)||f.push("<"+c);!d||g&&0!=("/"+d.tagName).indexOf(g)||f.push("</"+d.tagName+">")}else{var p=n[o.state.tagName],v=p&&p.attrs;if(!v)return;if("string"==s.type||"="==s.string){var x,O=t.getRange(r(a.line,Math.max(0,a.ch-60)),r(a.line,"string"==s.type?s.start:s.end)),y=O.match(/([^\s\u00a0=<>\"\']+)=$/);if(!y||!v.hasOwnProperty(y[1])||!(x=v[y[1]]))return;"string"==s.type&&(g=s.string,/['"]/.test(s.string.charAt(0))&&(i=s.string.charAt(0),g=s.string.slice(1)),h=!0);for(var m=0;m<x.length;++m)g&&0!=x[m].indexOf(g)||f.push(i+x[m]+i)}else{"attribute"==s.type&&(g=s.string,h=!0);for(var M in v)!v.hasOwnProperty(M)||g&&0!=M.indexOf(g)||f.push(M)}}return{list:f,from:h?r(a.line,s.start):a,to:h?r(a.line,s.end):a}}}}var r=CodeMirror.Pos;CodeMirror.xmlHint=t,CodeMirror.registerHelper("hint","xml",t)}();
+(function() {
+  "use strict";
+
+  var Pos = CodeMirror.Pos;
+
+  function getHints(cm, options) {
+    var tags = options && options.schemaInfo;
+    var quote = (options && options.quoteChar) || '"';
+    if (!tags) return;
+    var cur = cm.getCursor(), token = cm.getTokenAt(cur);
+    var inner = CodeMirror.innerMode(cm.getMode(), token.state);
+    if (inner.mode.name != "xml") return;
+    var result = [], replaceToken = false, prefix;
+    var isTag = token.string.charAt(0) == "<";
+    if (!inner.state.tagName || isTag) { // Tag completion
+      if (isTag) {
+        prefix = token.string.slice(1);
+        replaceToken = true;
+      }
+      var cx = inner.state.context, curTag = cx && tags[cx.tagName];
+      var childList = cx ? curTag && curTag.children : tags["!top"];
+      if (childList) {
+        for (var i = 0; i < childList.length; ++i) if (!prefix || childList[i].indexOf(prefix) == 0)
+          result.push("<" + childList[i]);
+      } else {
+        for (var name in tags) if (tags.hasOwnProperty(name) && name != "!top" && (!prefix || name.indexOf(prefix) == 0))
+          result.push("<" + name);
+      }
+      if (cx && (!prefix || ("/" + cx.tagName).indexOf(prefix) == 0))
+        result.push("</" + cx.tagName + ">");
+    } else {
+      // Attribute completion
+      var curTag = tags[inner.state.tagName], attrs = curTag && curTag.attrs;
+      if (!attrs) return;
+      if (token.type == "string" || token.string == "=") { // A value
+        var before = cm.getRange(Pos(cur.line, Math.max(0, cur.ch - 60)),
+                                 Pos(cur.line, token.type == "string" ? token.start : token.end));
+        var atName = before.match(/([^\s\u00a0=<>\"\']+)=$/), atValues;
+        if (!atName || !attrs.hasOwnProperty(atName[1]) || !(atValues = attrs[atName[1]])) return;
+        if (token.type == "string") {
+          prefix = token.string;
+          if (/['"]/.test(token.string.charAt(0))) {
+            quote = token.string.charAt(0);
+            prefix = token.string.slice(1);
+          }
+          replaceToken = true;
+        }
+        for (var i = 0; i < atValues.length; ++i) if (!prefix || atValues[i].indexOf(prefix) == 0)
+          result.push(quote + atValues[i] + quote);
+      } else { // An attribute name
+        if (token.type == "attribute") {
+          prefix = token.string;
+          replaceToken = true;
+        }
+        for (var attr in attrs) if (attrs.hasOwnProperty(attr) && (!prefix || attr.indexOf(prefix) == 0))
+          result.push(attr);
+      }
+    }
+    return {
+      list: result,
+      from: replaceToken ? Pos(cur.line, token.start) : cur,
+      to: replaceToken ? Pos(cur.line, token.end) : cur
+    };
+  }
+
+  CodeMirror.xmlHint = getHints; // deprecated
+  CodeMirror.registerHelper("hint", "xml", getHints);
+})();

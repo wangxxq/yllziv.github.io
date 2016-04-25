@@ -1,1 +1,40 @@
-CodeMirror.registerHelper("fold","comment",function(e,r){var t=e.getModeAt(r),o=t.blockCommentStart,n=t.blockCommentEnd;if(o&&n){for(var i,f=r.line,l=e.getLine(f),a=r.ch,d=0;;){var g=0>=a?-1:l.lastIndexOf(o,a-1);if(-1!=g){if(1==d&&g<r.ch)return;if(/comment/.test(e.getTokenTypeAt(CodeMirror.Pos(f,g+1)))){i=g+o.length;break}a=g-1}else{if(1==d)return;d=1,a=l.length}}var m,s,h=1,c=e.lastLine();e:for(var v=f;c>=v;++v)for(var k=e.getLine(v),C=v==f?i:0;;){var M=k.indexOf(o,C),b=k.indexOf(n,C);if(0>M&&(M=k.length),0>b&&(b=k.length),C=Math.min(M,b),C==k.length)break;if(C==M)++h;else if(!--h){m=v,s=C;break e}++C}if(null!=m&&(f!=m||s!=i))return{from:CodeMirror.Pos(f,i),to:CodeMirror.Pos(m,s)}}});
+CodeMirror.registerHelper("fold", "comment", function(cm, start) {
+  var mode = cm.getModeAt(start), startToken = mode.blockCommentStart, endToken = mode.blockCommentEnd;
+  if (!startToken || !endToken) return;
+  var line = start.line, lineText = cm.getLine(line);
+
+  var startCh;
+  for (var at = start.ch, pass = 0;;) {
+    var found = at <= 0 ? -1 : lineText.lastIndexOf(startToken, at - 1);
+    if (found == -1) {
+      if (pass == 1) return;
+      pass = 1;
+      at = lineText.length;
+      continue;
+    }
+    if (pass == 1 && found < start.ch) return;
+    if (/comment/.test(cm.getTokenTypeAt(CodeMirror.Pos(line, found + 1)))) {
+      startCh = found + startToken.length;
+      break;
+    }
+    at = found - 1;
+  }
+
+  var depth = 1, lastLine = cm.lastLine(), end, endCh;
+  outer: for (var i = line; i <= lastLine; ++i) {
+    var text = cm.getLine(i), pos = i == line ? startCh : 0;
+    for (;;) {
+      var nextOpen = text.indexOf(startToken, pos), nextClose = text.indexOf(endToken, pos);
+      if (nextOpen < 0) nextOpen = text.length;
+      if (nextClose < 0) nextClose = text.length;
+      pos = Math.min(nextOpen, nextClose);
+      if (pos == text.length) break;
+      if (pos == nextOpen) ++depth;
+      else if (!--depth) { end = i; endCh = pos; break outer; }
+      ++pos;
+    }
+  }
+  if (end == null || line == end && endCh == startCh) return;
+  return {from: CodeMirror.Pos(line, startCh),
+          to: CodeMirror.Pos(end, endCh)};
+});

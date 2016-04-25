@@ -1,1 +1,168 @@
-CodeMirror.defineMode("go",function(t){function e(t,e){var i=t.next();if('"'==i||"'"==i||"`"==i)return e.tokenize=n(i),e.tokenize(t,e);if(/[\d\.]/.test(i))return"."==i?t.match(/^[0-9]+([eE][\-+]?[0-9]+)?/):"0"==i?t.match(/^[xX][0-9a-fA-F]+/)||t.match(/^0[0-7]+/):t.match(/^[0-9]*\.?[0-9]*([eE][\-+]?[0-9]+)?/),"number";if(/[\[\]{}\(\),;\:\.]/.test(i))return c=i,null;if("/"==i){if(t.eat("*"))return e.tokenize=r,r(t,e);if(t.eat("/"))return t.skipToEnd(),"comment"}if(p.test(i))return t.eatWhile(p),"operator";t.eatWhile(/[\w\$_]/);var o=t.current();return l.propertyIsEnumerable(o)?("case"!=o&&"default"!=o||(c="case"),"keyword"):f.propertyIsEnumerable(o)?"atom":"variable"}function n(t){return function(n,r){for(var i,o=!1,a=!1;null!=(i=n.next());){if(i==t&&!o){a=!0;break}o=!o&&"\\"==i}return(a||!o&&"`"!=t)&&(r.tokenize=e),"string"}}function r(t,n){for(var r,i=!1;r=t.next();){if("/"==r&&i){n.tokenize=e;break}i="*"==r}return"comment"}function i(t,e,n,r,i){this.indented=t,this.column=e,this.type=n,this.align=r,this.prev=i}function o(t,e,n){return t.context=new i(t.indented,e,n,null,t.context)}function a(t){var e=t.context.type;return")"!=e&&"]"!=e&&"}"!=e||(t.indented=t.context.indented),t.context=t.context.prev}var c,u=t.indentUnit,l={"break":!0,"case":!0,chan:!0,"const":!0,"continue":!0,"default":!0,defer:!0,"else":!0,fallthrough:!0,"for":!0,func:!0,go:!0,"goto":!0,"if":!0,"import":!0,"interface":!0,map:!0,"package":!0,range:!0,"return":!0,select:!0,struct:!0,"switch":!0,type:!0,"var":!0,bool:!0,"byte":!0,complex64:!0,complex128:!0,float32:!0,float64:!0,int8:!0,int16:!0,int32:!0,int64:!0,string:!0,uint8:!0,uint16:!0,uint32:!0,uint64:!0,"int":!0,uint:!0,uintptr:!0},f={"true":!0,"false":!0,iota:!0,nil:!0,append:!0,cap:!0,close:!0,complex:!0,copy:!0,imag:!0,len:!0,make:!0,"new":!0,panic:!0,print:!0,println:!0,real:!0,recover:!0},p=/[+\-*&^%:=<>!|\/]/;return{startState:function(t){return{tokenize:null,context:new i((t||0)-u,0,"top",!1),indented:0,startOfLine:!0}},token:function(t,n){var r=n.context;if(t.sol()&&(null==r.align&&(r.align=!1),n.indented=t.indentation(),n.startOfLine=!0,"case"==r.type&&(r.type="}")),t.eatSpace())return null;c=null;var i=(n.tokenize||e)(t,n);return"comment"==i?i:(null==r.align&&(r.align=!0),"{"==c?o(n,t.column(),"}"):"["==c?o(n,t.column(),"]"):"("==c?o(n,t.column(),")"):"case"==c?r.type="case":"}"==c&&"}"==r.type?r=a(n):c==r.type&&a(n),n.startOfLine=!1,i)},indent:function(t,n){if(t.tokenize!=e&&null!=t.tokenize)return 0;var r=t.context,i=n&&n.charAt(0);if("case"==r.type&&/^(?:case|default)\b/.test(n))return t.context.type="}",r.indented;var o=i==r.type;return r.align?r.column+(o?0:1):r.indented+(o?0:u)},electricChars:"{}:",blockCommentStart:"/*",blockCommentEnd:"*/",lineComment:"//"}}),CodeMirror.defineMIME("text/x-go","go");
+CodeMirror.defineMode("go", function(config) {
+  var indentUnit = config.indentUnit;
+
+  var keywords = {
+    "break":true, "case":true, "chan":true, "const":true, "continue":true,
+    "default":true, "defer":true, "else":true, "fallthrough":true, "for":true,
+    "func":true, "go":true, "goto":true, "if":true, "import":true,
+    "interface":true, "map":true, "package":true, "range":true, "return":true,
+    "select":true, "struct":true, "switch":true, "type":true, "var":true,
+    "bool":true, "byte":true, "complex64":true, "complex128":true,
+    "float32":true, "float64":true, "int8":true, "int16":true, "int32":true,
+    "int64":true, "string":true, "uint8":true, "uint16":true, "uint32":true,
+    "uint64":true, "int":true, "uint":true, "uintptr":true
+  };
+
+  var atoms = {
+    "true":true, "false":true, "iota":true, "nil":true, "append":true,
+    "cap":true, "close":true, "complex":true, "copy":true, "imag":true,
+    "len":true, "make":true, "new":true, "panic":true, "print":true,
+    "println":true, "real":true, "recover":true
+  };
+
+  var isOperatorChar = /[+\-*&^%:=<>!|\/]/;
+
+  var curPunc;
+
+  function tokenBase(stream, state) {
+    var ch = stream.next();
+    if (ch == '"' || ch == "'" || ch == "`") {
+      state.tokenize = tokenString(ch);
+      return state.tokenize(stream, state);
+    }
+    if (/[\d\.]/.test(ch)) {
+      if (ch == ".") {
+        stream.match(/^[0-9]+([eE][\-+]?[0-9]+)?/);
+      } else if (ch == "0") {
+        stream.match(/^[xX][0-9a-fA-F]+/) || stream.match(/^0[0-7]+/);
+      } else {
+        stream.match(/^[0-9]*\.?[0-9]*([eE][\-+]?[0-9]+)?/);
+      }
+      return "number";
+    }
+    if (/[\[\]{}\(\),;\:\.]/.test(ch)) {
+      curPunc = ch;
+      return null;
+    }
+    if (ch == "/") {
+      if (stream.eat("*")) {
+        state.tokenize = tokenComment;
+        return tokenComment(stream, state);
+      }
+      if (stream.eat("/")) {
+        stream.skipToEnd();
+        return "comment";
+      }
+    }
+    if (isOperatorChar.test(ch)) {
+      stream.eatWhile(isOperatorChar);
+      return "operator";
+    }
+    stream.eatWhile(/[\w\$_]/);
+    var cur = stream.current();
+    if (keywords.propertyIsEnumerable(cur)) {
+      if (cur == "case" || cur == "default") curPunc = "case";
+      return "keyword";
+    }
+    if (atoms.propertyIsEnumerable(cur)) return "atom";
+    return "variable";
+  }
+
+  function tokenString(quote) {
+    return function(stream, state) {
+      var escaped = false, next, end = false;
+      while ((next = stream.next()) != null) {
+        if (next == quote && !escaped) {end = true; break;}
+        escaped = !escaped && next == "\\";
+      }
+      if (end || !(escaped || quote == "`"))
+        state.tokenize = tokenBase;
+      return "string";
+    };
+  }
+
+  function tokenComment(stream, state) {
+    var maybeEnd = false, ch;
+    while (ch = stream.next()) {
+      if (ch == "/" && maybeEnd) {
+        state.tokenize = tokenBase;
+        break;
+      }
+      maybeEnd = (ch == "*");
+    }
+    return "comment";
+  }
+
+  function Context(indented, column, type, align, prev) {
+    this.indented = indented;
+    this.column = column;
+    this.type = type;
+    this.align = align;
+    this.prev = prev;
+  }
+  function pushContext(state, col, type) {
+    return state.context = new Context(state.indented, col, type, null, state.context);
+  }
+  function popContext(state) {
+    var t = state.context.type;
+    if (t == ")" || t == "]" || t == "}")
+      state.indented = state.context.indented;
+    return state.context = state.context.prev;
+  }
+
+  // Interface
+
+  return {
+    startState: function(basecolumn) {
+      return {
+        tokenize: null,
+        context: new Context((basecolumn || 0) - indentUnit, 0, "top", false),
+        indented: 0,
+        startOfLine: true
+      };
+    },
+
+    token: function(stream, state) {
+      var ctx = state.context;
+      if (stream.sol()) {
+        if (ctx.align == null) ctx.align = false;
+        state.indented = stream.indentation();
+        state.startOfLine = true;
+        if (ctx.type == "case") ctx.type = "}";
+      }
+      if (stream.eatSpace()) return null;
+      curPunc = null;
+      var style = (state.tokenize || tokenBase)(stream, state);
+      if (style == "comment") return style;
+      if (ctx.align == null) ctx.align = true;
+
+      if (curPunc == "{") pushContext(state, stream.column(), "}");
+      else if (curPunc == "[") pushContext(state, stream.column(), "]");
+      else if (curPunc == "(") pushContext(state, stream.column(), ")");
+      else if (curPunc == "case") ctx.type = "case";
+      else if (curPunc == "}" && ctx.type == "}") ctx = popContext(state);
+      else if (curPunc == ctx.type) popContext(state);
+      state.startOfLine = false;
+      return style;
+    },
+
+    indent: function(state, textAfter) {
+      if (state.tokenize != tokenBase && state.tokenize != null) return 0;
+      var ctx = state.context, firstChar = textAfter && textAfter.charAt(0);
+      if (ctx.type == "case" && /^(?:case|default)\b/.test(textAfter)) {
+        state.context.type = "}";
+        return ctx.indented;
+      }
+      var closing = firstChar == ctx.type;
+      if (ctx.align) return ctx.column + (closing ? 0 : 1);
+      else return ctx.indented + (closing ? 0 : indentUnit);
+    },
+
+    electricChars: "{}:",
+    blockCommentStart: "/*",
+    blockCommentEnd: "*/",
+    lineComment: "//"
+  };
+});
+
+CodeMirror.defineMIME("text/x-go", "go");

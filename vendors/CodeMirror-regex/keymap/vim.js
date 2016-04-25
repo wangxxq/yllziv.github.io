@@ -1,1 +1,766 @@
-!function(){function r(){E=""}function e(r){E+=r}function n(r){return function(e){R+=r}}function i(){var r=parseInt(R,10);return R="",r||1}function o(r){for(var e=0,n=i();n>e;++e)r(e,e==n-1)}function t(r){return"string"==typeof r&&(r=CodeMirror.commands[r]),function(e){o(function(){r(e)})}}function f(r,e){for(var n in r)r.hasOwnProperty(n)&&e(n,r[n])}function c(r,e){for(var n in r)e(r[n])}function u(r){return"Shift-"==r.slice(0,6)?r.slice(0,1):"Space"==r?" ":3==r.length&&"'"==r[0]&&"'"==r[2]?r[1]:r.toLowerCase()}function a(r){if(" "==r)return"Space";var e=A.indexOf(r);return-1!=e?"'"+r+"'":r.toLowerCase()==r?r.toUpperCase():"Shift-"+r.toUpperCase()}function s(r,e,n,i){var o=0,t=-1;n>0&&(o=r.length,t=0);var f=o,c=o;r:for(;e!=o;e+=n)for(var u=0;u<i.length;++u)if(i[u].test(r.charAt(e+t))){for(f=e;e!=o&&i[u].test(r.charAt(e+t));e+=n);c=e;break r}return{from:Math.min(f,c),to:Math.max(f,c)}}function l(r,e,n,i,o){for(var t=r.getCursor(),f=0;i>f;f++)for(var c,u=r.getLine(t.line),a=t.ch;(t.ch==u.length&&n>0?(t.line++,t.ch=0,u=r.getLine(t.line)):0==t.ch&&0>n&&(t.line--,t.ch=u.length,u=r.getLine(t.line)),u)&&(c=s(u,t.ch,n,e),t.ch=c["end"==o?"to":"from"],a==t.ch&&c.from!=c.to);)t.ch=c[0>n?"from":"to"];return t}function p(r){var e=r.getCursor();e.ch,r.getLine(e.line),CodeMirror.commands.goLineEnd(r),e.line!=r.lineCount()&&(CodeMirror.commands.goLineEnd(r),r.replaceSelection(" ","end"),CodeMirror.commands.delCharRight(r))}function d(r,n){var i=P[n];if(void 0!==i){var o=r.getCursor().line,t=i>o?o:i,f=i>o?i:o;r.setCursor(t);for(var c=t;f>=c;c++)e("\n"+r.getLine(t)),r.removeLine(t)}}function m(r,n){var i=P[n];if(void 0!==i){for(var o=r.getCursor().line,t=i>o?o:i,f=i>o?i:o,c=t;f>=c;c++)e("\n"+r.getLine(c));r.setCursor(t)}}function h(r){var e=r.getCursor(),n=r.getLine(e.line).search(/\S/);r.setCursor(e.line,-1==n?line.length:n,!0)}function C(r,e,n){var i,o=r.getCursor(),t=r.getLine(o.line),f=u(e),c=n;return c.forward?(i=t.indexOf(f,o.ch+1),-1!=i&&c.inclusive&&(i+=1)):(i=t.lastIndexOf(f,o.ch),-1==i||c.inclusive||(i+=1)),i}function v(r,e,n){var i=C(r,e,n),o=r.getCursor();-1!=i&&r.setCursor({line:o.line,ch:i})}function g(r,e,n){var i=C(r,e,n),o=r.getCursor();-1!==i&&(n.forward?r.replaceRange("",{line:o.line,ch:o.ch},{line:o.line,ch:i}):r.replaceRange("",{line:o.line,ch:i},{line:o.line,ch:o.ch}))}function M(r){i(),r.setOption("keyMap","vim-insert")}function y(r){r[0]=function(r){R.length>0?n("0")(r):CodeMirror.commands.goLineStart(r)};for(var e=1;10>e;++e)r[e]=n(e)}function x(r){CodeMirror.keyMap["vim-prefix-m"][r]=function(e){P[r]=e.getCursor().line},CodeMirror.keyMap["vim-prefix-d'"][r]=function(e){d(e,r)},CodeMirror.keyMap["vim-prefix-y'"][r]=function(e){m(e,r)},CodeMirror.keyMap["vim-prefix-r"][r]=function(e){var n=e.getCursor();e.replaceRange(u(r),{line:n.line,ch:n.ch},{line:n.line,ch:n.ch+1}),CodeMirror.commands.goColumnLeft(e)},f(N,function(e,n){CodeMirror.keyMap["vim-prefix-"+e][r]=function(e){v(e,r,n)},CodeMirror.keyMap["vim-prefix-d"+e][r]=function(e){g(e,r,n)},CodeMirror.keyMap["vim-prefix-c"+e][r]=function(e){g(e,r,n),M(e)}})}function k(r,e,n){var i=e.line,n=n?n:r.getLine(i)[e.ch],o=-1!=["(","[","{"].indexOf(n),t=function(r){switch(r){case"(":return")";case"[":return"]";case"{":return"}";case")":return"(";case"]":return"[";case"}":return"{";default:return null}}(n);if(null==t)return e;for(var f=o?0:1;;){if(i==e.line)var c=o?r.getLine(i).substr(e.ch).split(""):r.getLine(i).substr(0,e.ch).split("").reverse();else var c=o?r.getLine(i).split(""):r.getLine(i).split("").reverse();for(var u=0;u<c.length;u++)if(c[u]==n?f++:c[u]==t&&f--,0==f)return o&&e.line==i?{line:i,ch:u+e.ch}:o?{line:i,ch:u}:{line:i,ch:c.length-u-1};o?i++:i--}}function L(r,e,n){var i=r.getCursor(),o=k(r,i,e),t=k(r,o);return t.ch+=n?1:0,o.ch+=n?0:1,{start:t,end:o}}function S(r,e,n){for(var i=null==n?r.length:n;i>=0;--i)if(e.test(r.charAt(i)))return i;return-1}function O(r,n,i,o,t){var f=$[n](r,t),c=f.start,u=f.end;if(c.line>u.line||c.line==u.line&&c.ch>u.ch)var a=!0;e(r.getRange(a?u:c,a?c:u)),i&&r.replaceRange("",a?u:c,a?c:u),o&&r.setOption("keyMap","vim-insert")}var R="",w="f",E="",D=0,P=[],U=0,A="~`!@#$%^&*()_-+=[{}]\\|/?.,<>:;\"'1234567890",I=[/\w/,/[^\w\s]/],B=[/\S/],F=CodeMirror.keyMap.vim={"'|'":function(r){r.setCursor(r.getCursor().line,i()-1,!0)},A:function(r){r.setCursor(r.getCursor().line,r.getCursor().ch+1,!0),M(r)},"Shift-A":function(r){CodeMirror.commands.goLineEnd(r),M(r)},I:function(r){M(r)},"Shift-I":function(r){h(r),M(r)},O:function(r){CodeMirror.commands.goLineEnd(r),CodeMirror.commands.newlineAndIndent(r),M(r)},"Shift-O":function(r){CodeMirror.commands.goLineStart(r),r.replaceSelection("\n","start"),r.indentLine(r.getCursor().line),M(r)},G:function(r){r.setOption("keyMap","vim-prefix-g")},"Shift-D":function(e){r(),P["Shift-D"]=e.getCursor(!1).line,e.setCursor(e.getCursor(!0).line),d(e,"Shift-D"),P=[]},S:function(r){t(function(r){CodeMirror.commands.delCharRight(r)})(r),M(r)},M:function(r){r.setOption("keyMap","vim-prefix-m"),P=[]},Y:function(e){e.setOption("keyMap","vim-prefix-y"),r(),D=0},"Shift-Y":function(e){r(),P["Shift-D"]=e.getCursor(!1).line,e.setCursor(e.getCursor(!0).line),m(e,"Shift-D"),P=[]},"/":function(r){var e=CodeMirror.commands.find;e&&e(r),w="f"},"'?'":function(r){var e=CodeMirror.commands.find;e&&(e(r),CodeMirror.commands.findPrev(r),w="r")},N:function(r){var e=CodeMirror.commands.findNext;e&&("r"!=w?e(r):CodeMirror.commands.findPrev(r))},"Shift-N":function(r){var e=CodeMirror.commands.findNext;e&&("r"!=w?CodeMirror.commands.findPrev(r):e.findNext(r))},"Shift-G":function(r){""==R?r.setCursor(r.lineCount()):r.setCursor(parseInt(R,10)-1),i(),CodeMirror.commands.goLineStart(r)},nofallthrough:!0,style:"fat-cursor"};c(["d","t","T","f","F","c","r"],function(e){CodeMirror.keyMap.vim[a(e)]=function(n){n.setOption("keyMap","vim-prefix-"+e),r()}}),y(CodeMirror.keyMap.vim),f({Left:"goColumnLeft",Right:"goColumnRight",Down:"goLineDown",Up:"goLineUp",Backspace:"goCharLeft",Space:"goCharRight",X:function(r){CodeMirror.commands.delCharRight(r)},P:function(r){r.getCursor().line,""!=E&&("\n"==E[0]&&CodeMirror.commands.goLineEnd(r),r.replaceRange(E,r.getCursor()))},"Shift-X":function(r){CodeMirror.commands.delCharLeft(r)},"Shift-J":function(r){p(r)},"Shift-P":function(r){var e=r.getCursor().line;""!=E&&(CodeMirror.commands.goLineUp(r),CodeMirror.commands.goLineEnd(r),r.replaceSelection(E,"end")),r.setCursor(e+1)},"'~'":function(r){var e=r.getCursor(),n=r.getRange({line:e.line,ch:e.ch},{line:e.line,ch:e.ch+1});n=n!=n.toLowerCase()?n.toLowerCase():n.toUpperCase(),r.replaceRange(n,{line:e.line,ch:e.ch},{line:e.line,ch:e.ch+1}),r.setCursor(e.line,e.ch+1)},"Ctrl-B":function(r){CodeMirror.commands.goPageUp(r)},"Ctrl-F":function(r){CodeMirror.commands.goPageDown(r)},"Ctrl-P":"goLineUp","Ctrl-N":"goLineDown",U:"undo","Ctrl-R":"redo"},function(r,e){F[r]=t(e)}),c(["vim-prefix-d'","vim-prefix-y'","vim-prefix-df","vim-prefix-dF","vim-prefix-dt","vim-prefix-dT","vim-prefix-c","vim-prefix-cf","vim-prefix-cF","vim-prefix-ct","vim-prefix-cT","vim-prefix-","vim-prefix-f","vim-prefix-F","vim-prefix-t","vim-prefix-T","vim-prefix-r","vim-prefix-m"],function(r){CodeMirror.keyMap[r]={auto:"vim",nofallthrough:!0,style:"fat-cursor"}}),CodeMirror.keyMap["vim-prefix-g"]={E:t(function(r){r.setCursor(l(r,I,-1,1,"start"))}),"Shift-E":t(function(r){r.setCursor(l(r,B,-1,1,"start"))}),G:function(r){r.setCursor({line:0,ch:r.getCursor().ch})},auto:"vim",nofallthrough:!0,style:"fat-cursor"},CodeMirror.keyMap["vim-prefix-d"]={D:t(function(r){e("\n"+r.getLine(r.getCursor().line)),r.removeLine(r.getCursor().line),r.setOption("keyMap","vim")}),"'":function(e){e.setOption("keyMap","vim-prefix-d'"),r()},B:function(r){var n=r.getCursor(),i=r.getLine(n.line),o=i.lastIndexOf(" ",n.ch);e(i.substring(o,n.ch)),r.replaceRange("",{line:n.line,ch:o},n),r.setOption("keyMap","vim")},nofallthrough:!0,style:"fat-cursor"},y(CodeMirror.keyMap["vim-prefix-d"]),CodeMirror.keyMap["vim-prefix-c"]={B:function(r){t("delWordLeft")(r),M(r)},C:function(r){o(function(e,n){CodeMirror.commands.deleteLine(r),e&&(CodeMirror.commands.delCharRight(r),n&&CodeMirror.commands.deleteLine(r))}),M(r)},nofallthrough:!0,style:"fat-cursor"},c(["vim-prefix-d","vim-prefix-c","vim-prefix-"],function(e){c(["f","F","T","t"],function(n){CodeMirror.keyMap[e][a(n)]=function(i){i.setOption("keyMap",e+n),r()}})});for(var N={t:{inclusive:!1,forward:!0},f:{inclusive:!0,forward:!0},T:{inclusive:!1,forward:!1},F:{inclusive:!0,forward:!1}},W=65;91>W;W++){var T=String.fromCharCode(W);x(a(T)),x(a(T.toLowerCase()))}c(A,function(r){x(a(r))}),x("Space"),CodeMirror.keyMap["vim-prefix-y"]={Y:t(function(r){e("\n"+r.getLine(r.getCursor().line+D)),D++}),"'":function(e){e.setOption("keyMap","vim-prefix-y'"),r()},nofallthrough:!0,style:"fat-cursor"},CodeMirror.keyMap["vim-insert"]={Esc:function(r){r.setCursor(r.getCursor().line,r.getCursor().ch-1,!0),r.setOption("keyMap","vim")},"Ctrl-N":"autocomplete","Ctrl-P":"autocomplete",fallthrough:["default"]};var b=["B","E","J","K","H","L","W","Shift-W","'^'","'$'","'%'","Esc"];motions={B:function(r,e){return l(r,I,-1,e)},"Shift-B":function(r,e){return l(r,B,-1,e)},E:function(r,e){return l(r,I,1,e,"end")},"Shift-E":function(r,e){return l(r,B,1,e,"end")},J:function(r,e){var n=r.getCursor();return{line:n.line+e,ch:n.ch}},K:function(r,e){var n=r.getCursor();return{line:n.line-e,ch:n.ch}},H:function(r,e){var n=r.getCursor();return{line:n.line,ch:n.ch-e}},L:function(r,e){var n=r.getCursor();return{line:n.line,ch:n.ch+e}},W:function(r,e){return l(r,I,1,e)},"Shift-W":function(r,e){return l(r,B,1,e)},"'^'":function(r,e){var n=r.getCursor(),i=r.getLine(n.line).split("");if(0==i.length)return n;for(var o=0;o<i.length;o++)if(i[o].match(/[^\s]/))return{line:n.line,ch:o}},"'$'":function(r){var e=r.getCursor(),n=r.getLine(e.line);return{line:e.line,ch:n.length}},"'%'":function(r){return k(r,r.getCursor())},Esc:function(r){return r.setOption("vim"),U=0,r.getCursor()}},b.forEach(function(r,n,i){CodeMirror.keyMap["vim-prefix-d"][r]=function(n){var i=n.getCursor(),o=motions[r](n,U?U:1);if(i.line>o.line||i.line==o.line&&i.ch>o.ch)var t=!0;e(n.getRange(t?o:i,t?i:o)),n.replaceRange("",t?o:i,t?i:o),U=0,n.setOption("keyMap","vim")},CodeMirror.keyMap["vim-prefix-c"][r]=function(n){var i=n.getCursor(),o=motions[r](n,U?U:1);if(i.line>o.line||i.line==o.line&&i.ch>o.ch)var t=!0;e(n.getRange(t?o:i,t?i:o)),n.replaceRange("",t?o:i,t?i:o),U=0,n.setOption("keyMap","vim-insert")},CodeMirror.keyMap["vim-prefix-y"][r]=function(n){var i=n.getCursor(),o=motions[r](n,U?U:1);if(i.line>o.line||i.line==o.line&&i.ch>o.ch)var t=!0;e(n.getRange(t?o:i,t?i:o)),U=0,n.setOption("keyMap","vim")},CodeMirror.keyMap.vim[r]=function(e){var n=motions[r](e,U?U:1);e.setCursor(n.line,n.ch),U=0}});var G=[1,2,3,4,5,6,7,8,9];G.forEach(function(r,e,n){CodeMirror.keyMap.vim[r]=function(e){U=10*U+r},CodeMirror.keyMap["vim-prefix-d"][r]=function(e){U=10*U+r},CodeMirror.keyMap["vim-prefix-y"][r]=function(e){U=10*U+r},CodeMirror.keyMap["vim-prefix-c"][r]=function(e){U=10*U+r}});var J=["d","y","c"];J.forEach(function(r,e,n){CodeMirror.keyMap["vim-prefix-"+r+"a"]={auto:"vim",nofallthrough:!0,style:"fat-cursor"},CodeMirror.keyMap["vim-prefix-"+r+"i"]={auto:"vim",nofallthrough:!0,style:"fat-cursor"},CodeMirror.keyMap["vim-prefix-"+r].A=function(e){U=0,e.setOption("keyMap","vim-prefix-"+r+"a")},CodeMirror.keyMap["vim-prefix-"+r].I=function(e){U=0,e.setOption("keyMap","vim-prefix-"+r+"i")}});for(var Y=["W","Shift-[","Shift-9","["],$={W:function(r,e){var n=r.getCursor(),i=r.getLine(n.line),o=new String(i.substring(0,n.ch)),t=S(o,/[^a-zA-Z0-9]/)+1,f=motions.E(r,1);return f.ch+=e?1:0,{start:{line:n.line,ch:t},end:f}},"Shift-[":function(r,e){return L(r,"}",e)},"Shift-9":function(r,e){return L(r,")",e)},"[":function(r,e){return L(r,"]",e)}},W=0;W<Y.length;++W){var H=Y[W];!function(r){CodeMirror.keyMap["vim-prefix-di"][r]=function(e){O(e,r,!0,!1,!1)},CodeMirror.keyMap["vim-prefix-da"][r]=function(e){O(e,r,!0,!1,!0)},CodeMirror.keyMap["vim-prefix-yi"][r]=function(e){O(e,r,!1,!1,!1)},CodeMirror.keyMap["vim-prefix-ya"][r]=function(e){O(e,r,!1,!1,!0)},CodeMirror.keyMap["vim-prefix-ci"][r]=function(e){O(e,r,!0,!0,!1)},CodeMirror.keyMap["vim-prefix-ca"][r]=function(e){O(e,r,!0,!0,!0)}}(H)}}();
+// Supported keybindings:
+//
+// Cursor movement:
+// h, j, k, l
+// e, E, w, W, b, B
+// Ctrl-f, Ctrl-b
+// Ctrl-n, Ctrl-p
+// $, ^, 0
+// G
+// ge, gE
+// gg
+// f<char>, F<char>, t<char>, T<char>
+// Ctrl-o, Ctrl-i TODO (FIXME - Ctrl-O wont work in Chrome)
+// /, ?, n, N TODO (does not work)
+// #, * TODO
+//
+// Entering insert mode:
+// i, I, a, A, o, O
+// s
+// ce, cb (without support for number of actions like c3e - TODO)
+// cc
+// S, C TODO
+// cf<char>, cF<char>, ct<char>, cT<char>
+//
+// Deleting text:
+// x, X
+// J
+// dd, D
+// de, db (without support for number of actions like d3e - TODO)
+// df<char>, dF<char>, dt<char>, dT<char>
+//
+// Yanking and pasting:
+// yy, Y
+// p, P
+// p'<char> TODO - test
+// y'<char> TODO - test
+// m<char> TODO - test
+//
+// Changing text in place:
+// ~
+// r<char>
+//
+// Visual mode:
+// v, V TODO
+//
+// Misc:
+// . TODO
+//
+
+(function() {
+  var count = "";
+  var sdir = "f";
+  var buf = "";
+  var yank = 0;
+  var mark = [];
+  var reptTimes = 0;
+  function emptyBuffer() { buf = ""; }
+  function pushInBuffer(str) { buf += str; }
+  function pushCountDigit(digit) { return function(cm) {count += digit;}; }
+  function popCount() { var i = parseInt(count, 10); count = ""; return i || 1; }
+  function iterTimes(func) {
+    for (var i = 0, c = popCount(); i < c; ++i) func(i, i == c - 1);
+  }
+  function countTimes(func) {
+    if (typeof func == "string") func = CodeMirror.commands[func];
+    return function(cm) { iterTimes(function () { func(cm); }); };
+  }
+
+  function iterObj(o, f) {
+    for (var prop in o) if (o.hasOwnProperty(prop)) f(prop, o[prop]);
+  }
+  function iterList(l, f) {
+    for (var i in l) f(l[i]);
+  }
+  function toLetter(ch) {
+    // T -> t, Shift-T -> T, '*' -> *, "Space" -> " "
+    if (ch.slice(0, 6) == "Shift-") {
+      return ch.slice(0, 1);
+    } else {
+      if (ch == "Space") return " ";
+      if (ch.length == 3 && ch[0] == "'" && ch[2] == "'") return ch[1];
+      return ch.toLowerCase();
+    }
+  }
+  var SPECIAL_SYMBOLS = "~`!@#$%^&*()_-+=[{}]\\|/?.,<>:;\"\'1234567890";
+  function toCombo(ch) {
+    // t -> T, T -> Shift-T, * -> '*', " " -> "Space"
+    if (ch == " ") return "Space";
+    var specialIdx = SPECIAL_SYMBOLS.indexOf(ch);
+    if (specialIdx != -1) return "'" + ch + "'";
+    if (ch.toLowerCase() == ch) return ch.toUpperCase();
+    return "Shift-" + ch.toUpperCase();
+  }
+
+  var word = [/\w/, /[^\w\s]/], bigWord = [/\S/];
+  function findWord(line, pos, dir, regexps) {
+    var stop = 0, next = -1;
+    if (dir > 0) { stop = line.length; next = 0; }
+    var start = stop, end = stop;
+    // Find bounds of next one.
+    outer: for (; pos != stop; pos += dir) {
+      for (var i = 0; i < regexps.length; ++i) {
+        if (regexps[i].test(line.charAt(pos + next))) {
+          start = pos;
+          for (; pos != stop; pos += dir) {
+            if (!regexps[i].test(line.charAt(pos + next))) break;
+          }
+          end = pos;
+          break outer;
+        }
+      }
+    }
+    return {from: Math.min(start, end), to: Math.max(start, end)};
+  }
+  function moveToWord(cm, regexps, dir, times, where) {
+    var cur = cm.getCursor();
+
+    for (var i = 0; i < times; i++) {
+      var line = cm.getLine(cur.line), startCh = cur.ch, word;
+      while (true) {
+        // If we're at start/end of line, start on prev/next respectivly
+        if (cur.ch == line.length && dir > 0) {
+          cur.line++;
+          cur.ch = 0;
+          line = cm.getLine(cur.line);
+        } else if (cur.ch == 0 && dir < 0) {
+          cur.line--;
+          cur.ch = line.length;
+          line = cm.getLine(cur.line);
+        }
+        if (!line) break;
+
+        // On to the actual searching
+        word = findWord(line, cur.ch, dir, regexps);
+        cur.ch = word[where == "end" ? "to" : "from"];
+        if (startCh == cur.ch && word.from != word.to) cur.ch = word[dir < 0 ? "from" : "to"];
+        else break;
+      }
+    }
+    return cur;
+  }
+  function joinLineNext(cm) {
+    var cur = cm.getCursor(), ch = cur.ch, line = cm.getLine(cur.line);
+    CodeMirror.commands.goLineEnd(cm);
+    if (cur.line != cm.lineCount()) {
+      CodeMirror.commands.goLineEnd(cm);
+      cm.replaceSelection(" ", "end");
+      CodeMirror.commands.delCharRight(cm);
+    }
+  }
+  function delTillMark(cm, cHar) {
+    var i = mark[cHar];
+    if (i === undefined) {
+      // console.log("Mark not set"); // TODO - show in status bar
+      return;
+    }
+    var l = cm.getCursor().line, start = i > l ? l : i, end = i > l ? i : l;
+    cm.setCursor(start);
+    for (var c = start; c <= end; c++) {
+      pushInBuffer("\n"+cm.getLine(start));
+      cm.removeLine(start);
+    }
+  }
+  function yankTillMark(cm, cHar) {
+    var i = mark[cHar];
+    if (i === undefined) {
+      // console.log("Mark not set"); // TODO - show in status bar
+      return;
+    }
+    var l = cm.getCursor().line, start = i > l ? l : i, end = i > l ? i : l;
+    for (var c = start; c <= end; c++) {
+      pushInBuffer("\n"+cm.getLine(c));
+    }
+    cm.setCursor(start);
+  }
+  function goLineStartText(cm) {
+    // Go to the start of the line where the text begins, or the end for whitespace-only lines
+    var cur = cm.getCursor(), firstNonWS = cm.getLine(cur.line).search(/\S/);
+    cm.setCursor(cur.line, firstNonWS == -1 ? line.length : firstNonWS, true);
+  }
+
+  function charIdxInLine(cm, cHar, motion_options) {
+    // Search for cHar in line.
+    // motion_options: {forward, inclusive}
+    // If inclusive = true, include it too.
+    // If forward = true, search forward, else search backwards.
+    // If char is not found on this line, do nothing
+    var cur = cm.getCursor(), line = cm.getLine(cur.line), idx;
+    var ch = toLetter(cHar), mo = motion_options;
+    if (mo.forward) {
+      idx = line.indexOf(ch, cur.ch + 1);
+      if (idx != -1 && mo.inclusive) idx += 1;
+    } else {
+      idx = line.lastIndexOf(ch, cur.ch);
+      if (idx != -1 && !mo.inclusive) idx += 1;
+    }
+    return idx;
+  }
+
+  function moveTillChar(cm, cHar, motion_options) {
+    // Move to cHar in line, as found by charIdxInLine.
+    var idx = charIdxInLine(cm, cHar, motion_options), cur = cm.getCursor();
+    if (idx != -1) cm.setCursor({line: cur.line, ch: idx});
+  }
+
+  function delTillChar(cm, cHar, motion_options) {
+    // delete text in this line, untill cHar is met,
+    // as found by charIdxInLine.
+    // If char is not found on this line, do nothing
+    var idx = charIdxInLine(cm, cHar, motion_options);
+    var cur = cm.getCursor();
+    if (idx !== -1) {
+      if (motion_options.forward) {
+        cm.replaceRange("", {line: cur.line, ch: cur.ch}, {line: cur.line, ch: idx});
+      } else {
+        cm.replaceRange("", {line: cur.line, ch: idx}, {line: cur.line, ch: cur.ch});
+      }
+    }
+  }
+
+  function enterInsertMode(cm) {
+    // enter insert mode: switch mode and cursor
+    popCount();
+    cm.setOption("keyMap", "vim-insert");
+  }
+
+  // main keymap
+  var map = CodeMirror.keyMap.vim = {
+    // Pipe (|); TODO: should be *screen* chars, so need a util function to turn tabs into spaces?
+    "'|'": function(cm) {
+      cm.setCursor(cm.getCursor().line, popCount() - 1, true);
+    },
+    "A": function(cm) {
+      cm.setCursor(cm.getCursor().line, cm.getCursor().ch+1, true);
+      enterInsertMode(cm);
+    },
+    "Shift-A": function(cm) { CodeMirror.commands.goLineEnd(cm); enterInsertMode(cm);},
+    "I": function(cm) { enterInsertMode(cm);},
+    "Shift-I": function(cm) { goLineStartText(cm); enterInsertMode(cm);},
+    "O": function(cm) {
+      CodeMirror.commands.goLineEnd(cm);
+      CodeMirror.commands.newlineAndIndent(cm);
+      enterInsertMode(cm);
+    },
+    "Shift-O": function(cm) {
+      CodeMirror.commands.goLineStart(cm);
+      cm.replaceSelection("\n", "start");
+      cm.indentLine(cm.getCursor().line);
+      enterInsertMode(cm);
+    },
+    "G": function(cm) { cm.setOption("keyMap", "vim-prefix-g");},
+    "Shift-D": function(cm) {
+      // commented out verions works, but I left original, cause maybe
+      // I don't know vim enouth to see what it does
+      /* var cur = cm.getCursor();
+      var f = {line: cur.line, ch: cur.ch}, t = {line: cur.line};
+      pushInBuffer(cm.getRange(f, t));
+      */
+      emptyBuffer();
+      mark["Shift-D"] = cm.getCursor(false).line;
+      cm.setCursor(cm.getCursor(true).line);
+      delTillMark(cm,"Shift-D"); mark = [];
+    },
+
+    "S": function (cm) {
+      countTimes(function (_cm) {
+        CodeMirror.commands.delCharRight(_cm);
+      })(cm);
+      enterInsertMode(cm);
+    },
+    "M": function(cm) {cm.setOption("keyMap", "vim-prefix-m"); mark = [];},
+    "Y": function(cm) {cm.setOption("keyMap", "vim-prefix-y"); emptyBuffer(); yank = 0;},
+    "Shift-Y": function(cm) {
+      emptyBuffer();
+      mark["Shift-D"] = cm.getCursor(false).line;
+      cm.setCursor(cm.getCursor(true).line);
+      yankTillMark(cm,"Shift-D"); mark = [];
+    },
+    "/": function(cm) {var f = CodeMirror.commands.find; f && f(cm); sdir = "f";},
+    "'?'": function(cm) {
+      var f = CodeMirror.commands.find;
+      if (f) { f(cm); CodeMirror.commands.findPrev(cm); sdir = "r"; }
+    },
+    "N": function(cm) {
+      var fn = CodeMirror.commands.findNext;
+      if (fn) sdir != "r" ? fn(cm) : CodeMirror.commands.findPrev(cm);
+    },
+    "Shift-N": function(cm) {
+      var fn = CodeMirror.commands.findNext;
+      if (fn) sdir != "r" ? CodeMirror.commands.findPrev(cm) : fn.findNext(cm);
+    },
+    "Shift-G": function(cm) {
+      count == "" ? cm.setCursor(cm.lineCount()) : cm.setCursor(parseInt(count, 10)-1);
+      popCount();
+      CodeMirror.commands.goLineStart(cm);
+    },
+    nofallthrough: true, style: "fat-cursor"
+  };
+
+  // standard mode switching
+  iterList(["d", "t", "T", "f", "F", "c", "r"],
+      function (ch) {
+        CodeMirror.keyMap.vim[toCombo(ch)] = function (cm) {
+          cm.setOption("keyMap", "vim-prefix-" + ch);
+          emptyBuffer();
+        };
+      });
+
+  function addCountBindings(keyMap) {
+    // Add bindings for number keys
+    keyMap["0"] = function(cm) {
+      count.length > 0 ? pushCountDigit("0")(cm) : CodeMirror.commands.goLineStart(cm);
+    };
+    for (var i = 1; i < 10; ++i) keyMap[i] = pushCountDigit(i);
+  }
+  addCountBindings(CodeMirror.keyMap.vim);
+
+  // main num keymap
+  // Add bindings that are influenced by number keys
+  iterObj({
+    "Left": "goColumnLeft", "Right": "goColumnRight",
+    "Down": "goLineDown", "Up": "goLineUp", "Backspace": "goCharLeft",
+    "Space": "goCharRight",
+    "X": function(cm) {CodeMirror.commands.delCharRight(cm);},
+    "P": function(cm) {
+      var cur = cm.getCursor().line;
+      if (buf!= "") {
+        if (buf[0] == "\n") CodeMirror.commands.goLineEnd(cm);
+        cm.replaceRange(buf, cm.getCursor());
+      }
+    },
+    "Shift-X": function(cm) {CodeMirror.commands.delCharLeft(cm);},
+    "Shift-J": function(cm) {joinLineNext(cm);},
+    "Shift-P": function(cm) {
+      var cur = cm.getCursor().line;
+      if (buf!= "") {
+        CodeMirror.commands.goLineUp(cm);
+        CodeMirror.commands.goLineEnd(cm);
+        cm.replaceSelection(buf, "end");
+      }
+      cm.setCursor(cur+1);
+    },
+    "'~'": function(cm) {
+      var cur = cm.getCursor(), cHar = cm.getRange({line: cur.line, ch: cur.ch}, {line: cur.line, ch: cur.ch+1});
+      cHar = cHar != cHar.toLowerCase() ? cHar.toLowerCase() : cHar.toUpperCase();
+      cm.replaceRange(cHar, {line: cur.line, ch: cur.ch}, {line: cur.line, ch: cur.ch+1});
+      cm.setCursor(cur.line, cur.ch+1);
+    },
+    "Ctrl-B": function(cm) {CodeMirror.commands.goPageUp(cm);},
+    "Ctrl-F": function(cm) {CodeMirror.commands.goPageDown(cm);},
+    "Ctrl-P": "goLineUp", "Ctrl-N": "goLineDown",
+    "U": "undo", "Ctrl-R": "redo"
+  }, function(key, cmd) { map[key] = countTimes(cmd); });
+
+  // empty key maps
+  iterList([
+      "vim-prefix-d'",
+      "vim-prefix-y'",
+      "vim-prefix-df",
+      "vim-prefix-dF",
+      "vim-prefix-dt",
+      "vim-prefix-dT",
+      "vim-prefix-c",
+      "vim-prefix-cf",
+      "vim-prefix-cF",
+      "vim-prefix-ct",
+      "vim-prefix-cT",
+      "vim-prefix-",
+      "vim-prefix-f",
+      "vim-prefix-F",
+      "vim-prefix-t",
+      "vim-prefix-T",
+      "vim-prefix-r",
+      "vim-prefix-m"
+      ],
+      function (prefix) {
+        CodeMirror.keyMap[prefix] = {
+          auto: "vim",
+          nofallthrough: true,
+          style: "fat-cursor"
+        };
+      });
+
+  CodeMirror.keyMap["vim-prefix-g"] = {
+    "E": countTimes(function(cm) { cm.setCursor(moveToWord(cm, word, -1, 1, "start"));}),
+    "Shift-E": countTimes(function(cm) { cm.setCursor(moveToWord(cm, bigWord, -1, 1, "start"));}),
+    "G": function (cm) { cm.setCursor({line: 0, ch: cm.getCursor().ch});},
+    auto: "vim", nofallthrough: true, style: "fat-cursor"
+  };
+
+  CodeMirror.keyMap["vim-prefix-d"] = {
+    "D": countTimes(function(cm) {
+      pushInBuffer("\n"+cm.getLine(cm.getCursor().line));
+      cm.removeLine(cm.getCursor().line);
+      cm.setOption("keyMap", "vim");
+    }),
+    "'": function(cm) {
+      cm.setOption("keyMap", "vim-prefix-d'");
+      emptyBuffer();
+    },
+    "B": function(cm) {
+      var cur = cm.getCursor();
+      var line = cm.getLine(cur.line);
+      var index = line.lastIndexOf(" ", cur.ch);
+
+      pushInBuffer(line.substring(index, cur.ch));
+      cm.replaceRange("", {line: cur.line, ch: index}, cur);
+      cm.setOption("keyMap", "vim");
+    },
+    nofallthrough: true, style: "fat-cursor"
+  };
+  // FIXME - does not work for bindings like "d3e"
+  addCountBindings(CodeMirror.keyMap["vim-prefix-d"]);
+
+  CodeMirror.keyMap["vim-prefix-c"] = {
+    "B": function (cm) {
+      countTimes("delWordLeft")(cm);
+      enterInsertMode(cm);
+    },
+    "C": function (cm) {
+      iterTimes(function (i, last) {
+        CodeMirror.commands.deleteLine(cm);
+        if (i) {
+          CodeMirror.commands.delCharRight(cm);
+          if (last) CodeMirror.commands.deleteLine(cm);
+        }
+      });
+      enterInsertMode(cm);
+    },
+    nofallthrough: true, style: "fat-cursor"
+  };
+
+  iterList(["vim-prefix-d", "vim-prefix-c", "vim-prefix-"], function (prefix) {
+    iterList(["f", "F", "T", "t"],
+      function (ch) {
+        CodeMirror.keyMap[prefix][toCombo(ch)] = function (cm) {
+          cm.setOption("keyMap", prefix + ch);
+          emptyBuffer();
+        };
+      });
+  });
+
+  var MOTION_OPTIONS = {
+    "t": {inclusive: false, forward: true},
+    "f": {inclusive: true,  forward: true},
+    "T": {inclusive: false, forward: false},
+    "F": {inclusive: true,  forward: false}
+  };
+
+  function setupPrefixBindingForKey(m) {
+    CodeMirror.keyMap["vim-prefix-m"][m] = function(cm) {
+      mark[m] = cm.getCursor().line;
+    };
+    CodeMirror.keyMap["vim-prefix-d'"][m] = function(cm) {
+      delTillMark(cm,m);
+    };
+    CodeMirror.keyMap["vim-prefix-y'"][m] = function(cm) {
+      yankTillMark(cm,m);
+    };
+    CodeMirror.keyMap["vim-prefix-r"][m] = function (cm) {
+      var cur = cm.getCursor();
+      cm.replaceRange(toLetter(m),
+          {line: cur.line, ch: cur.ch},
+          {line: cur.line, ch: cur.ch + 1});
+      CodeMirror.commands.goColumnLeft(cm);
+    };
+    // all commands, related to motions till char in line
+    iterObj(MOTION_OPTIONS, function (ch, options) {
+      CodeMirror.keyMap["vim-prefix-" + ch][m] = function(cm) {
+        moveTillChar(cm, m, options);
+      };
+      CodeMirror.keyMap["vim-prefix-d" + ch][m] = function(cm) {
+        delTillChar(cm, m, options);
+      };
+      CodeMirror.keyMap["vim-prefix-c" + ch][m] = function(cm) {
+        delTillChar(cm, m, options);
+        enterInsertMode(cm);
+      };
+    });
+  }
+  for (var i = 65; i < 65 + 26; i++) { // uppercase alphabet char codes
+    var ch = String.fromCharCode(i);
+    setupPrefixBindingForKey(toCombo(ch));
+    setupPrefixBindingForKey(toCombo(ch.toLowerCase()));
+  }
+  iterList(SPECIAL_SYMBOLS, function (ch) {
+    setupPrefixBindingForKey(toCombo(ch));
+  });
+  setupPrefixBindingForKey("Space");
+
+  CodeMirror.keyMap["vim-prefix-y"] = {
+    "Y": countTimes(function(cm) { pushInBuffer("\n"+cm.getLine(cm.getCursor().line+yank)); yank++; }),
+    "'": function(cm) {cm.setOption("keyMap", "vim-prefix-y'"); emptyBuffer();},
+    nofallthrough: true, style: "fat-cursor"
+  };
+
+  CodeMirror.keyMap["vim-insert"] = {
+    // TODO: override navigation keys so that Esc will cancel automatic indentation from o, O, i_<CR>
+    "Esc": function(cm) {
+      cm.setCursor(cm.getCursor().line, cm.getCursor().ch-1, true);
+      cm.setOption("keyMap", "vim");
+    },
+    "Ctrl-N": "autocomplete",
+    "Ctrl-P": "autocomplete",
+    fallthrough: ["default"]
+  };
+
+  function findMatchedSymbol(cm, cur, symb) {
+    var line = cur.line;
+    var symb = symb ? symb : cm.getLine(line)[cur.ch];
+
+    // Are we at the opening or closing char
+    var forwards = ['(', '[', '{'].indexOf(symb) != -1;
+
+    var reverseSymb = (function(sym) {
+      switch (sym) {
+        case '(' : return ')';
+        case '[' : return ']';
+        case '{' : return '}';
+        case ')' : return '(';
+        case ']' : return '[';
+        case '}' : return '{';
+        default : return null;
+      }
+    })(symb);
+
+    // Couldn't find a matching symbol, abort
+    if (reverseSymb == null) return cur;
+
+    // Tracking our imbalance in open/closing symbols. An opening symbol wii be
+    // the first thing we pick up if moving forward, this isn't true moving backwards
+    var disBal = forwards ? 0 : 1;
+
+    while (true) {
+      if (line == cur.line) {
+        // First pass, do some special stuff
+        var currLine =  forwards ? cm.getLine(line).substr(cur.ch).split('') : cm.getLine(line).substr(0,cur.ch).split('').reverse();
+      } else {
+        var currLine =  forwards ? cm.getLine(line).split('') : cm.getLine(line).split('').reverse();
+      }
+
+      for (var index = 0;  index < currLine.length; index++) {
+        if (currLine[index] == symb) disBal++;
+        else if (currLine[index] == reverseSymb) disBal--;
+
+        if (disBal == 0) {
+          if (forwards && cur.line == line) return {line: line, ch: index + cur.ch};
+          else if (forwards) return {line: line, ch: index};
+          else return {line: line, ch: currLine.length - index - 1 };
+        }
+      }
+
+      if (forwards) line++;
+      else line--;
+    }
+  }
+
+  function selectCompanionObject(cm, revSymb, inclusive) {
+    var cur = cm.getCursor();
+
+    var end = findMatchedSymbol(cm, cur, revSymb);
+    var start = findMatchedSymbol(cm, end);
+    start.ch += inclusive ? 1 : 0;
+    end.ch += inclusive ? 0 : 1;
+
+    return {start: start, end: end};
+  }
+
+  // These are our motion commands to be used for navigation and selection with
+  // certian other commands. All should return a cursor object.
+  var motionList = ['B', 'E', 'J', 'K', 'H', 'L', 'W', 'Shift-W', "'^'", "'$'", "'%'", 'Esc'];
+
+  motions = {
+    'B': function(cm, times) { return moveToWord(cm, word, -1, times); },
+    'Shift-B': function(cm, times) { return moveToWord(cm, bigWord, -1, times); },
+    'E': function(cm, times) { return moveToWord(cm, word, 1, times, 'end'); },
+    'Shift-E': function(cm, times) { return moveToWord(cm, bigWord, 1, times, 'end'); },
+    'J': function(cm, times) {
+      var cur = cm.getCursor();
+      return {line: cur.line+times, ch : cur.ch};
+    },
+
+    'K': function(cm, times) {
+      var cur = cm.getCursor();
+      return {line: cur.line-times, ch: cur.ch};
+    },
+
+    'H': function(cm, times) {
+      var cur = cm.getCursor();
+      return {line: cur.line, ch: cur.ch-times};
+    },
+
+    'L': function(cm, times) {
+      var cur = cm.getCursor();
+      return {line: cur.line, ch: cur.ch+times};
+    },
+    'W': function(cm, times) { return moveToWord(cm, word, 1, times); },
+    'Shift-W': function(cm, times) { return moveToWord(cm, bigWord, 1, times); },
+    "'^'": function(cm, times) {
+      var cur = cm.getCursor();
+      var line = cm.getLine(cur.line).split('');
+
+      // Empty line :o
+      if (line.length == 0) return cur;
+
+      for (var index = 0;  index < line.length; index++) {
+        if (line[index].match(/[^\s]/)) return {line: cur.line, ch: index};
+      }
+    },
+    "'$'": function(cm) {
+      var cur = cm.getCursor();
+      var line = cm.getLine(cur.line);
+      return {line: cur.line, ch: line.length};
+    },
+    "'%'": function(cm) { return findMatchedSymbol(cm, cm.getCursor()); },
+    "Esc" : function(cm) {
+      cm.setOption('vim');
+      reptTimes = 0;
+
+      return cm.getCursor();
+    }
+  };
+
+  // Map our movement actions each operator and non-operational movement
+  motionList.forEach(function(key, index, array) {
+    CodeMirror.keyMap['vim-prefix-d'][key] = function(cm) {
+      // Get our selected range
+      var start = cm.getCursor();
+      var end = motions[key](cm, reptTimes ? reptTimes : 1);
+
+      // Set swap var if range is of negative length
+      if ((start.line > end.line) || (start.line == end.line && start.ch > end.ch)) var swap = true;
+
+      // Take action, switching start and end if swap var is set
+      pushInBuffer(cm.getRange(swap ? end : start, swap ? start : end));
+      cm.replaceRange("", swap ? end : start, swap ? start : end);
+
+      // And clean up
+      reptTimes = 0;
+      cm.setOption("keyMap", "vim");
+    };
+
+    CodeMirror.keyMap['vim-prefix-c'][key] = function(cm) {
+      var start = cm.getCursor();
+      var end = motions[key](cm, reptTimes ? reptTimes : 1);
+
+      if ((start.line > end.line) || (start.line == end.line && start.ch > end.ch)) var swap = true;
+      pushInBuffer(cm.getRange(swap ? end : start, swap ? start : end));
+      cm.replaceRange("", swap ? end : start, swap ? start : end);
+
+      reptTimes = 0;
+      cm.setOption('keyMap', 'vim-insert');
+    };
+
+    CodeMirror.keyMap['vim-prefix-y'][key] = function(cm) {
+      var start = cm.getCursor();
+      var end = motions[key](cm, reptTimes ? reptTimes : 1);
+
+      if ((start.line > end.line) || (start.line == end.line && start.ch > end.ch)) var swap = true;
+      pushInBuffer(cm.getRange(swap ? end : start, swap ? start : end));
+
+      reptTimes = 0;
+      cm.setOption("keyMap", "vim");
+    };
+
+    CodeMirror.keyMap['vim'][key] = function(cm) {
+      var cur = motions[key](cm, reptTimes ? reptTimes : 1);
+      cm.setCursor(cur.line, cur.ch);
+
+      reptTimes = 0;
+    };
+  });
+
+  var nums = [1,2,3,4,5,6,7,8,9];
+  nums.forEach(function(key, index, array) {
+    CodeMirror.keyMap['vim'][key] = function (cm) {
+      reptTimes = (reptTimes * 10) + key;
+    };
+    CodeMirror.keyMap['vim-prefix-d'][key] = function (cm) {
+      reptTimes = (reptTimes * 10) + key;
+    };
+    CodeMirror.keyMap['vim-prefix-y'][key] = function (cm) {
+      reptTimes = (reptTimes * 10) + key;
+    };
+    CodeMirror.keyMap['vim-prefix-c'][key] = function (cm) {
+      reptTimes = (reptTimes * 10) + key;
+    };
+  });
+
+  // Create our keymaps for each operator and make xa and xi where x is an operator
+  // change to the corrosponding keymap
+  var operators = ['d', 'y', 'c'];
+  operators.forEach(function(key, index, array) {
+    CodeMirror.keyMap['vim-prefix-'+key+'a'] = {
+      auto: 'vim', nofallthrough: true, style: "fat-cursor"
+    };
+    CodeMirror.keyMap['vim-prefix-'+key+'i'] = {
+      auto: 'vim', nofallthrough: true, style: "fat-cursor"
+    };
+
+    CodeMirror.keyMap['vim-prefix-'+key]['A'] = function(cm) {
+      reptTimes = 0;
+      cm.setOption('keyMap', 'vim-prefix-' + key + 'a');
+    };
+
+    CodeMirror.keyMap['vim-prefix-'+key]['I'] = function(cm) {
+      reptTimes = 0;
+      cm.setOption('keyMap', 'vim-prefix-' + key + 'i');
+    };
+  });
+
+  function regexLastIndexOf(string, pattern, startIndex) {
+    for (var i = startIndex == null ? string.length : startIndex; i >= 0; --i)
+      if (pattern.test(string.charAt(i))) return i;
+    return -1;
+  }
+
+  // Create our text object functions. They work similar to motions but they
+  // return a start cursor as well
+  var textObjectList = ['W', 'Shift-[', 'Shift-9', '['];
+  var textObjects = {
+    'W': function(cm, inclusive) {
+      var cur = cm.getCursor();
+      var line = cm.getLine(cur.line);
+
+      var line_to_char = new String(line.substring(0, cur.ch));
+      var start = regexLastIndexOf(line_to_char, /[^a-zA-Z0-9]/) + 1;
+      var end = motions["E"](cm, 1) ;
+
+      end.ch += inclusive ? 1 : 0 ;
+      return {start: {line: cur.line, ch: start}, end: end };
+    },
+    'Shift-[': function(cm, inclusive) { return selectCompanionObject(cm, '}', inclusive); },
+    'Shift-9': function(cm, inclusive) { return selectCompanionObject(cm, ')', inclusive); },
+    '[': function(cm, inclusive) { return selectCompanionObject(cm, ']', inclusive); }
+  };
+
+  // One function to handle all operation upon text objects. Kinda funky but it works
+  // better than rewriting this code six times
+  function textObjectManipulation(cm, object, remove, insert, inclusive) {
+    // Object is the text object, delete object if remove is true, enter insert
+    // mode if insert is true, inclusive is the difference between a and i
+    var tmp = textObjects[object](cm, inclusive);
+    var start = tmp.start;
+    var end = tmp.end;
+
+    if ((start.line > end.line) || (start.line == end.line && start.ch > end.ch)) var swap = true ;
+
+    pushInBuffer(cm.getRange(swap ? end : start, swap ? start : end));
+    if (remove) cm.replaceRange("", swap ? end : start, swap ? start : end);
+    if (insert) cm.setOption('keyMap', 'vim-insert');
+  }
+
+  // And finally build the keymaps up from the text objects
+  for (var i = 0; i < textObjectList.length; ++i) {
+    var object = textObjectList[i];
+    (function(object) {
+      CodeMirror.keyMap['vim-prefix-di'][object] = function(cm) { textObjectManipulation(cm, object, true, false, false); };
+      CodeMirror.keyMap['vim-prefix-da'][object] = function(cm) { textObjectManipulation(cm, object, true, false, true); };
+      CodeMirror.keyMap['vim-prefix-yi'][object] = function(cm) { textObjectManipulation(cm, object, false, false, false); };
+      CodeMirror.keyMap['vim-prefix-ya'][object] = function(cm) { textObjectManipulation(cm, object, false, false, true); };
+      CodeMirror.keyMap['vim-prefix-ci'][object] = function(cm) { textObjectManipulation(cm, object, true, true, false); };
+      CodeMirror.keyMap['vim-prefix-ca'][object] = function(cm) { textObjectManipulation(cm, object, true, true, true); };
+    })(object)
+  }
+})();

@@ -1,1 +1,271 @@
-CodeMirror.defineMode("clike",function(e,t){function r(e,t){var r=e.next();if(h[r]){var i=h[r](e,t);if(i!==!1)return i}if('"'==r||"'"==r)return t.tokenize=n(r),t.tokenize(e,t);if(/[\[\]{}\(\),;\:\.]/.test(r))return s=r,null;if(/\d/.test(r))return e.eatWhile(/[\w\.]/),"number";if("/"==r){if(e.eat("*"))return t.tokenize=a,a(e,t);if(e.eat("/"))return e.skipToEnd(),"comment"}if(m.test(r))return e.eatWhile(m),"operator";e.eatWhile(/[\w\$_]/);var o=e.current();return u.propertyIsEnumerable(o)?(d.propertyIsEnumerable(o)&&(s="newstatement"),"keyword"):f.propertyIsEnumerable(o)?"atom":"word"}function n(e){return function(t,r){for(var n,a=!1,i=!1;null!=(n=t.next());){if(n==e&&!a){i=!0;break}a=!a&&"\\"==n}return(i||!a&&!p)&&(r.tokenize=null),"string"}}function a(e,t){for(var r,n=!1;r=e.next();){if("/"==r&&n){t.tokenize=null;break}n="*"==r}return"comment"}function i(e,t,r,n,a){this.indented=e,this.column=t,this.type=r,this.align=n,this.prev=a}function o(e,t,r){return e.context=new i(e.indented,t,r,null,e.context)}function l(e){var t=e.context.type;return")"!=t&&"]"!=t&&"}"!=t||(e.indented=e.context.indented),e.context=e.context.prev}var s,c=e.indentUnit,u=t.keywords||{},d=t.blockKeywords||{},f=t.atoms||{},h=t.hooks||{},p=t.multiLineStrings,m=/[+\-*&%=<>!?|\/]/;return{startState:function(e){return{tokenize:null,context:new i((e||0)-c,0,"top",!1),indented:0,startOfLine:!0}},token:function(e,t){var n=t.context;if(e.sol()&&(null==n.align&&(n.align=!1),t.indented=e.indentation(),t.startOfLine=!0),e.eatSpace())return null;s=null;var a=(t.tokenize||r)(e,t);if("comment"==a||"meta"==a)return a;if(null==n.align&&(n.align=!0),";"!=s&&":"!=s||"statement"!=n.type)if("{"==s)o(t,e.column(),"}");else if("["==s)o(t,e.column(),"]");else if("("==s)o(t,e.column(),")");else if("}"==s){for(;"statement"==n.type;)n=l(t);for("}"==n.type&&(n=l(t));"statement"==n.type;)n=l(t)}else s==n.type?l(t):("}"==n.type||"top"==n.type||"statement"==n.type&&"newstatement"==s)&&o(t,e.column(),"statement");else l(t);return t.startOfLine=!1,a},indent:function(e,t){if(e.tokenize!=r&&null!=e.tokenize)return 0;var n=e.context,a=t&&t.charAt(0);"statement"==n.type&&"}"==a&&(n=n.prev);var i=a==n.type;return"statement"==n.type?n.indented+("{"==a?0:c):n.align?n.column+(i?0:1):n.indented+(i?0:c)},electricChars:"{}"}}),function(){function e(e){for(var t={},r=e.split(" "),n=0;n<r.length;++n)t[r[n]]=!0;return t}function t(e,t){return t.startOfLine?(e.skipToEnd(),"meta"):!1}function r(e,t){for(var r;null!=(r=e.next());)if('"'==r&&!e.eat('"')){t.tokenize=null;break}return"string"}var n="auto if break int case long char register continue return default short do sizeof double static else struct entry switch extern typedef float union for unsigned goto while enum void const signed volatile";CodeMirror.defineMIME("text/x-csrc",{name:"clike",keywords:e(n),blockKeywords:e("case do else for if switch while struct"),atoms:e("null"),hooks:{"#":t}}),CodeMirror.defineMIME("text/x-c++src",{name:"clike",keywords:e(n+" asm dynamic_cast namespace reinterpret_cast try bool explicit new static_cast typeid catch operator template typename class friend private this using const_cast inline public throw virtual delete mutable protected wchar_t"),blockKeywords:e("catch class do else finally for if struct switch try while"),atoms:e("true false null"),hooks:{"#":t}}),CodeMirror.defineMIME("text/x-java",{name:"clike",keywords:e("abstract assert boolean break byte case catch char class const continue default do double else enum extends final finally float for goto if implements import instanceof int interface long native new package private protected public return short static strictfp super switch synchronized this throw throws transient try void volatile while"),blockKeywords:e("catch class do else finally for if switch try while"),atoms:e("true false null"),hooks:{"@":function(e,t){return e.eatWhile(/[\w\$_]/),"meta"}}}),CodeMirror.defineMIME("text/x-csharp",{name:"clike",keywords:e("abstract as base bool break byte case catch char checked class const continue decimal default delegate do double else enum event explicit extern finally fixed float for foreach goto if implicit in int interface internal is lock long namespace new object operator out override params private protected public readonly ref return sbyte sealed short sizeof stackalloc static string struct switch this throw try typeof uint ulong unchecked unsafe ushort using virtual void volatile while add alias ascending descending dynamic from get global group into join let orderby partial remove select set value var yield"),blockKeywords:e("catch class do else finally for foreach if struct switch try while"),atoms:e("true false null"),hooks:{"@":function(e,t){return e.eat('"')?(t.tokenize=r,r(e,t)):(e.eatWhile(/[\w\$_]/),"meta")}}}),CodeMirror.defineMIME("text/x-scala",{name:"clike",keywords:e("abstract case catch class def do else extends false final finally for forSome if implicit import lazy match new null object override package private protected return sealed super this throw trait try trye type val var while with yield _ : = => <- <: <% >: # @ assert assume require print println printf readLine readBoolean readByte readShort readChar readInt readLong readFloat readDouble AnyVal App Application Array BufferedIterator BigDecimal BigInt Char Console Either Enumeration Equiv Error Exception Fractional Function IndexedSeq Integral Iterable Iterator List Map Numeric Nil NotNull Option Ordered Ordering PartialFunction PartialOrdering Product Proxy Range Responder Seq Serializable Set Specializable Stream StringBuilder StringContext Symbol Throwable Traversable TraversableOnce Tuple Unit Vector :: #:: Boolean Byte Character CharSequence Class ClassLoader Cloneable Comparable Compiler Double Exception Float Integer Long Math Number Object Package Pair Process Runtime Runnable SecurityManager Short StackTraceElement StrictMath String StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void"),blockKeywords:e("catch class do else finally for forSome if match switch try while"),atoms:e("true false null"),hooks:{"@":function(e,t){return e.eatWhile(/[\w\$_]/),"meta"}}})}();
+CodeMirror.defineMode("clike", function(config, parserConfig) {
+  var indentUnit = config.indentUnit,
+      keywords = parserConfig.keywords || {},
+      blockKeywords = parserConfig.blockKeywords || {},
+      atoms = parserConfig.atoms || {},
+      hooks = parserConfig.hooks || {},
+      multiLineStrings = parserConfig.multiLineStrings;
+  var isOperatorChar = /[+\-*&%=<>!?|\/]/;
+
+  var curPunc;
+
+  function tokenBase(stream, state) {
+    var ch = stream.next();
+    if (hooks[ch]) {
+      var result = hooks[ch](stream, state);
+      if (result !== false) return result;
+    }
+    if (ch == '"' || ch == "'") {
+      state.tokenize = tokenString(ch);
+      return state.tokenize(stream, state);
+    }
+    if (/[\[\]{}\(\),;\:\.]/.test(ch)) {
+      curPunc = ch;
+      return null;
+    }
+    if (/\d/.test(ch)) {
+      stream.eatWhile(/[\w\.]/);
+      return "number";
+    }
+    if (ch == "/") {
+      if (stream.eat("*")) {
+        state.tokenize = tokenComment;
+        return tokenComment(stream, state);
+      }
+      if (stream.eat("/")) {
+        stream.skipToEnd();
+        return "comment";
+      }
+    }
+    if (isOperatorChar.test(ch)) {
+      stream.eatWhile(isOperatorChar);
+      return "operator";
+    }
+    stream.eatWhile(/[\w\$_]/);
+    var cur = stream.current();
+    if (keywords.propertyIsEnumerable(cur)) {
+      if (blockKeywords.propertyIsEnumerable(cur)) curPunc = "newstatement";
+      return "keyword";
+    }
+    if (atoms.propertyIsEnumerable(cur)) return "atom";
+    return "word";
+  }
+
+  function tokenString(quote) {
+    return function(stream, state) {
+      var escaped = false, next, end = false;
+      while ((next = stream.next()) != null) {
+        if (next == quote && !escaped) {end = true; break;}
+        escaped = !escaped && next == "\\";
+      }
+      if (end || !(escaped || multiLineStrings))
+        state.tokenize = null;
+      return "string";
+    };
+  }
+
+  function tokenComment(stream, state) {
+    var maybeEnd = false, ch;
+    while (ch = stream.next()) {
+      if (ch == "/" && maybeEnd) {
+        state.tokenize = null;
+        break;
+      }
+      maybeEnd = (ch == "*");
+    }
+    return "comment";
+  }
+
+  function Context(indented, column, type, align, prev) {
+    this.indented = indented;
+    this.column = column;
+    this.type = type;
+    this.align = align;
+    this.prev = prev;
+  }
+  function pushContext(state, col, type) {
+    return state.context = new Context(state.indented, col, type, null, state.context);
+  }
+  function popContext(state) {
+    var t = state.context.type;
+    if (t == ")" || t == "]" || t == "}")
+      state.indented = state.context.indented;
+    return state.context = state.context.prev;
+  }
+
+  // Interface
+
+  return {
+    startState: function(basecolumn) {
+      return {
+        tokenize: null,
+        context: new Context((basecolumn || 0) - indentUnit, 0, "top", false),
+        indented: 0,
+        startOfLine: true
+      };
+    },
+
+    token: function(stream, state) {
+      var ctx = state.context;
+      if (stream.sol()) {
+        if (ctx.align == null) ctx.align = false;
+        state.indented = stream.indentation();
+        state.startOfLine = true;
+      }
+      if (stream.eatSpace()) return null;
+      curPunc = null;
+      var style = (state.tokenize || tokenBase)(stream, state);
+      if (style == "comment" || style == "meta") return style;
+      if (ctx.align == null) ctx.align = true;
+
+      if ((curPunc == ";" || curPunc == ":") && ctx.type == "statement") popContext(state);
+      else if (curPunc == "{") pushContext(state, stream.column(), "}");
+      else if (curPunc == "[") pushContext(state, stream.column(), "]");
+      else if (curPunc == "(") pushContext(state, stream.column(), ")");
+      else if (curPunc == "}") {
+        while (ctx.type == "statement") ctx = popContext(state);
+        if (ctx.type == "}") ctx = popContext(state);
+        while (ctx.type == "statement") ctx = popContext(state);
+      }
+      else if (curPunc == ctx.type) popContext(state);
+      else if (ctx.type == "}" || ctx.type == "top" || (ctx.type == "statement" && curPunc == "newstatement"))
+        pushContext(state, stream.column(), "statement");
+      state.startOfLine = false;
+      return style;
+    },
+
+    indent: function(state, textAfter) {
+      if (state.tokenize != tokenBase && state.tokenize != null) return 0;
+      var ctx = state.context, firstChar = textAfter && textAfter.charAt(0);
+      if (ctx.type == "statement" && firstChar == "}") ctx = ctx.prev;
+      var closing = firstChar == ctx.type;
+      if (ctx.type == "statement") return ctx.indented + (firstChar == "{" ? 0 : indentUnit);
+      else if (ctx.align) return ctx.column + (closing ? 0 : 1);
+      else return ctx.indented + (closing ? 0 : indentUnit);
+    },
+
+    electricChars: "{}"
+  };
+});
+
+(function() {
+  function words(str) {
+    var obj = {}, words = str.split(" ");
+    for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
+    return obj;
+  }
+  var cKeywords = "auto if break int case long char register continue return default short do sizeof " +
+    "double static else struct entry switch extern typedef float union for unsigned " +
+    "goto while enum void const signed volatile";
+
+  function cppHook(stream, state) {
+    if (!state.startOfLine) return false;
+    stream.skipToEnd();
+    return "meta";
+  }
+
+  // C#-style strings where "" escapes a quote.
+  function tokenAtString(stream, state) {
+    var next;
+    while ((next = stream.next()) != null) {
+      if (next == '"' && !stream.eat('"')) {
+        state.tokenize = null;
+        break;
+      }
+    }
+    return "string";
+  }
+
+  CodeMirror.defineMIME("text/x-csrc", {
+    name: "clike",
+    keywords: words(cKeywords),
+    blockKeywords: words("case do else for if switch while struct"),
+    atoms: words("null"),
+    hooks: {"#": cppHook}
+  });
+  CodeMirror.defineMIME("text/x-c++src", {
+    name: "clike",
+    keywords: words(cKeywords + " asm dynamic_cast namespace reinterpret_cast try bool explicit new " +
+                    "static_cast typeid catch operator template typename class friend private " +
+                    "this using const_cast inline public throw virtual delete mutable protected " +
+                    "wchar_t"),
+    blockKeywords: words("catch class do else finally for if struct switch try while"),
+    atoms: words("true false null"),
+    hooks: {"#": cppHook}
+  });
+  CodeMirror.defineMIME("text/x-java", {
+    name: "clike",
+    keywords: words("abstract assert boolean break byte case catch char class const continue default " + 
+                    "do double else enum extends final finally float for goto if implements import " +
+                    "instanceof int interface long native new package private protected public " +
+                    "return short static strictfp super switch synchronized this throw throws transient " +
+                    "try void volatile while"),
+    blockKeywords: words("catch class do else finally for if switch try while"),
+    atoms: words("true false null"),
+    hooks: {
+      "@": function(stream, state) {
+        stream.eatWhile(/[\w\$_]/);
+        return "meta";
+      }
+    }
+  });
+  CodeMirror.defineMIME("text/x-csharp", {
+    name: "clike",
+    keywords: words("abstract as base bool break byte case catch char checked class const continue decimal" + 
+                    " default delegate do double else enum event explicit extern finally fixed float for" + 
+                    " foreach goto if implicit in int interface internal is lock long namespace new object" + 
+                    " operator out override params private protected public readonly ref return sbyte sealed short" + 
+                    " sizeof stackalloc static string struct switch this throw try typeof uint ulong unchecked" + 
+                    " unsafe ushort using virtual void volatile while add alias ascending descending dynamic from get" + 
+                    " global group into join let orderby partial remove select set value var yield"),
+    blockKeywords: words("catch class do else finally for foreach if struct switch try while"),
+    atoms: words("true false null"),
+    hooks: {
+      "@": function(stream, state) {
+        if (stream.eat('"')) {
+          state.tokenize = tokenAtString;
+          return tokenAtString(stream, state);
+        }
+        stream.eatWhile(/[\w\$_]/);
+        return "meta";
+      }
+    }
+  });
+  CodeMirror.defineMIME("text/x-scala", {
+    name: "clike",
+    keywords: words(
+      
+      /* scala */
+      "abstract case catch class def do else extends false final finally for forSome if " +
+      "implicit import lazy match new null object override package private protected return " +
+      "sealed super this throw trait try trye type val var while with yield _ : = => <- <: " +
+      "<% >: # @ " +
+                    
+      /* package scala */
+      "assert assume require print println printf readLine readBoolean readByte readShort " +
+      "readChar readInt readLong readFloat readDouble " +
+      
+      "AnyVal App Application Array BufferedIterator BigDecimal BigInt Char Console Either " +
+      "Enumeration Equiv Error Exception Fractional Function IndexedSeq Integral Iterable " +
+      "Iterator List Map Numeric Nil NotNull Option Ordered Ordering PartialFunction PartialOrdering " +
+      "Product Proxy Range Responder Seq Serializable Set Specializable Stream StringBuilder " +
+      "StringContext Symbol Throwable Traversable TraversableOnce Tuple Unit Vector :: #:: " +
+      
+      /* package java.lang */            
+      "Boolean Byte Character CharSequence Class ClassLoader Cloneable Comparable " +
+      "Compiler Double Exception Float Integer Long Math Number Object Package Pair Process " +
+      "Runtime Runnable SecurityManager Short StackTraceElement StrictMath String " +
+      "StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void"
+      
+      
+    ),
+    blockKeywords: words("catch class do else finally for forSome if match switch try while"),
+    atoms: words("true false null"),
+    hooks: {
+      "@": function(stream, state) {
+        stream.eatWhile(/[\w\$_]/);
+        return "meta";
+      }
+    }
+  });
+}());

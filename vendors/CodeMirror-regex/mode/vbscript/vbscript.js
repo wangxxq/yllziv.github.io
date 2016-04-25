@@ -1,1 +1,26 @@
-CodeMirror.defineMode("vbscript",function(){var e=/^(?:Call|Case|CDate|Clear|CInt|CLng|Const|CStr|Description|Dim|Do|Each|Else|ElseIf|End|Err|Error|Exit|False|For|Function|If|LCase|Loop|LTrim|Next|Nothing|Now|Number|On|Preserve|Quit|ReDim|Resume|RTrim|Select|Set|Sub|Then|To|Trim|True|UBound|UCase|Until|VbCr|VbCrLf|VbLf|VbTab)$/im;return{token:function(r){if(r.eatSpace())return null;var t=r.next();return"'"==t?(r.skipToEnd(),"comment"):'"'==t?(r.skipTo('"'),"string"):/\w/.test(t)&&(r.eatWhile(/\w/),e.test(r.current()))?"keyword":null}}}),CodeMirror.defineMIME("text/vbscript","vbscript");
+CodeMirror.defineMode("vbscript", function() {
+  var regexVBScriptKeyword = /^(?:Call|Case|CDate|Clear|CInt|CLng|Const|CStr|Description|Dim|Do|Each|Else|ElseIf|End|Err|Error|Exit|False|For|Function|If|LCase|Loop|LTrim|Next|Nothing|Now|Number|On|Preserve|Quit|ReDim|Resume|RTrim|Select|Set|Sub|Then|To|Trim|True|UBound|UCase|Until|VbCr|VbCrLf|VbLf|VbTab)$/im;
+
+  return {
+    token: function(stream) {
+      if (stream.eatSpace()) return null;
+      var ch = stream.next();
+      if (ch == "'") {
+      	stream.skipToEnd();
+      	return "comment";
+      }
+      if (ch == '"') {
+      	stream.skipTo('"');
+      	return "string";
+      }
+
+      if (/\w/.test(ch)) {
+        stream.eatWhile(/\w/);
+        if (regexVBScriptKeyword.test(stream.current())) return "keyword";
+      }
+      return null;
+    }
+  };
+});
+
+CodeMirror.defineMIME("text/vbscript", "vbscript");

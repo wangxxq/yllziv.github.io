@@ -1,1 +1,91 @@
-!function(){function t(t){"object"==typeof t&&(this.minChars=t.minChars,this.style=t.style,this.showToken=t.showToken,this.delay=t.delay),null==this.style&&(this.style=h),null==this.minChars&&(this.minChars=n),null==this.delay&&(this.delay=s),this.overlay=this.timeout=null}function e(t){var e=t.state.matchHighlighter;clearTimeout(e.timeout),e.timeout=setTimeout(function(){i(t)},e.delay)}function i(t){t.operation(function(){var e=t.state.matchHighlighter;if(e.overlay&&(t.removeOverlay(e.overlay),e.overlay=null),!t.somethingSelected()&&e.showToken){for(var i=e.showToken===!0?/[\w$]/:e.showToken,r=t.getCursor(),n=t.getLine(r.line),h=r.ch,s=h;h&&i.test(n.charAt(h-1));)--h;for(;s<n.length&&i.test(n.charAt(s));)++s;return void(s>h&&t.addOverlay(e.overlay=o(n.slice(h,s),i,e.style)))}if(t.getCursor("head").line==t.getCursor("anchor").line){var a=t.getSelection().replace(/^\s+|\s+$/g,"");a.length>=e.minChars&&t.addOverlay(e.overlay=o(a,!1,e.style))}})}function r(t,e){return!(t.start&&e.test(t.string.charAt(t.start-1))||t.pos!=t.string.length&&e.test(t.string.charAt(t.pos)))}function o(t,e,i){return{token:function(o){return!o.match(t)||e&&!r(o,e)?(o.next(),void(o.skipTo(t.charAt(0))||o.skipToEnd())):i}}}var n=2,h="matchhighlight",s=100;CodeMirror.defineOption("highlightSelectionMatches",!1,function(r,o,n){if(n&&n!=CodeMirror.Init){var h=r.state.matchHighlighter.overlay;h&&r.removeOverlay(h),clearTimeout(r.state.matchHighlighter.timeout),r.state.matchHighlighter=null,r.off("cursorActivity",e)}o&&(r.state.matchHighlighter=new t(o),i(r),r.on("cursorActivity",e))})}();
+// Highlighting text that matches the selection
+//
+// Defines an option highlightSelectionMatches, which, when enabled,
+// will style strings that match the selection throughout the
+// document.
+//
+// The option can be set to true to simply enable it, or to a
+// {minChars, style, showToken} object to explicitly configure it.
+// minChars is the minimum amount of characters that should be
+// selected for the behavior to occur, and style is the token style to
+// apply to the matches. This will be prefixed by "cm-" to create an
+// actual CSS class name. showToken, when enabled, will cause the
+// current token to be highlighted when nothing is selected.
+
+(function() {
+  var DEFAULT_MIN_CHARS = 2;
+  var DEFAULT_TOKEN_STYLE = "matchhighlight";
+  var DEFAULT_DELAY = 100;
+
+  function State(options) {
+    if (typeof options == "object") {
+      this.minChars = options.minChars;
+      this.style = options.style;
+      this.showToken = options.showToken;
+      this.delay = options.delay;
+    }
+    if (this.style == null) this.style = DEFAULT_TOKEN_STYLE;
+    if (this.minChars == null) this.minChars = DEFAULT_MIN_CHARS;
+    if (this.delay == null) this.delay = DEFAULT_DELAY;
+    this.overlay = this.timeout = null;
+  }
+
+  CodeMirror.defineOption("highlightSelectionMatches", false, function(cm, val, old) {
+    if (old && old != CodeMirror.Init) {
+      var over = cm.state.matchHighlighter.overlay;
+      if (over) cm.removeOverlay(over);
+      clearTimeout(cm.state.matchHighlighter.timeout);
+      cm.state.matchHighlighter = null;
+      cm.off("cursorActivity", cursorActivity);
+    }
+    if (val) {
+      cm.state.matchHighlighter = new State(val);
+      highlightMatches(cm);
+      cm.on("cursorActivity", cursorActivity);
+    }
+  });
+
+  function cursorActivity(cm) {
+    var state = cm.state.matchHighlighter;
+    clearTimeout(state.timeout);
+    state.timeout = setTimeout(function() {highlightMatches(cm);}, state.delay);
+  }
+
+  function highlightMatches(cm) {
+    cm.operation(function() {
+      var state = cm.state.matchHighlighter;
+      if (state.overlay) {
+        cm.removeOverlay(state.overlay);
+        state.overlay = null;
+      }
+      if (!cm.somethingSelected() && state.showToken) {
+        var re = state.showToken === true ? /[\w$]/ : state.showToken;
+        var cur = cm.getCursor(), line = cm.getLine(cur.line), start = cur.ch, end = start;
+        while (start && re.test(line.charAt(start - 1))) --start;
+        while (end < line.length && re.test(line.charAt(end))) ++end;
+        if (start < end)
+          cm.addOverlay(state.overlay = makeOverlay(line.slice(start, end), re, state.style));
+        return;
+      }
+      if (cm.getCursor("head").line != cm.getCursor("anchor").line) return;
+      var selection = cm.getSelection().replace(/^\s+|\s+$/g, "");
+      if (selection.length >= state.minChars)
+        cm.addOverlay(state.overlay = makeOverlay(selection, false, state.style));
+    });
+  }
+
+  function boundariesAround(stream, re) {
+    return (!stream.start || !re.test(stream.string.charAt(stream.start - 1))) &&
+      (stream.pos == stream.string.length || !re.test(stream.string.charAt(stream.pos)));
+  }
+
+  function makeOverlay(query, hasBoundary, style) {
+    return {token: function(stream) {
+      if (stream.match(query) &&
+          (!hasBoundary || boundariesAround(stream, hasBoundary)))
+        return style;
+      stream.next();
+      stream.skipTo(query.charAt(0)) || stream.skipToEnd();
+    }};
+  }
+})();

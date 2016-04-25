@@ -1,1 +1,51 @@
-!function(){"use strict";function t(t){t.state.matchedTag&&(t.state.matchedTag.clear(),t.state.matchedTag=null)}function a(a){a.state.failedTagMatch=!1,a.operation(function(){t(a);var o=a.getCursor(),e=a.getViewport();e.from=Math.min(e.from,o.line),e.to=Math.max(o.line+1,e.to);var r=CodeMirror.findMatchingTag(a,o,e);if(r){var i="close"==r.at?r.open:r.close;i?a.state.matchedTag=a.markText(i.from,i.to,{className:"CodeMirror-matchingtag"}):a.state.failedTagMatch=!0}})}function o(t){t.state.failedTagMatch&&a(t)}CodeMirror.defineOption("matchTags",!1,function(e,r,i){i&&i!=CodeMirror.Init&&(e.off("cursorActivity",a),e.off("viewportChange",o),t(e)),r&&(e.on("cursorActivity",a),e.on("viewportChange",o),a(e))}),CodeMirror.commands.toMatchingTag=function(t){var a=CodeMirror.findMatchingTag(t,t.getCursor());if(a){var o="close"==a.at?a.open:a.close;o&&t.setSelection(o.to,o.from)}}}();
+(function() {
+  "use strict";
+
+  CodeMirror.defineOption("matchTags", false, function(cm, val, old) {
+    if (old && old != CodeMirror.Init) {
+      cm.off("cursorActivity", doMatchTags);
+      cm.off("viewportChange", maybeUpdateMatch);
+      clear(cm);
+    }
+    if (val) {
+      cm.on("cursorActivity", doMatchTags);
+      cm.on("viewportChange", maybeUpdateMatch);
+      doMatchTags(cm);
+    }
+  });
+
+  function clear(cm) {
+    if (cm.state.matchedTag) {
+      cm.state.matchedTag.clear();
+      cm.state.matchedTag = null;
+    }
+  }
+
+  function doMatchTags(cm) {
+    cm.state.failedTagMatch = false;
+    cm.operation(function() {
+      clear(cm);
+      var cur = cm.getCursor(), range = cm.getViewport();
+      range.from = Math.min(range.from, cur.line); range.to = Math.max(cur.line + 1, range.to);
+      var match = CodeMirror.findMatchingTag(cm, cur, range);
+      if (!match) return;
+      var other = match.at == "close" ? match.open : match.close;
+      if (other)
+        cm.state.matchedTag = cm.markText(other.from, other.to, {className: "CodeMirror-matchingtag"});
+      else
+        cm.state.failedTagMatch = true;
+    });
+  }
+
+  function maybeUpdateMatch(cm) {
+    if (cm.state.failedTagMatch) doMatchTags(cm);
+  }
+
+  CodeMirror.commands.toMatchingTag = function(cm) {
+    var found = CodeMirror.findMatchingTag(cm, cm.getCursor());
+    if (found) {
+      var other = found.at == "close" ? found.open : found.close;
+      if (other) cm.setSelection(other.to, other.from);
+    }
+  };
+})();

@@ -1,1 +1,19 @@
-jQuery(document).ready(function(e){e(".level-bar-inner").css("width","0"),e(window).on("load",function(){e(".level-bar-inner").each(function(){var n=e(this).data("level");e(this).animate({width:n},800)})}),e(".level-label").tooltip()}),$(document).ready(function(){$("iframe",window.parent.document).height($(".yll-person").height()),$(window).resize(function(){$("iframe",window.parent.document).height($(".yll-person").height())})});
+jQuery(document).ready(function($) {
+  $('.level-bar-inner').css('width', '0');
+  $(window).on('load', function() {
+    $('.level-bar-inner').each(function() {
+      var itemWidth = $(this).data('level');
+      $(this).animate({
+        width: itemWidth
+      }, 800);
+    });
+  });
+  $('.level-label').tooltip();
+});
+
+$(document).ready(function() {
+  $('iframe', window.parent.document).height($('.yll-person').height());
+  $(window).resize(function() {
+    $('iframe', window.parent.document).height($('.yll-person').height());
+  })
+});

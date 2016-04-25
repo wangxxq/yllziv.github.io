@@ -1,1 +1,42 @@
-CodeMirror.defineMode("jinja2",function(e,t){function n(e,t){var n=e.next();return"{"==n&&(n=e.eat(/\{|%|#/))?(e.eat("-"),t.tokenize=o(n),"tag"):void 0}function o(e){return"{"==e&&(e="}"),function(t,o){var i=t.next();return(i==e||"-"==i&&t.eat(e))&&t.eat("}")?(o.tokenize=n,"tag"):t.match(r)?"keyword":"#"==e?"comment":"string"}}var r=["block","endblock","for","endfor","in","true","false","loop","none","self","super","if","as","not","and","else","import","with","without","context"];return r=new RegExp("^(("+r.join(")|(")+"))\\b"),{startState:function(){return{tokenize:n}},token:function(e,t){return t.tokenize(e,t)}}});
+CodeMirror.defineMode("jinja2", function(config, parserConf) {
+    var keywords = ["block", "endblock", "for", "endfor", "in", "true", "false", 
+                    "loop", "none", "self", "super", "if", "as", "not", "and",
+                    "else", "import", "with", "without", "context"];
+    keywords = new RegExp("^((" + keywords.join(")|(") + "))\\b");
+
+    function tokenBase (stream, state) {
+        var ch = stream.next();
+        if (ch == "{") {
+            if (ch = stream.eat(/\{|%|#/)) {
+                stream.eat("-");
+                state.tokenize = inTag(ch);
+                return "tag";
+            }
+        }
+    }
+    function inTag (close) {
+        if (close == "{") {
+            close = "}";
+        }
+        return function (stream, state) {
+            var ch = stream.next();
+            if ((ch == close || (ch == "-" && stream.eat(close)))
+                && stream.eat("}")) {
+                state.tokenize = tokenBase;
+                return "tag";
+            }
+            if (stream.match(keywords)) {
+                return "keyword";
+            }
+            return close == "#" ? "comment" : "string";
+        };
+    }
+    return {
+        startState: function () {
+            return {tokenize: tokenBase};
+        },
+        token: function (stream, state) {
+            return state.tokenize(stream, state);
+        }
+    }; 
+});
