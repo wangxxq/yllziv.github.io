@@ -1,1 +1,1 @@
-$('br').remove();
+$("br").remove();

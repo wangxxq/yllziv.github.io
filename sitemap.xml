@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yanglonglong.com/blog/web/2016-04-19-%E4%BD%BF%E7%94%A8hexo%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2.html</loc>
+    
+    <lastmod>2016-04-26T15:40:48.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/blog/web/2016-04-26-%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8EJade%E6%B7%B1%E5%85%A5%E7%A0%94%E7%A9%B6.html</loc>
+    
+    <lastmod>2016-04-26T15:39:48.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/blog/tool/2016-04-26-nginx%E5%9C%A8centos6-5%E5%92%8Cmac%E4%B8%AD%E7%9A%84%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html</loc>
+    
+    <lastmod>2016-04-26T15:39:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/photos/blogAlbum.json</loc>
+    
+    <lastmod>2016-04-26T14:38:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yanglonglong.com/tool/rest.html</loc>
     
     <lastmod>2016-04-24T15:31:47.000Z</lastmod>
@@ -19,13 +47,6 @@
     <loc>http://yanglonglong.com/tool/vim.html</loc>
     
     <lastmod>2016-04-24T07:14:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/photos/blogAlbum.json</loc>
-    
-    <lastmod>2016-04-24T06:11:11.000Z</lastmod>
     
   </url>
   
@@ -96,13 +117,6 @@
     <loc>http://yanglonglong.com/photos/albumString.json</loc>
     
     <lastmod>2016-04-21T08:32:06.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/blog/web/2016-04-19-hello-world.html</loc>
-    
-    <lastmod>2016-04-20T15:50:30.000Z</lastmod>
     
   </url>
   

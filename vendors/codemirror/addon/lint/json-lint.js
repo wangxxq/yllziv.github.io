@@ -1,15 +1,1 @@
-// Depends on jsonlint.js from https://github.com/zaach/jsonlint
-
-CodeMirror.registerHelper("lint", "json", function(text) {
-  var found = [];
-  jsonlint.parseError = function(str, hash) {
-    var loc = hash.loc;
-    found.push({from: CodeMirror.Pos(loc.first_line - 1, loc.first_column),
-                to: CodeMirror.Pos(loc.last_line - 1, loc.last_column),
-                message: str});
-  };
-  try { jsonlint.parse(text); }
-  catch(e) {}
-  return found;
-});
-CodeMirror.jsonValidator = CodeMirror.lint.json; // deprecated
+CodeMirror.registerHelper("lint","json",function(r){var o=[];jsonlint.parseError=function(r,n){var i=n.loc;o.push({from:CodeMirror.Pos(i.first_line-1,i.first_column),to:CodeMirror.Pos(i.last_line-1,i.last_column),message:r})};try{jsonlint.parse(r)}catch(n){}return o}),CodeMirror.jsonValidator=CodeMirror.lint.json;

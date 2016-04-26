@@ -1,15 +1,1 @@
-CodeMirror.defineOption("showTrailingSpace", false, function(cm, val, prev) {
-  if (prev == CodeMirror.Init) prev = false;
-  if (prev && !val)
-    cm.removeOverlay("trailingspace");
-  else if (!prev && val)
-    cm.addOverlay({
-      token: function(stream) {
-        for (var l = stream.string.length, i = l; i && /\s/.test(stream.string.charAt(i - 1)); --i) {}
-        if (i > stream.pos) { stream.pos = i; return null; }
-        stream.pos = l;
-        return "trailingspace";
-      },
-      name: "trailingspace"
-    });
-});
+CodeMirror.defineOption("showTrailingSpace",!1,function(r,n,e){e==CodeMirror.Init&&(e=!1),e&&!n?r.removeOverlay("trailingspace"):!e&&n&&r.addOverlay({token:function(r){for(var n=r.string.length,e=n;e&&/\s/.test(r.string.charAt(e-1));--e);return e>r.pos?(r.pos=e,null):(r.pos=n,"trailingspace")},name:"trailingspace"})});
