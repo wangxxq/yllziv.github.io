@@ -1,0 +1,1 @@
+$(document).ready(function(){$(".headList span").click(function(a){var t=$(a.target).attr("data-list");switch(t){case"1":self.location="guess.html";break;case"2":self.location="daily.html";break;case"3":self.location="search.html";break;case"4":self.location="about.html"}})});
