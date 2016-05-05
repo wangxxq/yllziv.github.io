@@ -1,1 +1,1 @@
-var serverIp="115.28.28.161";
+var serverIp = '115.28.28.161';

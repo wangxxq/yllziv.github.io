@@ -1,1 +1,150 @@
-function queryConnectionHandler(e,n){n.writeHead(200,{"Content-Type":"application/json; charset=UTF-8","Access-Control-Allow-Methods":"PUT,POST,GET,DELETE,OPTIONS","Access-Control-Allow-Headers":"Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With","Access-Control-Allow-Origin":"*"});var i=url.parse(e.url).pathname,o=require("url").parse(e.url.toLowerCase(),!0);if("/random"==i){var r=o.query.num||0;client.query('select * from "movie" where douban_movie_lookedman>100000 order by random() limit '+r,function(e,i){e?n.send(""):i.rows.length>0?(movies=JSON.stringify(i.rows),n.end(movies)):n.send("false")})}if("/individuality"==i){o.query.from||0,o.query.to||0;if("POST"===e.method){var t="";e.on("data",function(e){t+=e}),e.on("end",function(){var e=individual.getIndividualMoives(JSON.parse(t)),i=individual.getSql(e,0,150);console.log(i),client.query(i,function(e,i){e?n.send(""):i.rows.length>0?(movies=JSON.stringify(i.rows),n.end(movies)):n.send("false")})})}}if("/daily"==i){var r=o.query.num||0,s=o.query.mood||"开心",l=individual.getDailySql(s,130);client.query(l,function(e,i){e?n.send(""):i.rows.length>0?(movies=JSON.stringify(i.rows),n.end(movies)):n.send("false")})}if("/theme"==i){var r=o.query.num||0,u=o.query.myear||"2014",a=o.query.mtype||"喜剧",d=o.query.mlanguage||"普通话",c=o.query.mscore||"7",l=individual.getThemeSql(130,u,a,d,c);client.query(l,function(e,i){e?n.send(""):i.rows.length>0?(movies=JSON.stringify(i.rows),n.end(movies)):n.send("false")})}if("/themeone"==i){var r=o.query.num||0,a=o.query.mtype||"喜剧",l=individual.getThemeOneSql(r,a);console.log(l),client.query(l,function(e,i){e?n.send(""):i.rows.length>0?(movies=JSON.stringify(i.rows),n.end(movies)):n.send("false")})}}var pg=require("pg"),http=require("http"),url=require("url"),conString="tcp://postgres:admin@115.28.28.161:5432/imovie",client=new pg.Client(conString),movies=null,individual=require("./individual");client.connect(function(e,n){return e?(console.log("ClientConnectionReady Error: "+e.message),void client.end()):void console.log("Connecting to postgres success...")});var server=http.createServer(queryConnectionHandler);server.listen(19931),console.log("Server running at http://localhost:19931/random?num=2");
+/*删除douban_movie_score字段为NULL的记录
+DELETE FROM movie WHERE douban_movie_score='NULL'
+选择好电影
+select * from movie where douban_movie_lookedman>100000 and cast(douban_movie_score as real)>9
+
+删除douban_movie_name重复的列（年份是连续的两个）
+delete from movie where douban_movie_id in (select douban_movie_id from movie
+where douban_movie_name in
+(select douban_movie_name from movie
+group by douban_movie_name having count(douban_movie_name) > 1) and cast(douban_movie_year as int)%2=1)*/
+
+var pg = require('pg');
+var http = require('http');
+var url = require('url');
+var conString = "tcp://postgres:admin@115.28.28.161:5432/imovie"; // 连接字符串="tcp:// 用户名 : 密码 @localhost:5432/ 库名";
+var client = new pg.Client(conString);
+var movies = null;
+var individual = require('./individual');
+
+// 连接数据库
+client.connect(function(error, results) {
+  if (error) {
+    console.log('ClientConnectionReady Error: ' + error.message);
+    client.end();
+    return;
+  }
+  console.log('Connecting to postgres success...');
+});
+
+
+var server = http.createServer(queryConnectionHandler);
+
+function queryConnectionHandler(req, res) {
+  res.writeHead(200, {
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+    'Access-Control-Allow-Headers': 'Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With',
+    'Access-Control-Allow-Origin': '*'
+  });
+  var pathname = url.parse(req.url).pathname;
+  var args = require('url').parse(req.url.toLowerCase(), true);
+
+  if (pathname == '/random') { //
+    var num = args.query.num || 0; //获得参数num
+    // 查询数据库
+    client.query("select * from \"movie\" where douban_movie_lookedman>100000 order by random() limit " + num, function(err, result) {
+      if (!err) {
+        if (result.rows.length > 0) {
+          movies = JSON.stringify(result.rows);
+          res.end(movies);
+        } else {
+          res.send('false');
+        }
+      } else {
+        res.send('');
+      }
+    });
+  }
+  if (pathname == '/individuality') {
+    var from = args.query.from || 0; //获得参数from
+    var to = args.query.to || 0; //获得参数to
+    if (req.method === 'POST') {
+      var body = '';
+      req.on('data', function(data) {
+        body += data;
+      });
+      req.on('end', function() {
+        //console.log("Body: " + body);
+        var result = individual.getIndividualMoives(JSON.parse(body));
+        //console.log(result);
+
+        var sqlString = individual.getSql(result, 0, 150);
+        console.log(sqlString);
+        client.query(sqlString, function(err, result) {
+          if (!err) {
+            if (result.rows.length > 0) {
+              movies = JSON.stringify(result.rows);
+              res.end(movies);
+            } else {
+              res.send('false');
+            }
+          } else {
+            res.send('');
+          }
+        });
+      });
+    }
+  }
+  if (pathname == '/daily') { //
+    var num = args.query.num || 0; //获得参数num
+    var mood = args.query.mood || '开心';
+    var sqlString = individual.getDailySql(mood, 130);
+    // 查询数据库
+    client.query(sqlString, function(err, result) {
+      if (!err) {
+        if (result.rows.length > 0) {
+          movies = JSON.stringify(result.rows);
+          res.end(movies);
+        } else {
+          res.send('false');
+        }
+      } else {
+        res.send('');
+      }
+    });
+  }
+  if (pathname == '/theme') { //
+    var num = args.query.num || 0; //获得参数num
+    var myear = args.query.myear || '2014'; // 年代
+    var mtype = args.query.mtype || '喜剧'; // 主题
+    var mlanguage = args.query.mlanguage || '普通话'; // 语言
+    var mscore = args.query.mscore || '7'; // 评分
+    var sqlString = individual.getThemeSql(130, myear, mtype, mlanguage, mscore);
+    // 查询数据库
+    client.query(sqlString, function(err, result) {
+      if (!err) {
+        if (result.rows.length > 0) {
+          movies = JSON.stringify(result.rows);
+          res.end(movies);
+        } else {
+          res.send('false');
+        }
+      } else {
+        res.send('');
+      }
+    });
+  }
+  if (pathname == '/themeone') { //
+    var num = args.query.num || 0; //获得参数num
+    var mtype = args.query.mtype || '喜剧'; // 主题
+    var sqlString = individual.getThemeOneSql(num, mtype);
+    // 查询数据库
+    console.log(sqlString)
+    client.query(sqlString, function(err, result) {
+      if (!err) {
+        if (result.rows.length > 0) {
+          movies = JSON.stringify(result.rows);
+          res.end(movies);
+        } else {
+          res.send('false');
+        }
+      } else {
+        res.send('');
+      }
+    });
+  }
+}
+server.listen(19931);
+
+console.log("Server running at http://localhost:19931/random?num=2");

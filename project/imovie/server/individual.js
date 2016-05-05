@@ -1,1 +1,171 @@
-function unique(r){for(var e,o=[],a={},t=0;null!=(e=r[t]);t++)a[e]||(o.push(e),a[e]=!0);return o}var http=require("http"),factor={directors:[],actors:[],types:[],language:[],address:[]};module.exports.getIndividualMoives=function(r){for(var e in r)factor.directors.push(processString(r[e].douban_movie_director)),factor.actors.push(processString(r[e].douban_movie_actor).replace("更多...","")),factor.types.push(processString(r[e].douban_movie_class)),factor.language.push(processString(r[e].douban_movie_language)),factor.address.push(processString(r[e].douban_movie_place));factor.directors=factor.directors.toString().split(","),factor.actors=factor.actors.toString().replace(/,+/g,",").split(","),factor.types=factor.types.toString().split(","),factor.language=factor.language.toString().split(","),factor.address=factor.address.toString().split(",");var o={};return o.directors=maxArray(staticArray(factor.directors)),o.actors=maxArray(staticArray(factor.actors)),o.types=maxArray(staticArray(factor.types)),o.language=maxArray(staticArray(factor.language)),o.address=maxArray(staticArray(factor.address)),o},module.exports.getSql=function(r,e,o){var a=Number.parseInt(o)-Number.parseInt(e)+1,t='select * from "movie" where douban_movie_lookedman > 5000  and (';for(var n in r.directors)t+="douban_movie_director like '%"+r.directors[n]+"%' or \n";t=t.substr(0,t.length-4)+" or ";for(var n in r.actors)t+="douban_movie_actor like '%"+r.actors[n]+"%' or \n";t=t.substr(0,t.length-4)+") and (";for(var n in r.types)t+="douban_movie_class like '%"+r.types[n]+"%' or \n";t=t.substr(0,t.length-4)+") and (";for(var n in r.language)t+="douban_movie_language like '%"+r.language[n]+"%' or \n";t=t.substr(0,t.length-4)+") and (";for(var n in r.address)t+="douban_movie_place like '%"+r.address[n]+"%' or \n";return t=t.substr(0,t.length-4)+") order by douban_movie_lookedman desc  limit "+a+" offset  "+e};var processString=function(r){return r.toString().replace(/\r/g,"").replace("/ [1,]/g ","").split("/").toString().replace(/\s/g,"")},staticArray=function(r){var e={};for(var o in r)e.hasOwnProperty(r[o])?e[r[o]]++:e[r[o]]=1;return e},maxArray=function(r){var e=[],o=0;for(var a in r)e.push(Number.parseInt(r[a])),o+=Number.parseInt(r[a]);e.sort(function(r,e){return e>r?1:-1});var t=[];for(var a in r)r[a]==e[0]?t.push(a):r[a]==e[1]&&t.push(a);return t};module.exports.getDailySql=function(r,e){r="开心"==r||"幸福"==r||"快乐"==r?"晴阳美亮好漂丽佳谐富兴愉喜悦福":"犹豫"==r||"忧郁"==r||"彷徨"==r||"伤心"==r||"矛盾"==r?"雾霾阴忧郁销魂挠苦愁痛撕裂叹哎闷伤犹豫彷徨伤心":"痛苦"==r||"烦恼"==r||"失落"==r||"不爽"==r||"愁闷"==r||"嫉妒"==r?"雾雨泪血风淋浴痛苦烦恼愁闷嫉妒":"恐惧"==r||"龌龊"==r||"贪婪"==r?"鬼魂恐惧黑暗尸鞭蜈蚣虫怖":"懒惰"==r||"淫欲"==r||"愤怒"==r||"绝望"==r?"害怕淫欲色情黄裸女虐杀抢":"平和"==r||"坚定"==r||"骄傲"==r?"平和鸽坚定骄傲持久笃":"美好";for(var o=r.split(""),a='select * from "movie" where douban_movie_lookedman > 1000  and (',t=0;t<o.length;t++)a+="douban_movie_name like '%"+o[t]+"%' or \n";return a=a.substr(0,a.length-4)+") order by douban_movie_lookedman desc  limit "+e+" offset 0"},module.exports.getThemeSql=function(r,e,o,a,t){var n='select * from "movie" where douban_movie_lookedman > 10  and ';return n+="douban_movie_year like '%"+e+"%' and ",n+="douban_movie_class like '%"+o+"%' and ",n+="douban_movie_language like '%"+a+"%' and ",n+="CAST(douban_movie_score AS double precision) > "+t,n+=" order by douban_movie_lookedman desc  limit "+r+" offset 0"},module.exports.getThemeOneSql=function(r,e){var o='select * from "movie" where douban_movie_lookedman > 10  and ';return o+="douban_movie_class like '%"+e+"%' ",o+=" order by douban_movie_lookedman desc  limit "+r+" offset 0"};
+var http = require('http');
+
+var factor = { // 影像因子
+	directors: [],
+	actors: [],
+	types: [],
+	language: [],
+	address: []
+};
+module.exports.getIndividualMoives = function(data){
+	for(var i in data){
+		factor.directors.push(processString(data[i].douban_movie_director));
+		factor.actors.push(processString(data[i].douban_movie_actor).replace('更多...',''));
+		factor.types.push(processString(data[i].douban_movie_class));
+		factor.language.push(processString(data[i].douban_movie_language));
+		factor.address.push(processString(data[i].douban_movie_place));
+
+	}
+	factor.directors = factor.directors.toString().split(',');
+	factor.actors = factor.actors.toString().replace(/,+/g,',').split(',');
+	factor.types = factor.types.toString().split(',');
+	factor.language = factor.language.toString().split(',');
+	factor.address = factor.address.toString().split(',');
+	// console.log(staticArray1(factor.address));
+	var result = {};
+	result.directors = (maxArray(staticArray(factor.directors)));
+	result.actors = (maxArray(staticArray(factor.actors)));
+	result.types = (maxArray(staticArray(factor.types)));
+	result.language = (maxArray(staticArray(factor.language)));
+	result.address = (maxArray(staticArray(factor.address)));
+	return result;
+};
+
+module.exports.getSql = function(myObj, from, to){
+	var summaryNum = Number.parseInt(to) - Number.parseInt(from) + 1;
+	var sqlString = "select * from \"movie\" where douban_movie_lookedman > 5000  and (";
+	for(var i in myObj.directors){
+		sqlString += "douban_movie_director like \'%"+ myObj.directors[i] +"%\' or \n";
+	}
+	sqlString = sqlString.substr(0,sqlString.length-4) + " or "
+	for(var i in myObj.actors){
+		sqlString += "douban_movie_actor like \'%"+ myObj.actors[i] +"%\' or \n";
+	}
+	sqlString = sqlString.substr(0,sqlString.length-4) + ") and ("
+	for(var i in myObj.types){
+		sqlString += "douban_movie_class like \'%"+ myObj.types[i] +"%\' or \n";
+	}
+	sqlString = sqlString.substr(0,sqlString.length-4) + ") and ("
+	for(var i in myObj.language){
+		sqlString += "douban_movie_language like \'%"+ myObj.language[i] +"%\' or \n";
+	}
+	sqlString = sqlString.substr(0,sqlString.length-4) + ") and ("
+	for(var i in myObj.address){
+		sqlString += "douban_movie_place like \'%"+ myObj.address[i] +"%\' or \n";
+	}
+	sqlString = sqlString.substr(0,sqlString.length-4) + ") order by douban_movie_lookedman desc  limit " + summaryNum + " offset  " + from;
+	return sqlString;
+};
+
+var processString = function(myString){
+	return myString.toString().replace(/\r/g,'').replace('/ [1,]/g ','').split('/').toString().replace(/\s/g, "");
+};
+
+var staticArray = function(arrayObj){  // 统计数组中各个元素的数量，速度比方法1快三倍
+	var tempArray = {};
+	for( var i in arrayObj){
+		if(tempArray.hasOwnProperty(arrayObj[i])){
+			tempArray[arrayObj[i]]++;
+		}else{
+			tempArray[arrayObj[i]] = 1;
+		}
+	}
+	return tempArray;
+};
+
+var maxArray = function(myArray){ // 取得最大值
+	var intArray = [];
+	var sum = 0;
+	for(var i in myArray){
+		intArray.push(Number.parseInt(myArray[i]));
+		sum += Number.parseInt(myArray[i]);
+	}
+	intArray.sort(function(a,b){return a<b?1:-1});
+	var result = [];
+	for(var i in myArray){
+		if(myArray[i] == intArray[0]){
+			result.push(i);
+		}
+		else if (myArray[i] == intArray[1]){
+			result.push(i);
+		}
+		//else if (myArray[i] == intArray[2]){
+		//	result.push(i);
+		//}
+		//else if (myArray[i] == intArray[3]){
+		//	result.push(i);
+		//}
+	}
+	return result;
+};
+
+function unique(arr){  // 去重
+	var result = [], hash = {};
+	for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+		if (!hash[elem]) {
+			result.push(elem);
+			hash[elem] = true;
+		}
+	}
+	return result;
+}
+//
+//http.get('http://"+serverIp+":19931/random?num=100',function(res){
+//	if (res.statusCode === 200) {
+//		var size = 0;
+//		var chunks = [];
+//		res.on('data', function(chunk){
+//			size += chunk.length;
+//			chunks.push(chunk);
+//		});
+//		res.on('end', function(){
+//			var data = Buffer.concat(chunks, size);
+//			var result = getIndividualMoives(JSON.parse(data));
+//			var sqlString = getSql(result,1,20);
+//		}).on('error', function(e) {
+//			console.log("Got error: " + e.message);
+//		});
+//	}
+//});
+
+module.exports.getDailySql = function(mood,num){
+//var getDailySql = function(mood,num){
+	if(mood == "开心" || mood == "幸福" || mood == "快乐"){
+		mood = "晴阳美亮好漂丽佳谐富兴愉喜悦福"
+	} else if(mood == "犹豫" || mood == "忧郁" || mood == "彷徨" || mood == "伤心" || mood == "矛盾"){
+		mood = "雾霾阴忧郁销魂挠苦愁痛撕裂叹哎闷伤犹豫彷徨伤心"
+	} else if(mood == "痛苦" || mood == "烦恼" || mood == "失落" || mood == "不爽" || mood == "愁闷" || mood == "嫉妒"){
+		mood = "雾雨泪血风淋浴痛苦烦恼愁闷嫉妒"
+	}else if(mood == "恐惧" || mood =="龌龊" || mood == "贪婪"){
+		mood = "鬼魂恐惧黑暗尸鞭蜈蚣虫怖"
+	}else if(mood =="懒惰" || mood =="淫欲" || mood =="愤怒" || mood =="绝望"){
+		mood = "害怕淫欲色情黄裸女虐杀抢"
+	}else if(mood == "平和" || mood =="坚定"  || mood =="骄傲" ){
+		mood = "平和鸽坚定骄傲持久笃"
+	}else{
+		mood = "美好"
+	}
+	var moodArray = mood.split('');
+	var sqlString = "select * from \"movie\" where douban_movie_lookedman > 1000  and (";
+	for(var i = 0; i < moodArray.length; i++){
+		sqlString += "douban_movie_name like \'%"+ moodArray[i] +"%\' or \n";
+	}
+	sqlString = sqlString.substr(0,sqlString.length-4) + ") order by douban_movie_lookedman desc  limit " + num + " offset 0";
+	return sqlString;
+};
+
+module.exports.getThemeSql = function(num,myear,mtype,mlanguage,mscore){
+	var sqlString = "select * from \"movie\" where douban_movie_lookedman > 10  and ";
+	sqlString += "douban_movie_year like \'%"+ myear +"%\' and ";
+	sqlString += "douban_movie_class like \'%"+ mtype +"%\' and ";
+	sqlString += "douban_movie_language like \'%"+ mlanguage +"%\' and ";
+	sqlString += "CAST(douban_movie_score AS double precision) > "+ mscore ;
+	sqlString += " order by douban_movie_lookedman desc  limit " + num + " offset 0";
+	return sqlString;
+};
+module.exports.getThemeOneSql = function(num,mtype){
+	var sqlString = "select * from \"movie\" where douban_movie_lookedman > 10  and ";
+	sqlString += "douban_movie_class like \'%"+ mtype +"%\' ";
+	sqlString += " order by douban_movie_lookedman desc  limit " + num + " offset 0";
+	return sqlString;
+};
