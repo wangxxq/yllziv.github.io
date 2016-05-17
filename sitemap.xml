@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yanglonglong.com/blog/2016-05-17-%E7%99%BE%E5%BA%A6%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E5%AD%A6%E9%99%A2%E4%BB%BB%E5%8A%A1%E2%80%94%E2%80%94%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0.html</loc>
+    
+    <lastmod>2016-05-17T13:24:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/blog/2016-05-08-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E4%B8%89%E8%A1%8C%E4%B8%89%E5%88%97%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80.html</loc>
+    
+    <lastmod>2016-05-17T13:01:49.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yanglonglong.com/blog/2016-04-19-%E4%BD%BF%E7%94%A8hexo%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2.html</loc>
     
     <lastmod>2016-05-09T14:50:31.000Z</lastmod>
@@ -16,14 +30,14 @@
   </url>
   
   <url>
-    <loc>http://yanglonglong.com/blog/2016-04-26-nginx%E5%9C%A8centos6-5%E5%92%8Cmac%E4%B8%AD%E7%9A%84%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html</loc>
+    <loc>http://yanglonglong.com/blog/2016-04-28-centos6-5-os-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8mongodb.html</loc>
     
     <lastmod>2016-05-09T14:43:07.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yanglonglong.com/blog/2016-04-28-centos6-5-os-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8mongodb.html</loc>
+    <loc>http://yanglonglong.com/blog/2016-04-26-nginx%E5%9C%A8centos6-5%E5%92%8Cmac%E4%B8%AD%E7%9A%84%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html</loc>
     
     <lastmod>2016-05-09T14:43:07.000Z</lastmod>
     
@@ -37,7 +51,7 @@
   </url>
   
   <url>
-    <loc>http://yanglonglong.com/blog/2016-05-06-%E5%9C%A8centos%E4%B8%AD%E4%BD%BF%E7%94%A8PostgreSQL.html</loc>
+    <loc>http://yanglonglong.com/blog/2016-05-04-%E6%90%AD%E5%BB%BALeaflet%E4%B8%AD%E6%96%87%E4%B8%BB%E9%A1%B5%E5%92%8CLeaflet%E4%B8%AD%E6%96%87%E7%A4%BE%E5%8C%BA.html</loc>
     
     <lastmod>2016-05-09T14:42:49.000Z</lastmod>
     
@@ -51,16 +65,9 @@
   </url>
   
   <url>
-    <loc>http://yanglonglong.com/blog/2016-05-04-%E6%90%AD%E5%BB%BALeaflet%E4%B8%AD%E6%96%87%E4%B8%BB%E9%A1%B5%E5%92%8CLeaflet%E4%B8%AD%E6%96%87%E7%A4%BE%E5%8C%BA.html</loc>
+    <loc>http://yanglonglong.com/blog/2016-05-06-%E5%9C%A8centos%E4%B8%AD%E4%BD%BF%E7%94%A8PostgreSQL.html</loc>
     
     <lastmod>2016-05-09T14:42:49.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/blog/2016-05-08-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E4%B8%89%E8%A1%8C%E4%B8%89%E5%88%97%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80.html</loc>
-    
-    <lastmod>2016-05-09T14:42:18.000Z</lastmod>
     
   </url>
   
