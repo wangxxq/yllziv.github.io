@@ -5,7 +5,7 @@
   <link href="/rss.xml" rel="self"/>
   
   <link href="http://yanglonglong.com/"/>
-  <updated>2016-05-17T13:24:43.000Z</updated>
+  <updated>2016-05-17T13:50:05.000Z</updated>
   <id>http://yanglonglong.com/</id>
   
   <author>
@@ -20,47 +20,47 @@
     <link href="http://yanglonglong.com/blog/2016-05-17-%E7%99%BE%E5%BA%A6%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF%E5%AD%A6%E9%99%A2%E4%BB%BB%E5%8A%A1%E2%80%94%E2%80%94%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0.html"/>
     <id>http://yanglonglong.com/blog/2016-05-17-百度前端技术学院任务——持续更新.html</id>
     <published>2016-05-17T12:36:23.000Z</published>
-    <updated>2016-05-17T13:24:43.000Z</updated>
+    <updated>2016-05-17T13:50:05.000Z</updated>
     
     <content type="html">&lt;h2 id=&quot;引子&quot;&gt;&lt;a href=&quot;#引子&quot; class=&quot;headerlink&quot; title=&quot;引子&quot;&gt;&lt;/a&gt;引子&lt;/h2&gt;&lt;p&gt;入门前端到现在大概有两年了吧，知识总是断断续续的，项目也是边学习边做，还没有系统的学习过。借着百度前端学院这次机会，准备自己独立完成学院的这些任务，也便于发现自己的知识盲点。计划是一个挨着一个的慢慢做下去，做完一个就review下其他人的代码，刷完今年的任务，就刷去年的任务。所有的这些任务都是在业余时间完成。&lt;/p&gt;
 &lt;h2 id=&quot;IFE春季班第一阶段任务&quot;&gt;&lt;a href=&quot;#IFE春季班第一阶段任务&quot; class=&quot;headerlink&quot; title=&quot;IFE春季班第一阶段任务&quot;&gt;&lt;/a&gt;IFE春季班第一阶段任务&lt;/h2&gt;&lt;p&gt;第一阶段的主要目标是帮助大家 了解、认识、学习、掌握HTML及CSS。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务一：零基础HTML编码/index.html&quot;&gt;任务一（已完成，入门）：面向零基础的HTML代码编写&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务二：零基础HTML以及CSS编码（一）/index.html&quot;&gt;任务二（已完成，入门）：基于任务1的HTML代码，实现简单的CSS代码编写&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务一：零基础HTML编码/index.html&quot;&gt;任务一（已完成，入门）：面向零基础的HTML代码编写&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务二：零基础HTML以及CSS编码（一）/index.html&quot;&gt;任务二（已完成，入门）：基于任务1的HTML代码，实现简单的CSS代码编写&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
 &lt;li&gt;任务三（已完成，简单）：HTML、CSS布局入门，三栏式布局的实践&lt;blockquote&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/绝对定位法.html&quot;&gt;绝对定位法&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/圣杯布局-浮动定位法.html&quot;&gt;圣杯布局-浮动定位法&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/flex实现圣杯局部.html&quot;&gt;flex实现圣杯局部&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/双飞翼-浮动定位法.html&quot;&gt;双飞翼-浮动定位法&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/三行布局.html&quot;&gt;三行布局&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/绝对定位法.html&quot;&gt;绝对定位法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/圣杯布局-浮动定位法.html&quot;&gt;圣杯布局-浮动定位法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/flex实现圣杯局部.html&quot;&gt;flex实现圣杯局部&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/双飞翼-浮动定位法.html&quot;&gt;双飞翼-浮动定位法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务三：三栏式布局/三行布局.html&quot;&gt;三行布局&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务四：定位和居中问题/index.html&quot;&gt;任务四（已完成，入门）：HTML、CSS布局深入，定位和居中问题的实践&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务五：零基础HTML及CSS编码（二）/index.html&quot;&gt;任务五（已完成，简单）：基于任务1的HTML代码，实现一个稍微复杂的CSS代码编写&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务六：通过HTML及CSS模拟报纸排版/index.html&quot;&gt;任务六（已完成，简单）：按照设计图，通过HTML/CSS实现一个像报纸杂志一样的页面布局排版&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务七：实现常见的技术产品官网的页面架构及样式布局/index.html&quot;&gt;任务七（已完成，中等）：按照设计图，通过HTML/CSS实现一个产品官网&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务四：定位和居中问题/index.html&quot;&gt;任务四（已完成，入门）：HTML、CSS布局深入，定位和居中问题的实践&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务五：零基础HTML及CSS编码（二）/index.html&quot;&gt;任务五（已完成，简单）：基于任务1的HTML代码，实现一个稍微复杂的CSS代码编写&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务六：通过HTML及CSS模拟报纸排版/index.html&quot;&gt;任务六（已完成，简单）：按照设计图，通过HTML/CSS实现一个像报纸杂志一样的页面布局排版&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务七：实现常见的技术产品官网的页面架构及样式布局/index.html&quot;&gt;任务七（已完成，中等）：按照设计图，通过HTML/CSS实现一个产品官网&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
 &lt;li&gt;任务八（已完成，中等）：网格/栅格化布局学习与实践&lt;blockquote&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务八：响应式网格（栅格化）布局/在css中使用calc.html&quot;&gt;在css中使用calc实现&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务八：响应式网格（栅格化）布局/在div中填充div实现.html&quot;&gt;在div中填充div实现&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务八：响应式网格（栅格化）布局/在css中使用calc.html&quot;&gt;在css中使用calc实现&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务八：响应式网格（栅格化）布局/在div中填充div实现.html&quot;&gt;在div中填充div实现&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;br&gt;  &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务九：使用HTML/CSS实现一个复杂页面/index.html&quot;&gt;任务九（已完成，复杂）：按照设计图，通过HTML/CSS实现一个复杂的业务系统页面&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务十：Flexbox 布局练习/index.html&quot;&gt;任务十（已完成，简单）：学习和练习Flex布局&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务十一：移动Web页面布局实践/index.html&quot;&gt;任务十一（已完成，中等）：移动Web开发入门，按照设计稿实现一个移动端的页面&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务十二：学习CSS 3的新特性/index.html&quot;&gt;任务十二（已完成，简单）：CSS 3新特性的小练习&lt;/a&gt;&lt;blockquote&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务九：使用HTML和CSS实现一个复杂页面/index.html&quot;&gt;任务九（已完成，复杂）：按照设计图，通过HTML和CSS实现一个复杂的业务系统页面&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务十：Flexbox 布局练习/index.html&quot;&gt;任务十（已完成，简单）：学习和练习Flex布局&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务十一：移动Web页面布局实践/index.html&quot;&gt;任务十一（已完成，中等）：移动Web开发入门，按照设计稿实现一个移动端的页面&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务十二：学习CSS 3的新特性/index.html&quot;&gt;任务十二（已完成，简单）：CSS 3新特性的小练习&lt;/a&gt;&lt;blockquote&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务十二：学习CSS 3的新特性/使用css-radio实现标签页切换.html&quot;&gt;使用css-radio实现标签页切换&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://yanglonglong.com/project/ife-college/任务十二：学习CSS 3的新特性/使用css-target实现标签页切换.html&quot;&gt;使用css-target实现标签页切换&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务十二：学习CSS 3的新特性/使用css-radio实现标签页切换.html&quot;&gt;使用css-radio实现标签页切换&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://yanglonglong.com/project/ife-college/任务十二：学习CSS 3的新特性/使用css-target实现标签页切换.html&quot;&gt;使用css-target实现标签页切换&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
@@ -68,56 +68,56 @@
 &lt;p&gt;&lt;br&gt;  &lt;/p&gt;
 &lt;h2 id=&quot;IFE春季班第一阶段任务-1&quot;&gt;&lt;a href=&quot;#IFE春季班第一阶段任务-1&quot; class=&quot;headerlink&quot; title=&quot;IFE春季班第一阶段任务&quot;&gt;&lt;/a&gt;IFE春季班第一阶段任务&lt;/h2&gt;&lt;p&gt;第二阶段的主要目标是帮助大家 了解、认识、学习、掌握JavaScript。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务十三：面向零基础的JavaScript代码编写（一），难度简单。对JS、事件、DOM有个初体验&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务十四：面向零基础的JavaScript代码编写（二），难度简单。对JS的判断、循环、数组等有个初体验&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务十五：面向零基础的JavaScript代码编写（三），难度简单。继续熟悉JavaScript&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务十六：面向零基础的JavaScript代码编写（四），难度中等。学习事件代理、表单验证等&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务十七：面向零基础的JavaScript代码编写（五），难度中等。做一个较为完成的有JavaScript交互的页面&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务十八：基础JavaScript练习（一），难度简单。实现一个基本队列的相关操作&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务十九：基础JavaScript练习（二），难度简单。丰富队列操作，实现一个排序算法的可视化呈现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十：基础JavaScript练习（三），难度简单。实践字符串、数组相关方法&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十一：基础JavaScript练习（四），难度简单。结合实际运用场景，综合练习十八到二十的学习内容&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十二：JavaScript和树（一），难度简单。用JavaScript实践二叉树的遍历&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十三：JavaScript和树（二），难度简单。用JavaScript实践多叉树的遍历&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十四：JavaScript和树（三），难度中等。用JavaScript实践多叉树的节点相关操作&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十五：JavaScript和树（四），难度中等。结合实际运用场景，综合练习二十二到二十四的学习内容&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十六：行星与飞船（一），难度中等。学习面向对象编程及基础的设计模式，实现一个有行星和飞船的宇宙&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十七：行星与飞船（一），难度中等。改善在任务二十六中创建的各个航空系统&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十八：行星与飞船（一），难度中等。改善在任务二十七中创建的各个航空系统&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务二十九：表单（一），难度简单。学习单个表单如何进行验证&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务三十：表单（二），难度简单。学习一个完整表单如何进行验证&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务三十一：表单（三），难度简单。学习如何实现联动表单&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务三十二：表单（四），难度中等。学习如何实现一个表单工厂&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务三十三：听指令的小方块（一），难度简单。实现一个通过文本指令运动的小方块&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务三十四：听指令的小方块（二），难度简单。升级指令系统，实现动画运动效果&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务三十五：听指令的小方块（三），难度中等。升级指令系统，允许输入一段指令集合&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务三十六：听指令的小方块（四），难度高。提供墙的功能，实现寻路算法&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务十三：面向零基础的JavaScript代码编写（一），难度简单。对JS、事件、DOM有个初体验&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务十四：面向零基础的JavaScript代码编写（二），难度简单。对JS的判断、循环、数组等有个初体验&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务十五：面向零基础的JavaScript代码编写（三），难度简单。继续熟悉JavaScript&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务十六：面向零基础的JavaScript代码编写（四），难度中等。学习事件代理、表单验证等&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务十七：面向零基础的JavaScript代码编写（五），难度中等。做一个较为完成的有JavaScript交互的页面&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务十八：基础JavaScript练习（一），难度简单。实现一个基本队列的相关操作&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务十九：基础JavaScript练习（二），难度简单。丰富队列操作，实现一个排序算法的可视化呈现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十：基础JavaScript练习（三），难度简单。实践字符串、数组相关方法&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十一：基础JavaScript练习（四），难度简单。结合实际运用场景，综合练习十八到二十的学习内容&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十二：JavaScript和树（一），难度简单。用JavaScript实践二叉树的遍历&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十三：JavaScript和树（二），难度简单。用JavaScript实践多叉树的遍历&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十四：JavaScript和树（三），难度中等。用JavaScript实践多叉树的节点相关操作&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十五：JavaScript和树（四），难度中等。结合实际运用场景，综合练习二十二到二十四的学习内容&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十六：行星与飞船（一），难度中等。学习面向对象编程及基础的设计模式，实现一个有行星和飞船的宇宙&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十七：行星与飞船（一），难度中等。改善在任务二十六中创建的各个航空系统&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十八：行星与飞船（一），难度中等。改善在任务二十七中创建的各个航空系统&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务二十九：表单（一），难度简单。学习单个表单如何进行验证&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务三十：表单（二），难度简单。学习一个完整表单如何进行验证&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务三十一：表单（三），难度简单。学习如何实现联动表单&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务三十二：表单（四），难度中等。学习如何实现一个表单工厂&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务三十三：听指令的小方块（一），难度简单。实现一个通过文本指令运动的小方块&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务三十四：听指令的小方块（二），难度简单。升级指令系统，实现动画运动效果&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务三十五：听指令的小方块（三），难度中等。升级指令系统，允许输入一段指令集合&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务三十六：听指令的小方块（四），难度高。提供墙的功能，实现寻路算法&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;IFE春季班第三阶段任务&quot;&gt;&lt;a href=&quot;#IFE春季班第三阶段任务&quot; class=&quot;headerlink&quot; title=&quot;IFE春季班第三阶段任务&quot;&gt;&lt;/a&gt;IFE春季班第三阶段任务&lt;/h2&gt;&lt;p&gt;第三阶段的主要目标是帮助大家 综合练习HTML，CSS，JavaScript。&lt;/p&gt;
 &lt;h3 id=&quot;系列任务一：RIA-问卷管理平台准备工作&quot;&gt;&lt;a href=&quot;#系列任务一：RIA-问卷管理平台准备工作&quot; class=&quot;headerlink&quot; title=&quot;系列任务一：RIA 问卷管理平台准备工作&quot;&gt;&lt;/a&gt;系列任务一：RIA 问卷管理平台准备工作&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务37：浮出层组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务38：支持表头排序功能的表格组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务39：首行冻结表格组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务40：简单日历组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务41：日历组件升级&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务42：支持日期段选择的日历组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务37：浮出层组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务38：支持表头排序功能的表格组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务39：首行冻结表格组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务40：简单日历组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务41：日历组件升级&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务42：支持日期段选择的日历组件实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&quot;系列任务二：高级相册准备工作&quot;&gt;&lt;a href=&quot;#系列任务二：高级相册准备工作&quot; class=&quot;headerlink&quot; title=&quot;系列任务二：高级相册准备工作&quot;&gt;&lt;/a&gt;系列任务二：高级相册准备工作&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务43：拼图布局&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务44：瀑布布局&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务45：木桶布局&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务43：拼图布局&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务44：瀑布布局&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务45：木桶布局&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&quot;系列任务三：王牌特工游戏准备工作&quot;&gt;&lt;a href=&quot;#系列任务三：王牌特工游戏准备工作&quot; class=&quot;headerlink&quot; title=&quot;系列任务三：王牌特工游戏准备工作&quot;&gt;&lt;/a&gt;系列任务三：王牌特工游戏准备工作&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务46：游戏界面元素的简单实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务47：与游戏中元素的互动实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务48：游戏地图的实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;任务49：更炫酷的游戏实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务46：游戏界面元素的简单实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务47：与游戏中元素的互动实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务48：游戏地图的实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;任务49：更炫酷的游戏实现&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;IFE春季班第四阶段任务&quot;&gt;&lt;a href=&quot;#IFE春季班第四阶段任务&quot; class=&quot;headerlink&quot; title=&quot;IFE春季班第四阶段任务&quot;&gt;&lt;/a&gt;IFE春季班第四阶段任务&lt;/h2&gt;&lt;p&gt;第四阶段的主要目标是帮助大家在第三阶段的基础上 结合模块化、过程管理工具，综合运用HTML，CSS，JavaScript实现一个小型的网站或者应用。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;系列任务一：RIA 问卷管理平台&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;系列任务二：高级相册&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;&quot;&gt;系列任务三：王牌特工游戏&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;系列任务一：RIA 问卷管理平台&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;系列任务二：高级相册&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;&quot;&gt;系列任务三：王牌特工游戏&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
     
