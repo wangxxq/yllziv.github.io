@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yanglonglong.com/blog/2016-06-01-%E4%BD%BF%E7%94%A8JavaScript%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8.html</loc>
+    
+    <lastmod>2016-05-31T06:29:46.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yanglonglong.com/blog/2016-04-26-%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8EJade%E6%B7%B1%E5%85%A5%E7%A0%94%E7%A9%B6.html</loc>
+    
+    <lastmod>2016-05-31T01:40:47.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yanglonglong.com/blog/2016-06-02-%E4%BD%BF%E7%94%A8JavaScript%E5%AE%9E%E7%8E%B0%E9%9B%86%E5%90%88.html</loc>
     
     <lastmod>2016-05-30T14:05:31.000Z</lastmod>
@@ -12,13 +26,6 @@
     <loc>http://yanglonglong.com/blog/2016-06-01-%E4%BD%BF%E7%94%A8JavaScript%E5%AE%9E%E7%8E%B0%E5%AD%97%E5%85%B8.html</loc>
     
     <lastmod>2016-05-30T13:25:31.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/blog/2016-06-01-%E4%BD%BF%E7%94%A8JavaScript%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8.html</loc>
-    
-    <lastmod>2016-05-30T12:38:25.000Z</lastmod>
     
   </url>
   
@@ -93,9 +100,9 @@
   </url>
   
   <url>
-    <loc>http://yanglonglong.com/blog/2016-04-26-%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8EJade%E6%B7%B1%E5%85%A5%E7%A0%94%E7%A9%B6.html</loc>
+    <loc>http://yanglonglong.com/blog/2016-04-26-nginx%E5%9C%A8centos6-5%E5%92%8Cmac%E4%B8%AD%E7%9A%84%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html</loc>
     
-    <lastmod>2016-05-09T14:44:02.000Z</lastmod>
+    <lastmod>2016-05-09T14:43:07.000Z</lastmod>
     
   </url>
   
@@ -107,14 +114,7 @@
   </url>
   
   <url>
-    <loc>http://yanglonglong.com/blog/2016-04-26-nginx%E5%9C%A8centos6-5%E5%92%8Cmac%E4%B8%AD%E7%9A%84%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html</loc>
-    
-    <lastmod>2016-05-09T14:43:07.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yanglonglong.com/blog/2016-04-27-%E4%BD%BF%E7%94%A8GeoServer%E5%8F%91%E5%B8%83shp%E6%95%B0%E6%8D%AE%E4%B8%BAWMS%E6%9C%8D%E5%8A%A1%E5%92%8CWFS%E6%9C%8D%E5%8A%A1%EF%BC%88%E5%9B%BE%E6%96%87%E6%95%99%E7%A8%8B%EF%BC%89.html</loc>
+    <loc>http://yanglonglong.com/blog/2016-05-09-%E5%85%B3%E4%BA%8E-Swift-%E7%BC%96%E8%AF%91%E6%97%B6%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83.html</loc>
     
     <lastmod>2016-05-09T14:42:49.000Z</lastmod>
     
@@ -128,14 +128,14 @@
   </url>
   
   <url>
-    <loc>http://yanglonglong.com/blog/2016-05-04-%E6%90%AD%E5%BB%BALeaflet%E4%B8%AD%E6%96%87%E4%B8%BB%E9%A1%B5%E5%92%8CLeaflet%E4%B8%AD%E6%96%87%E7%A4%BE%E5%8C%BA.html</loc>
+    <loc>http://yanglonglong.com/blog/2016-04-27-%E4%BD%BF%E7%94%A8GeoServer%E5%8F%91%E5%B8%83shp%E6%95%B0%E6%8D%AE%E4%B8%BAWMS%E6%9C%8D%E5%8A%A1%E5%92%8CWFS%E6%9C%8D%E5%8A%A1%EF%BC%88%E5%9B%BE%E6%96%87%E6%95%99%E7%A8%8B%EF%BC%89.html</loc>
     
     <lastmod>2016-05-09T14:42:49.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yanglonglong.com/blog/2016-05-09-%E5%85%B3%E4%BA%8E-Swift-%E7%BC%96%E8%AF%91%E6%97%B6%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83.html</loc>
+    <loc>http://yanglonglong.com/blog/2016-05-04-%E6%90%AD%E5%BB%BALeaflet%E4%B8%AD%E6%96%87%E4%B8%BB%E9%A1%B5%E5%92%8CLeaflet%E4%B8%AD%E6%96%87%E7%A4%BE%E5%8C%BA.html</loc>
     
     <lastmod>2016-05-09T14:42:49.000Z</lastmod>
     
